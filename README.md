@@ -1,8 +1,8 @@
-#Welcome to the my Web Development wiki for CS 4550.
+# Welcome to the my Web Development wiki for CS 4550.
 
-##This repository is for all the assignments and projects related to CS 4550.
+## This repository is for all the assignments and projects related to CS 4550.
 
-####About me
+#### About me
 I am an undergraduate student in my 4th year at Northeastern University studying 
 Computer Engineering and Computer Science. 
 I have experience with C++ and Java doing development in Android, IOS, and Embedded Systems. 
