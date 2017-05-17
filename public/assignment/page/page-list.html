@@ -10,25 +10,33 @@
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="#" onclick="history.go(-1)" class="navbar-link">
+            <div class="navbar-header">
+                <a  href="#"
+                    type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+                <div class="navbar-brand">
+                    <a href="../website/website-list.html"
+                       class="navbar-link">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
-                </li>
-                <li>
-                    <a href="#" class="navbar-brand">
-                        Pages
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="page-new.html" class="navbar-link">
-                        <span class="glyphicon glyphicon-plus"></span>
-                    </a>
-                </li>
-            </ul>
+                    <span>Pages</span>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="page-new.html"
+                           class="navbar-link">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 

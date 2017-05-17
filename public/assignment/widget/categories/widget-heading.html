@@ -4,46 +4,62 @@
     <meta charset="UTF-8">
     <title>Matt's Website Maker</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/assignment/css/style.css" rel="stylesheet"/>
+    <link href="../../css/style.css" rel="stylesheet"/>
 </head>
 <body>
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="../../widget/widget-list.html" class="navbar-link">
+            <div class="navbar-header">
+                <a  href="../widget-list.html"
+                    type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+                <div class="navbar-brand">
+                    <a href="../../widget/widget-list.html"
+                       class="navbar-link">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
-                </li>
-                <li>
-                    <a href="#" class="navbar-brand">
-                        Widget Edit
-                    </a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="../../widget/widget-list.html" class="navbar-link">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </a>
-                </li>
-            </ul>
+                    <span>Widget Edit</span>
+                </div>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="../../widget/widget-list.html"
+                           class="navbar-link">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <div class="container">
         <div class="form-group">
             <label for="name-input">Name</label>
-            <input class="form-control" type="text" id="name-input" />
+            <input class="form-control"
+                   type="text"
+                   id="name-input" />
         </div>
         <div class="form-group">
             <label for="title-input">Text</label>
-            <input class="form-control" type="text" id="title-input" value="Us Senate Reaches" />
+            <input class="form-control"
+                   type="text"
+                   id="title-input"
+                   value="Us Senate Reaches" />
         </div>
         <div class="form-group dropdown">
             <label for="name-input">Size</label>
-            <input class="form-control dropdown-toggle" type="text" id="size-input" data-toggle="dropdown"/>
+            <input class="form-control dropdown-toggle"
+                   type="text"
+                   id="size-input"
+                   data-toggle="dropdown"/>
             <ul class="dropdown-menu">
                 <li><a href="#">1</a></li>
                 <li><a href="#">2</a></li>
@@ -54,7 +70,8 @@
             </ul>
         </div>
         <div class="form-group">
-            <a href="../widget-list.html" class="btn btn-block btn-danger">
+            <a href="../widget-list.html"
+               class="btn btn-block btn-danger">
                 Delete
             </a>
         </div>
@@ -64,7 +81,7 @@
         <div class="container">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="/assignment/user/profile.html">
+                    <a href="../../user/profile.html">
                         <span class="glyphicon glyphicon-user"></span>
                     </a>
                 </li>

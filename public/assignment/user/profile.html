@@ -11,17 +11,26 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    Profile
-                </a>
+                <button type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        aria-expanded="false"
+                        aria-controls="navbar">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                <span class="navbar-brand">Profile</span>
             </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="#" class="navbar-link">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </a>
-                </li>
-            </ul>
+            <div id="navbar"
+                 class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#"
+                           class="navbar-link">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -32,24 +41,36 @@
         <form>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Username">
+                <input type="text"
+                       class="form-control"
+                       id="username"
+                       placeholder="Username">
             </div>
             <div class="form-group">
                 <label for="email">Email address</label>
-                <input type="email" class="form-control" id="email" placeholder="alice@wonderland.com">
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       placeholder="alice@wonderland.com">
             </div>
             <div class="form-group">
                 <label for="first-name">First Name</label>
-                <input type="text" class="form-control" id="first-name" placeholder="Alice">
+                <input type="text"
+                       class="form-control"
+                       id="first-name"
+                       placeholder="Alice">
             </div>
             <div class="form-group">
                 <label for="last-name">Last Name</label>
-                <input type="text" class="form-control" id="last-name" placeholder="Wonderland">
+                <input type="text"
+                       class="form-control"
+                       id="last-name"
+                       placeholder="Wonderland">
             </div>
         </form>
 
         <a class="btn btn-primary btn-block"
-           href="/assignment/website/website-list.html">Websites</a>
+           href="../website/website-list.html">Websites</a>
         <a class="btn btn-danger  btn-block"
            href="login.html">Logout</a>
     </div>
