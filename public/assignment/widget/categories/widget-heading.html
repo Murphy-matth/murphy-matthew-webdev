@@ -9,7 +9,7 @@
 <body>
 
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header">
                 <a  href="../widget-list.html"
                     type="button"
@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container-fluid wd-padding-top">
         <div class="form-group">
             <label for="name-input">Name</label>
             <input class="form-control"
@@ -55,19 +55,16 @@
                    value="Us Senate Reaches" />
         </div>
         <div class="form-group dropdown">
-            <label for="name-input">Size</label>
-            <input class="form-control dropdown-toggle"
-                   type="text"
-                   id="size-input"
-                   data-toggle="dropdown"/>
-            <ul class="dropdown-menu">
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">6</a></li>
-            </ul>
+            <label for="select-input">Size</label>
+            <select class="form-control"
+                    id="select-input">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">5</option>
+            </select>
         </div>
         <div class="form-group">
             <a href="../widget-list.html"
@@ -78,7 +75,7 @@
     </div>
 
     <nav class="navbar navbar-default navbar-fixed-bottom">
-        <div class="container">
+        <div class="container-fluid">
             <div class="navbar-header navbar-right">
                 <a  href="../../user/profile.html"
                     type="button"
@@ -89,7 +86,8 @@
                     <span class="glyphicon glyphicon-user"></span>
                 </a>
                 <div class="navbar-brand navbar-collapse collapse">
-                    <a href="../../user/profile.html">
+                    <a href="../../user/profile.html"
+                       class="navbar-link">
                         <span class="glyphicon glyphicon-user"></span>
                     </a>
                 </div>

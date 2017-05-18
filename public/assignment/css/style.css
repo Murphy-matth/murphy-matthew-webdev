@@ -6,13 +6,39 @@ body {
     padding-top: 65px;
 }
 
-li.borderless { border: none; }
+.wd-borderless { border: none; }
 
-.right-border {
-    border-right: 1px solid #000000;
+.wd-padding-top {
+    padding-top: 15px;
 }
 
-.fill {
-    min-height: 100%;
-    height: 100%;
+.wd-scrollable-left {
+    position: absolute;
+    top: 50px;
+    bottom: 0px;
+    overflow: scroll;
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .wd-col-right-scrollable-left {
+        margin-left: 33%;
+    }
+}
+
+.wd-widget {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.wd-toolbar {
+    position: absolute;
+    background-color: #ffffff;
+    top: 0px;
+    right: 0px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    border-bottom-left-radius: 5px;
+    opacity: 0.8;
 }
