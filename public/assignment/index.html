@@ -3,14 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>Assignment Home Page</title>
-</head>
-<body>
-    <h1>Assignment Home Page</h1>
-    <a href="user/login.html">Login</a>
-    <a href="user/profile.html">Profile</a>
-    <a href="user/register.html">Register</a>
-
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/style.css" rel="stylesheet"/>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/padding.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button"
+                        class="navbar-toggle collapsed"
+                        data-toggle="collapse"
+                        data-target="#navbar"
+                        aria-expanded="false"
+                        aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Matt's Assignment</span>
+            </div>
+            <div id="navbar"
+                 class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="user/login.html"
+                           class="navbar-link">
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user/profile.html"
+                           class=" navbar-link">
+                            Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="user/register.html"
+                           class="navbar-link">
+                            Register
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <h1>Assignment Home Page</h1>
+    </div>
+
 </body>
 </html>
