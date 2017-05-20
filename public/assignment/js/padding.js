@@ -5,7 +5,10 @@
 (function() {
     var onResize = function() {
         // apply dynamic padding at the top of the body according to the fixed navbar height
-        jQuery("body").css("padding-top", jQuery(".navbar-fixed-top").height());
+        var body = jQuery("body");
+
+        body.css("padding-top", jQuery(".navbar-fixed-top").height());
+        body.css("padding-bottom", jQuery(".navbar-fixed-bottom").height());
     };
 
     // attach the function to the window resize event
