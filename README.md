@@ -16,7 +16,7 @@ Both my project and my assignments are hosted at [heroku.](https://webdev-summer
 
 My project is located at [TBD.](www.google.com)
 
-My assignment is located at [TBD.](www.google.com)
+My assignment is located at [TBD.](https://webdev-summer-2017.herokuapp.com/assignment/index.html)
 
 
 
