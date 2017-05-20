@@ -87,3 +87,7 @@ a.btn-block {
     width: 100%;
     height: 100%;
 }
+
+.text-muted {
+    color: #333;
+}
