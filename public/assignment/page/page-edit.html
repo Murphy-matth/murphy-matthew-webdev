@@ -28,7 +28,7 @@
                        class="navbar-link">
                         <span class="glyphicon glyphicon-chevron-left"></span>
                     </a>
-                    <span>New Page</span>
+                    <span>Edit Page</span>
                 </div>
             </div>
             <div class="navbar-collapse collapse">
@@ -45,26 +45,64 @@
     </nav>
 
     <div class="container-fluid wd-padding-top">
-        <div class="form-group">
-            <label for="name-input">Name</label>
-            <input class="form-control"
-                   type="text"
-                   id="name-input"
-                   placeholder="Page Name"
-                   value="Blog Post" />
-        </div>
-        <div class="form-group">
-            <label for="title-input">Title</label>
-            <input class="form-control"
-                   type="text"
-                   id="title-input"
-                   placeholder="Page Name" />
-        </div>
-        <div class="form-group">
-            <a href="page-list.html"
-               class="btn btn-block btn-danger">
-                Delete
-            </a>
+        <div class="row">
+            <div class="col-sm-4 hidden-xs wd-scrollable-left">
+                <ul class="list-group">
+                    <li class="list-group-item wd-borderless">
+                        <a href="../widget/widget-list.html">Blog Post</a>
+                        <a href="page-edit.html">
+                            <span class="glyphicon glyphicon-cog pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="list-group-item wd-borderless">
+                        <a href="../widget/widget-list.html">Blogs</a>
+                        <a href="page-edit.html">
+                            <span class="glyphicon glyphicon-cog pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="list-group-item wd-borderless">
+                        <a href="../widget/widget-list.html">Home</a>
+                        <a href="page-edit.html">
+                            <span class="glyphicon glyphicon-cog pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="list-group-item wd-borderless">
+                        <a href="../widget/widget-list.html">About</a>
+                        <a href="page-edit.html">
+                            <span class="glyphicon glyphicon-cog pull-right"></span>
+                        </a>
+                    </li>
+                    <li class="list-group-item wd-borderless">
+                        <a href="../widget/widget-list.html">Contact Us</a>
+                        <a href="page-edit.html">
+                            <span class="glyphicon glyphicon-cog pull-right"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-8 col-xs-12 wd-col-right-scrollable-left">
+                <div class="form-group">
+                    <label for="name-input">Name</label>
+                    <input class="form-control"
+                           type="text"
+                           id="name-input"
+                           placeholder="Page Name"
+                           value="Blog Post" />
+                </div>
+                <div class="form-group">
+                    <label for="title-input">Title</label>
+                    <input class="form-control"
+                           type="text"
+                           id="title-input"
+                           placeholder="Page Name" />
+                </div>
+                <div class="form-group">
+                    <a href="page-list.html"
+                       class="btn btn-block btn-danger">
+                        Delete
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
