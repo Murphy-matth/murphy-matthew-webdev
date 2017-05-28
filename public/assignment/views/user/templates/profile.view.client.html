@@ -25,12 +25,16 @@
 </nav>
 
 <div class="container-fluid wd-padding-top">
+    <div ng-show="vm.message"
+         class="alert alert-success">
+        {{vm.message}}
+    </div>
     <div class="form-group">
         <label for="username">Username</label>
         <input type="text"
                class="form-control"
                id="username"
-               value="{{vm.user.username}}"
+               ng-model="vm.user.username"
                placeholder="Username">
     </div>
     <div class="form-group">
@@ -38,7 +42,7 @@
         <input type="email"
                class="form-control"
                id="email"
-               value="{{vm.user.email}}"
+               ng-model="vm.user.email"
                placeholder="alice@wonderland.com">
     </div>
     <div class="form-group">
@@ -46,7 +50,7 @@
         <input type="text"
                class="form-control"
                id="first-name"
-               value="{{vm.user.firstName}}"
+               ng-model="vm.user.firstName"
                placeholder="Alice">
     </div>
     <div class="form-group">
@@ -54,13 +58,14 @@
         <input type="text"
                class="form-control"
                id="last-name"
-               value="{{vm.user.lastName}}"
+               ng-model="vm.user.lastName"
                placeholder="Wonderland">
     </div>
 
     <a class="btn btn-primary btn-block"
        href="#!/user/{{vm.userId}}/website">Websites</a>
-    <a class="btn btn-success btn-block">
+    <a class="btn btn-success btn-block"
+       ng-click="vm.update()">
         Update
     </a>
     <a class="btn btn-danger btn-block"

@@ -40,7 +40,10 @@
                 // Make the user.
                 user = {
                     username: username,
-                    password: password
+                    password: password,
+                    email: "www.example.com",
+                    firstName: "",
+                    lastName: ""
                 };
                 // Add it to the service.
                 var user = userService.createUser(user);
