@@ -1,0 +1,23 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand">
+                <a href="#/user/{{vm.userId}}/website/{{vm.websiteId}}/page/{{vm.pageId}}/widget"
+                   class="navbar-link">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <span>Choose Widget</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid wd-padding-top">
+    <ul class="list-group">
+        <li ng-repeat="widgetType in vm.widgetTypes" class="list-group-item wd-borderless">
+            <a ng-click="vm.createWidgetFromType(widgetType.type)">{{widgetType.type}}</a>
+        </li>
+    </ul>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

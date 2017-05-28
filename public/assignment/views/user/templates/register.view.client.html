@@ -1,0 +1,33 @@
+<div class="wd-vertical-center">
+    <div class="container-fluid wd-vertical-center-container">
+        <h1 class="text-center">Register</h1>
+        <div ng-show="vm.updateError"
+             class="alert alert-danger wd-center">
+            {{vm.updateError}}
+        </div>
+        <div ng-show="vm.registerError"
+             class="alert alert-danger wd-center">
+            {{vm.registerError}}
+        </div>
+        <input type="text"
+               ng-model="username"
+               class="form-control wd-center"
+               placeholder="username"/>
+        <input type="password"
+               ng-model="password"
+               class="form-control wd-center"
+               placeholder="password"/>
+        <input type="password"
+               ng-model="verify"
+               class="form-control wd-center"
+               placeholder="verify password"/>
+        <a class="btn btn-primary btn-block wd-center"
+           ng-click="vm.register(username, password, verify)">Register</a>
+        <a class="btn btn-success btn-block wd-center"
+            href="#!/login">
+            Already registered? Login!
+        </a>
+        <a class="btn btn-danger btn-block wd-center"
+           href="#!/login">Cancel</a>
+    </div>
+</div>

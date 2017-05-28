@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="WebAppMaker">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,56 +7,40 @@
     <title>Assignment Home Page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/style.css" rel="stylesheet"/>
+    <!--- Angular JS --->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="app.js"></script>
+    <!--- Angular Routing JS --->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular-route.min.js"></script>
+    <script src="config.js"></script>
+    <!-- Angular Services JS --->
+    <script type="text/javascript" src="services/page.service.client.js"></script>
+    <script type="text/javascript" src="services/user.service.client.js"></script>
+    <script type="text/javascript" src="services/website.service.client.js"></script>
+    <script type="text/javascript" src="services/widget.service.client.js"></script>
+    <!-- Angular Controllers --->
+    <script type="text/javascript" src="views/user/controllers/login.controller.client.js"></script>
+    <script type="text/javascript" src="views/user/controllers/profile.controller.client.js"></script>
+    <script type="text/javascript" src="views/user/controllers/register.controller.client.js"></script>
+    <script type="text/javascript" src="views/website/controllers/website-list.controller.client.js"></script>
+    <script type="text/javascript" src="views/website/controllers/website-new.controller.client.js"></script>
+    <script type="text/javascript" src="views/website/controllers/website-edit.controller.client.js"></script>
+    <script type="text/javascript" src="views/page/controllers/page-list.controller.client.js"></script>
+    <script type="text/javascript" src="views/page/controllers/page-new.controller.client.js"></script>
+    <script type="text/javascript" src="views/page/controllers/page-edit.controller.client.js"></script>
+    <script type="text/javascript" src="views/widget/controllers/widget-list.controller.client.js"></script>
+    <script type="text/javascript" src="views/widget/controllers/widget-chooser.controller.client.js"></script>
+    <script type="text/javascript" src="views/widget/controllers/widget-edit.controller.client.js"></script>
+    <!--- Jquery JS --->
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/padding.js"></script>
+    <!--- Bootsrap JS --->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
 
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button"
-                        class="navbar-toggle collapsed"
-                        data-toggle="collapse"
-                        data-target="#mynavbar"
-                        aria-expanded="false"
-                        aria-controls="navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand">Matt's Assignment</span>
-            </div>
-            <div id="mynavbar"
-                 class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="user/login.html"
-                           class="navbar-link">
-                            Login
-                        </a>
-                    </li>
-                    <li>
-                        <a href="user/profile.html"
-                           class=" navbar-link">
-                            Profile
-                        </a>
-                    </li>
-                    <li>
-                        <a href="user/register.html"
-                           class="navbar-link">
-                            Register
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container-fluid">
-        <h1>Assignment Home Page</h1>
-    </div>
+    <!-- Used for angular routing -->
+    <div ng-view></div>
 
 </body>
 </html>

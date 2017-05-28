@@ -1,0 +1,71 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a type="button"
+               ng-click="vm.createWebsite(name, description)"
+               class="navbar-toggle collapsed"
+               data-toggle="collapse"
+               aria-expanded="false"
+               aria-controls="navbar">
+                <span class="glyphicon glyphicon-ok"></span>
+            </a>
+            <div class="navbar-brand">
+                <a class="navbar-link">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <span>New Website</span>
+            </div>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a ng-click="vm.createWebsite(name, description)"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid wd-padding-top">
+    <div class="row">
+        <div class="col-sm-4 hidden-xs wd-scrollable-left">
+            <div ng-repeat="website in vm.websites" class="list-group-item wd-borderless">
+                <a href="#!/user/{{vm.userId}}/website/{{website._id}}/page">{{website.name}}</a>
+                <a href="#!/user/{{vm.userId}}/website/{{website._id}}">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8 col-xs-12 wd-col-right-scrollable-left">
+            <div ng-show="vm.nameError"
+                 class="alert alert-danger">
+                {{vm.nameError}}
+            </div>
+            <div ng-show="vm.descriptionError"
+                 class="alert alert-danger">
+                {{vm.descriptionError}}
+            </div>
+            <div class="form-group">
+                <label for="name-input">Name</label>
+                <input class="form-control"
+                       ng-model="name"
+                       type="text"
+                       id="name-input"
+                       placeholder="Name" />
+            </div>
+            <div class="form-group">
+                <label for="description-input">Description</label>
+                <textarea class="form-control"
+                          ng-model="description"
+                          rows="5"
+                          id="description-input"
+                          placeholder="Description"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

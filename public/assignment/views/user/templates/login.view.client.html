@@ -1,0 +1,25 @@
+<div class="wd-vertical-center">
+    <div class="container-fluid wd-vertical-center-container">
+        <h1 class="text-center">Login</h1>
+        <div ng-show="vm.invalidUsername"
+             class="alert alert-danger wd-center">
+            {{vm.invalidUsername}}
+        </div>
+        <div ng-show="vm.invalidPassword"
+             class="alert alert-danger wd-center">
+            {{vm.invalidPassword}}
+        </div>
+        <input type="text"
+               ng-model="username"
+               class="form-control wd-center"
+               placeholder="username"/>
+        <input type="password"
+               ng-model="password"
+               class="form-control wd-center"
+               placeholder="password"/>
+        <a class="btn btn-primary btn-block wd-center"
+           ng-click="vm.login(username, password)">Login</a>
+        <a class="btn btn-success btn-block wd-center"
+           href="#!/register">Register</a>
+    </div>
+</div>

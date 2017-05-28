@@ -1,0 +1,70 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <span class="navbar-brand">Profile</span>
+        </div>
+        <div id="navbar"
+             class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid wd-padding-top">
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text"
+               class="form-control"
+               id="username"
+               value="{{vm.user.username}}"
+               placeholder="Username">
+    </div>
+    <div class="form-group">
+        <label for="email">Email address</label>
+        <input type="email"
+               class="form-control"
+               id="email"
+               value="{{vm.user.email}}"
+               placeholder="alice@wonderland.com">
+    </div>
+    <div class="form-group">
+        <label for="first-name">First Name</label>
+        <input type="text"
+               class="form-control"
+               id="first-name"
+               value="{{vm.user.firstName}}"
+               placeholder="Alice">
+    </div>
+    <div class="form-group">
+        <label for="last-name">Last Name</label>
+        <input type="text"
+               class="form-control"
+               id="last-name"
+               value="{{vm.user.lastName}}"
+               placeholder="Wonderland">
+    </div>
+
+    <a class="btn btn-primary btn-block"
+       href="#!/user/{{vm.userId}}/website">Websites</a>
+    <a class="btn btn-success btn-block">
+        Update
+    </a>
+    <a class="btn btn-danger btn-block"
+       href="#!/login">Logout</a>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

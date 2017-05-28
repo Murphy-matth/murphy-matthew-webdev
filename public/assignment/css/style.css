@@ -6,7 +6,8 @@ a.btn-block {
 .wd-borderless { border: none; }
 
 .wd-padding-top {
-    padding-top: 15px;
+    padding-top: 65px;
+    padding-bottom: 65px;
 }
 
 .wd-vertical-center {
@@ -88,6 +89,10 @@ a.btn-block {
     height: 100%;
 }
 
-.text-muted {
+.wd-text-muted {
     color: #333;
+}
+
+.wd-scrollable {
+    overflow: scroll;
 }

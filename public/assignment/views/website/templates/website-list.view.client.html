@@ -1,0 +1,44 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a  href="#!/user/{{vm.userId}}/website/new"
+                type="button"
+                class="navbar-toggle collapsed"
+                data-toggle="collapse"
+                aria-expanded="false"
+                aria-controls="navbar">
+                <span class="glyphicon glyphicon-ok"></span>
+            </a>
+            <div class="navbar-brand">
+                <a class="navbar-link"
+                   href="#!/user/{{vm.userId}}/">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <span>Websites</span>
+            </div>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#!/user/{{vm.userId}}/website/new"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid wd-padding-top">
+    <ul class="list-group">
+        <li ng-repeat="website in vm.websites" class="list-group-item wd-borderless">
+            <a href="#!/user/{{vm.userId}}/website/{{website._id}}/page">{{website.name}}</a>
+            <a href="#!/user/{{vm.userId}}/website/{{website._id}}">
+                <span class="glyphicon glyphicon-cog pull-right"></span>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

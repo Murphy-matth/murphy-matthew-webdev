@@ -1,0 +1,40 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div class="navbar-brand">
+                <a href="#/user/{{vm.userId}}/website/{{vm.websiteId}}/page/{{vm.pageId}}/widget"
+                   class="navbar-link">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+                <span>Create Widget</span>
+            </div>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="navbar-link"
+                       ng-click="vm.updateWidget();">
+                        <span class="glyphicon glyphicon-ok"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+HAPPY
+<div class="container-fluid wd-padding-top">
+    <div ng-include="vm.getWidgetUrlForType()"></div>
+    <!--<div ng-switch="widget.widgetType">-->
+    <!--<div ng-switch-when="HEADING">-->
+    <!--<div ng-include="'views/widget/templates/editors/widget-heading-editor.view.client.html'"></div>-->
+    <!--</div>-->
+    <!--<div ng-switch-when="IMAGE">-->
+    <!--<div ng-include="'views/widget/templates/editors/widget-image-editor.view.client.html'"></div>-->
+    <!--</div>-->
+    <!--<div ng-switch-when="YOUTUBE">-->
+    <!--<div ng-include="'views/widget/templates/editors/widget-youtube-editor.view.client.html'"></div>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>
