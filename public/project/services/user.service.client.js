@@ -4,12 +4,12 @@
  */
 (function() {
     angular
-        .module("WebAppMaker")
+        .module("PokerHandReplayer")
         .factory("userService", userService);
 
     function userService($http) {
 
-        var baseUrl = "/api/assignment/user/";
+        var baseUrl = "/api/project/user/";
 
         var api = {
             "createUser"   : createUser,
@@ -17,9 +17,14 @@
             "findUserByUsername" : findUserByUsername,
             "findUserByCredentials" : findUserByCredentials,
             "updateUser" : updateUser,
-            "deleteUser" : deleteUser
+            "deleteUser" : deleteUser,
+            "updatePassword": updatePassword
         };
         return api;
+
+        function updatePassword(userId, password) {
+            return "Update Successful";
+        }
 
         // Adds the user parameter instance. Returns the new user.
         function createUser(user) {
@@ -30,6 +35,7 @@
                 });
         }
 
+        // Returns the user in local users array whose _id matches the userId parameter.
         // Returns the user whose _id matches the id.
         function findUserById(id) {
             return sendGet(baseUrl + id);
@@ -45,7 +51,7 @@
             return sendGet(baseUrl + "?username=" + username + "&password=" + password);
         }
 
-        // Updates the user in local users array whose _id matches the userId parameter.
+        // Updates the user whose _id matches the userId parameter. Returns the user on success.
         function updateUser(userId, user) {
             var url = baseUrl + userId;
             return $http.put(url, user)
@@ -56,11 +62,12 @@
 
         // Removes the user whose _id matches the userId parameter.
         function deleteUser(userId) {
-            var url = baseUrl + userId;
-            return $http.delete(url)
-                .then(function (response) {
-                    return response.data;
-                });
+            var user = users.find(function(user) {
+                return user._id === id;
+            });
+
+            var index = users.indexOf(user);
+            users.splice(index, 1);
         }
 
         function sendGet(url) {

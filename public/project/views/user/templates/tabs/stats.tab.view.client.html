@@ -1,0 +1,28 @@
+<div class="container-fluid wd-padding">
+    <div class="panel-group" id="accordion">
+        <div ng-repeat="game in vm.games" class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse"
+                       data-parent="#accordion"
+                       href="#collapse1"
+                       target="_self">
+                        {{game.name}}</a>
+                </h4>
+            </div>
+            <div id="collapse1" class="panel-collapse collapse in">
+                <div ng-repeat="stat in game.stats"class="panel-body col-xs-4">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{stat.name}}
+                        </div>
+                        <div class="col-xs-6">
+                            {{stat.value}}
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+

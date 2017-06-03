@@ -1,0 +1,52 @@
+<div class="container-fluid wd-padding">
+    <div ng-show="vm.updatePasswordSuccess"
+         class="alert alert-success">
+        {{vm.updatePasswordSuccess}}
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': vm.invalidOldPassword}">
+        <div class="input-group">
+            <span class="input-group-addon wd-min-width">Old Password</span>
+            <input type="password"
+                   class="form-control"
+                   id="old-password"
+                   ng-model="vm.password.old"
+                   placeholder="Old Password">
+        </div>
+        <span ng-show="vm.invalidOldPassword"
+              class="help-block">
+                {{vm.invalidOldPassword}}
+        </span>
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': vm.updatePasswordFailed}">
+        <div class="input-group">
+            <span class="input-group-addon wd-min-width">New Password</span>
+            <input type="password"
+                   class="form-control"
+                   id="new-password"
+                   ng-model="vm.password.new"
+                   placeholder="New Password">
+        </div>
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': vm.updatePasswordFailed}">
+        <div class="input-group">
+            <span class="input-group-addon wd-min-width">Verify Password</span>
+            <input type="password"
+                   class="form-control"
+                   id="verify-password"
+                   ng-model="vm.password.verify"
+                   placeholder="Verify Password">
+        </div>
+        <span ng-show="vm.updatePasswordFailed"
+              class="help-block">
+                {{vm.updatePasswordFailed}}
+        </span>
+    </div>
+
+    <a class="btn btn-success btn-block"
+       ng-click="vm.updatePassword()">
+        Update
+    </a>
+</div>

@@ -1,7 +1,7 @@
 // Login Controller
 (function() {
     angular
-        .module("WebAppMaker")
+        .module("PokerHandReplayer")
         .controller("loginController", loginController);
 
 
@@ -32,12 +32,12 @@
                 // If the username does not exist present an error message.
                 function userDoesNotExist(error) {
                     // Username is invalid.
-                    vm.invalidUsername = "Username " + username + " not found. Please try again";
+                    vm.invalidUsername = "Username not found. Please try again :)";
                 }
 
                 // Handle the login response.
                 function handleLogin(user) {
-                    $location.url("/user/" + user._id + "/website");
+                    $location.url("/user/" + user._id);
                 }
 
                 // If there is a login error present an error message.
@@ -45,5 +45,5 @@
                     vm.invalidPassword = "Invalid password. Please try again";
                 }
             }
-        };
+        }
 })();

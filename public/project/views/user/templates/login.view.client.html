@@ -1,0 +1,43 @@
+<div class="wd-vertical-center">
+    <div class="container-fluid wd-vertical-center-container">
+        <h1 class="text-center">Login</h1>
+            <div class="form-group wd-center"
+                 ng-class="{'has-error': vm.invalidUsername}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </span>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Username"
+                           ng-model="username" />
+                </div>
+                <span ng-show="vm.invalidUsername"
+                      class="help-block">
+                    {{vm.invalidUsername}}
+                </span>
+            </div>
+        <div class="form-group wd-center"
+             ng-class="{'has-error': vm.invalidPassword}">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input id="password"
+                       type="password"
+                       class="form-control"
+                       name="password"
+                       placeholder="Password"
+                       ng-model="password" />
+            </div>
+            <span ng-show="vm.invalidPassword"
+                  class="help-block">
+                    {{vm.invalidPassword}}
+            </span>
+        </div>
+        <a class="btn btn-primary btn-block wd-center"
+           ng-click="vm.login(username, password)">Login</a>
+        <a class="btn btn-success btn-block wd-center"
+           href="#!/register">Need an Account? Register!</a>
+    </div>
+</div>

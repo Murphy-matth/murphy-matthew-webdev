@@ -33,8 +33,11 @@
                 widget.url = "www.example.com";
                 widget.width = "100%";
             }
-            var result = WidgetService.createWidget(vm.pageId, widget);
-            $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + result._id);
+            WidgetService
+                .createWidget(vm.pageId, widget)
+                .then(function(widget) {
+                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + widget._id);
+                })
         }
     }
 })();

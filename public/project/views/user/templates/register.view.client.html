@@ -1,0 +1,65 @@
+<div class="wd-vertical-center">
+    <div class="container-fluid wd-vertical-center-container">
+        <h1 class="text-center">Register</h1>
+        <div class="form-group wd-center"
+             ng-class="{'has-warning': vm.usernameTaken}">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-user"></i>
+                </span>
+                <input id="User"
+                       type="text"
+                       class="form-control"
+                       name="User"
+                       placeholder="Username"
+                       ng-model="username" />
+            </div>
+            <span ng-show="vm.usernameTaken"
+                  class="help-block">
+                    {{vm.usernameTaken}}
+            </span>
+        </div>
+        <div class="form-group wd-center"
+             ng-class="{'has-error': vm.passwordError, 'has-warning': vm.passwordWarning}">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input id="Pass"
+                       type="password"
+                       class="form-control"
+                       name="Pass"
+                       placeholder="Password"
+                       ng-model="password" />
+            </div>
+        </div>
+        <div class="form-group wd-center"
+             ng-class="{'has-error': vm.passwordError, 'has-warning': vm.passwordWarning}">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <i class="glyphicon glyphicon-lock"></i>
+                </span>
+                <input id="VerifyPass"
+                       type="password"
+                       class="form-control"
+                       name="VerifyPass"
+                       placeholder="Verify Password"
+                       ng-model="verify" />
+            </div>
+            <span ng-show="vm.passwordWarning"
+                  class="help-block">
+                    {{vm.passwordWarning}}
+            </span>
+            <span ng-show="vm.passwordError"
+                  class="help-block">
+                    {{vm.passwordError}}
+            </span>
+        </div>
+        <a class="btn btn-primary btn-block wd-center"
+           ng-click="vm.register(username, password, verify)">Register</a>
+        <a class="btn btn-success btn-block wd-center"
+            href="#!/login">
+            Already registered? Login!
+        </a>
+    </div>
+</div>

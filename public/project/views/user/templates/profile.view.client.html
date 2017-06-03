@@ -1,0 +1,77 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="glyphicon glyphicon-home"></span>
+            </button>
+            <span class="navbar-brand">Profile</span>
+        </div>
+        <div id="navbar"
+             class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container wd-padding-top">
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="text-center">
+                <img src="{{vm.savedUser.photo}}"
+                     class="avatar
+                     img-circle
+                     img-thumbnail"
+                     alt="avatar">
+            </div>
+            <h2 class="caption text-center">
+                {{vm.savedUser.username}}
+            </h2>
+            <div class="row wd-padding">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-4">
+                    <a class="btn btn-primary btn-block">
+                        Message
+                    </a>
+                </div>
+                <div class="col-xs-2"></div>
+                <div class="col-xs-4">
+                    <a class="btn btn-primary btn-block">
+                        Follow
+                    </a>
+                </div>
+                <div class="col-xs-1"></div>
+            </div>
+        </div>
+        <!--- Right Column --->
+        <div class="col-md-8 col-sm-6 col-xs-12">
+            <!--- Top Row --->
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="tab in vm.tabs" role="presentation"
+                        ng-class="{'active' : vm.isCurrentTab(tab)}">
+                        <a ng-click="vm.setTab(tab)">
+                            {{tab}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div ng-include="vm.getCurrentTabUrl()"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

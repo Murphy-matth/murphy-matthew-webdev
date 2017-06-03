@@ -17,25 +17,35 @@
             vm.pageId = $routeParams['pid'];
             vm.widgetId = $routeParams['wigid'];
             vm.widgetTypes = WidgetService.getWidgetTypes();
-            vm.widget = WidgetService.findWidgetById(vm.widgetId);
-            console.log(vm.widget);
+            WidgetService
+                .findWidgetById(vm.widgetId)
+                .then(function(widget) {
+                    console.log(widget);
+                    vm.widget = widget;
+                    vm.editableWidget = angular.copy(vm.widget);
+                })
         }
         init();
 
-        vm.editableWidget = angular.copy(vm.widget);
 
         vm.getWidgetUrlForType = getWidgetUrlForType;
         vm.deleteWidget = deleteWidget;
         vm.updateWidget = updateWidget;
 
         function updateWidget() {
-            WidgetService.updateWidget(vm.widget._id, vm.editableWidget);
-            $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/");
+            WidgetService
+                .updateWidget(vm.widget._id, vm.editableWidget)
+                .then(function(response) {
+                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/");
+                })
         }
 
         function deleteWidget() {
-            WidgetService.deleteWidget(vm.widget._id);
-            $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/");
+            WidgetService
+                .deleteWidget(vm.widget._id)
+                .then(function(response) {
+                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/");
+                })
         }
 
         function getWidgetUrlForType() {

@@ -10,14 +10,18 @@
 
         function init() {
             vm.userId = $routeParams['uid'];
-            vm.websites = WebsiteService.findWebsitesByUser(vm.userId);
+            WebsiteService
+                .findWebsitesByUser(vm.userId)
+                .then(function(websites) {
+                    vm.websites = websites;
+                })
         }
         init();
         // Event Handlers.
         vm.createWebsite = createWebsite;
 
         function createWebsite(name, description) {
-            vm.nameError = null
+            vm.nameError = null;
             vm.descriptionError = null;
 
             if (typeof name === 'undefined') {
@@ -34,10 +38,12 @@
                 description: description,
                 developerId: vm.userId
             };
-            WebsiteService.createWebsite(vm.userId, website);
-
-            // Navigate back to the website list page.
-            $location.url("/user/" + vm.userId + "/website");
+            WebsiteService
+                .createWebsite(vm.userId, website)
+                .then(function(response) {
+                    // Navigate back to the website list page.
+                    $location.url("/user/" + vm.userId + "/website");
+                })
         }
-    };
+    }
 })();

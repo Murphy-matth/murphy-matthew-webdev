@@ -7,29 +7,21 @@
         .module("WebAppMaker")
         .factory("WidgetService", WidgetService);
 
-    function WidgetService() {
-        // I removed the HTML Widgets as we do not display them yet and it causes problems.
-        var widgets = [
-            { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "text": "GIZMODO", "name": ""},
-            { "_id": "234", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name": ""},
-            { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%",
-                "url": "http://lorempixel.com/400/200/", "name": ""},
-            { "_id": "567", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name": ""},
-            { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%",
-                "url": "https://youtu.be/AM2Ivdi9c4E", "name": ""},
-        ];
+    function WidgetService($http) {
+
+        var baseUrl = '/api/assignment/';
 
         var widgetTypes = [
-            {"type": "HTML", "widgetId": "1"},
-            {"type": "HEADING", "widgetId": "2"},
-            {"type": "IMAGE", "widgetId": "3"},
-            {"type": "YOUTUBE", "widgetId": "4"},
-            {"type": "LABEL", "widgetId": "5"},
-            {"type": "TEXT INPUT", "widgetId": "6"},
-            {"type": "BUTTON", "widgetId": "7"},
-            {"type": "LINK", "widgetId": "8"},
-            {"type": "DATA TABLE", "widgetId": "9"},
-            {"type": "REPEATER", "widgetId": "10"}
+            {"type": "HTML"},
+            {"type": "HEADING"},
+            {"type": "IMAGE"},
+            {"type": "YOUTUBE"},
+            {"type": "LABEL"},
+            {"type": "TEXT INPUT"},
+            {"type": "BUTTON"},
+            {"type": "LINK"},
+            {"type": "DATA TABLE"},
+            {"type": "REPEATER"}
         ];
 
         var api = {
@@ -37,24 +29,30 @@
             "findWidgetsByPageId" : findWidgetsByPageId,
             "findWidgetById" : findWidgetById,
             "updateWidget" : updateWidget,
+            "updateWidgetUrl" : updateWidgetUrl,
             "deleteWidget" : deleteWidget,
             "getWidgetTypes" : getWidgetTypes,
-            "getWidgetTypeById" : getWidgetTypeById
+            "sortWidgets": sortWidgets
         };
         return api;
 
-        function getWidgetTypeById(widgetId) {
-            var result = widgetTypes.find(function(widget) {
-                return widget.widgetId === widgetId;
-            });
-            if (typeof result === 'undefined') {
-                return null;
-            }
-            return result;
+        function sortWidgets(pageId, startIndex, stopIndex) {
+            var url = baseUrl + 'page/' + pageId + '/widget?initial=' + startIndex + '&final=' + stopIndex;
+            return $http
+                .put(url)
+                .then(function(response) {
+                    return response.data;
+                });
         }
 
         // Returns the different types of widgets.
         function getWidgetTypes() {
+            // var url = '/api/assignment/widget/types';
+            // console.log(url);
+            // return $http.get(url)
+            //     .then(function (response) {
+            //         return response.data;
+            //     })
             return widgetTypes;
         }
 
@@ -63,57 +61,61 @@
         function createWidget(pageId, widget) {
             var newWidget = angular.copy(widget);
 
-            // For now use a temporary time stamp until it is assigned by the database.
-            newWidget._id = (new Date()).getTime() + ""; // This seems really bad.
-            newWidget.pageId = pageId;
-            newWidget.name = "Widget Name";
-            widgets.push(newWidget);
-
-            return newWidget;
+            var url = baseUrl + 'page/' + pageId + '/widget';
+            return $http.post(url, newWidget)
+                .then(function (response) {
+                    return response.data;
+                })
         }
 
-        // Retrieves the widgets in local widgets array whose pageId matches the parameter pageId.
+        // Retrieves the widgets whose pageId matches the parameter pageId.
         function findWidgetsByPageId(pageId) {
-            var result = widgets.filter(function(widget) {
-                return widget.pageId === pageId;
-            });
-            if (typeof result === 'undefined') {
-                return null;
-            }
-            return result;
+            var url = baseUrl + 'page/' + pageId + '/widget';
+
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                })
         }
 
-        // Retrieves the widget in local widgets array whose _id matches the widgetId parameter.
+        // Retrieves the widget whose _id matches the widgetId parameter.
         function findWidgetById(widgetId) {
-            var result = widgets.find(function (widget) {
-                return widget._id === widgetId;
-            });
-            if (typeof result === 'undefined') {
-                return null;
-            }
-            return result;
+            var url = baseUrl + 'widget/' + widgetId;
+
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                })
         }
 
-        // Updates the widget in local widgets array whose _id matches the widgetId parameter.
+        // Updates the widget whose _id matches the widgetId parameter.
         function updateWidget(widgetId, widget) {
-            for (var ii = 0; ii < widgets.length; ii++) {
-                var widge = widgets[ii];
-                if (widge._id === widgetId) {
-                    widget._id = widgetId;
-                    widgets[ii] = widget;
-                    break;
-                }
-            }
+            var url = baseUrl + 'widget/' + widgetId;
+
+            return $http.put(url, widget)
+                .then(function (response) {
+                    return response.data;
+                })
         }
 
-        // Removes the widget from local widgets array whose _id matches the widgetId parameter.
-        function deleteWidget(widgetId) {
-            var widget = widgets.find(function(widget) {
-                return widget._id === widgetId;
-            });
+        // Updates the widget whose _id matches the widgetId parameter.
+        function updateWidgetUrl(widgetId, newUrl) {
+            var url = baseUrl + 'widget/' + widgetId;
 
-            var index = widgets.indexOf(widget);
-            widgets.splice(index, 1);
+            return $http.post(url, {url : newUrl} )
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        // Removes the widget whose _id matches the widgetId parameter.
+        function deleteWidget(widgetId) {
+            var url = baseUrl + 'widget/' + widgetId;
+
+            return $http.delete(url)
+                .then(function (response) {
+                    return response.data;
+                })
         }
     }
 })();

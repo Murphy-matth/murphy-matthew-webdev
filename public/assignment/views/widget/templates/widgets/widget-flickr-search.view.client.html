@@ -1,0 +1,21 @@
+<div class="container-fluid wd-padding-top">
+    <div class="input-group">
+        <input ng-model="searchText"
+                type="text"
+                class="form-control">
+        <span class="input-group-btn">
+            <a ng-click="vm.searchPhotos(searchText)"
+               class="btn btn-default"
+               type="button">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+        </span>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-4" ng-repeat="photo in vm.photos.photo">
+            <img ng-click="vm.selectPhoto(photo)"
+                 ng-src="https://farm{{photo.farm}}.staticflickr.com/{{photo.server}}/{{photo.id}}_{{photo.secret}}_s.jpg"/>
+        </div>
+    </div>
+</div>

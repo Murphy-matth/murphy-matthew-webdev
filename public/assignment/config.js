@@ -80,5 +80,10 @@
                 controller: "widgetEditController",
                 controllerAs: 'vm'
             })
+            .when('/user/:uid/website/:wid/page/:pid/widget/:wigid/search', {
+                templateUrl: 'views/widget/templates/widgets/widget-flickr-search.view.client.html',
+                controller: 'flickrController',
+                controllerAs: 'vm'
+                    })
     }
 })();

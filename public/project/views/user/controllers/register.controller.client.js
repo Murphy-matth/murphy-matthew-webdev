@@ -1,43 +1,26 @@
 // Register Controller
 (function() {
     angular
-        .module("WebAppMaker")
+        .module("PokerHandReplayer")
         .controller("registerController", registerController);
 
-    function registerController($location, userService) {
+    function registerController($location, userService, passwordService) {
         var vm = this;
 
         vm.register = register;
-        vm.update = update;
-
-        function update(username, password, email, firstName, lastName) {
-            vm.updateError = null;
-
-            userService
-                .findUserByCredentials(username, password)
-                .then(userFound, userNotFound);
-
-            function userNotFound(error) {
-                vm.updateError = "You are not allowed to update the username or password";
-
-            }
-
-            function userFound(user) {
-                var newUser = angular.copy(user);
-                newUser.email = email;
-                newUser.firstName = firstName;
-                newUser.lastName = lastName;
-
-                // Do not need to handle the response.
-                userService.updateUser(newUser._id, newUser);
-            }
-        }
 
         function register(username, password, verify) {
-            vm.registerError = null;
+            vm.passwordError = null;
+            vm.usernameTaken = null;
+
+            var valid = passwordService.validate(password);
+            if (!valid.result) {
+                vm.passwordWarning = valid.message;
+                return;
+            }
 
             if (password !== verify) {
-                vm.registerError = "Passwords do not match. Please verify that they are the same.";
+                vm.passwordError = "Passwords do not match. Please verify that they are the same.";
                 return;
             }
 
@@ -46,7 +29,7 @@
                 .then(userExists, userDoesNotExist);
 
             function userExists(reponse) {
-                vm.registerError = "Username is already in use. Please use another name.";
+                vm.registerError = "Username is already in use.";
             }
 
             function userDoesNotExist(error) {

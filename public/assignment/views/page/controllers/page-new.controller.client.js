@@ -14,7 +14,11 @@
         function init() {
             vm.userId = $routeParams['uid'];
             vm.websiteId = $routeParams['wid'];
-            vm.pages = PageService.findPagesByWebsiteId(vm.websiteId);
+            PageService
+                .findPagesByWebsiteId(vm.websiteId)
+                .then(function(pages) {
+                    vm.pages = pages;
+                })
         }
         init();
         // Event Handlers.
@@ -38,10 +42,14 @@
                 websiteId: vm.websiteId,
                 description: title
             };
-            PageService.createPage(vm.pageId, page);
 
-            // Navigate back to the page list page.
-            $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+            PageService
+                .createPage(vm.pageId, page)
+                .then(function(response) {
+                    // Navigate back to the page list page.
+                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");
+                })
+
         }
     };
 })();

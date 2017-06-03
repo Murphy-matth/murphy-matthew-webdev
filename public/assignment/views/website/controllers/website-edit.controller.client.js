@@ -11,22 +11,32 @@
         function init() {
             vm.userId = $routeParams['uid'];
             vm.websiteId = $routeParams['wid'];
-            vm.website = WebsiteService.findWebsiteById(vm.websiteId);
-            vm.websites = WebsiteService.findWebsitesByUser(vm.userId);
+            WebsiteService
+                .findWebsiteById(vm.websiteId)
+                .then(function(website) {
+                    vm.website = website;
+                    vm.editableWebsite = angular.copy(vm.website);
+                });
+            WebsiteService
+                .findWebsitesByUser(vm.userId)
+                .then(function(websites) {
+                    vm.websites = websites;
+                })
         }
         init();
-
-        vm.editableWebsite = angular.copy(vm.website);
 
         // Event Handlers.
         vm.deleteWebsite = deleteWebsite;
         vm.updateWebsite = updateWebsite;
 
         function deleteWebsite() {
-            WebsiteService.deleteWebsite(vm.websiteId);
+            WebsiteService
+                .deleteWebsite(vm.websiteId)
+                .then(function(response) {
+                    // Navigate back to the website list page.
+                    $location.url("/user/" + vm.userId + "/website");
+                })
 
-            // Navigate back to the website list page.
-            $location.url("/user/" + vm.userId + "/website");
         }
 
         function updateWebsite(webName, webDescription) {
@@ -47,9 +57,12 @@
                 description: webDescription,
                 developerId: vm.userId
             };
-            WebsiteService.updateWebsite(vm.websiteId, website);
-            // Navigate back to the website list page.
-            $location.url("/user/" + vm.userId + "/website");
+            WebsiteService
+                .updateWebsite(vm.websiteId, website)
+                .then(function(response) {
+                    // Navigate back to the website list page.
+                    $location.url("/user/" + vm.userId + "/website");
+                })
         }
     }
 })();
