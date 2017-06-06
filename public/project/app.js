@@ -1,5 +1,5 @@
 // Main angular javascript file.
 (function() {
-    var pokerhandreplayer = angular
-        .module('PokerHandReplayer', ['ngRoute']);
+    var KnowYourRep = angular
+        .module('KnowYourRep', ['ngRoute']);
 })();

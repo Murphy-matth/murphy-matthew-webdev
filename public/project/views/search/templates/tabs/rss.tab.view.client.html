@@ -1,0 +1,10 @@
+<div class="row-fluid">
+    <ul class="unstyled">
+        <span class="badge badge-warning" ng-show="vm.feeds.length > 0">{{(vm.feeds | filter:filterText).length}} Items</span>
+        <li ng-repeat="feed in vm.feeds | filter:filterText">
+            <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
+            <p class="text-left">{{feed.contentSnippet}}</p>
+            <span class="small">{{feed.publishedDate}}</span>
+        </li>
+    </ul>
+</div>

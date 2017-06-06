@@ -1,7 +1,7 @@
 // Login Controller
 (function() {
     angular
-        .module("PokerHandReplayer")
+        .module("KnowYourRep")
         .controller("loginController", loginController);
 
 

@@ -1,0 +1,37 @@
+<div class="container-fluid">
+    <div ng-repeat="rep in vm.selectedReps" class="row list-group-item wd-group-item">
+        <div class="row">
+            <div class="col-xs-2 text-left">
+                First Name:
+            </div>
+            <div class="col-xs-10 text-left">
+                {{rep.first_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-left">
+                Last Name:
+            </div>
+            <div class="col-xs-10 text-left">
+                {{rep.last_name}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-left">
+                State:
+            </div>
+            <div class="col-xs-10 text-left">
+                {{rep.state}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2 text-left">
+                Party:
+            </div>
+            <div class="col-xs-10 text-left">
+                <span ng-show="rep.party === 'R'">Republican</span>
+                <span ng-show="rep.party === 'D'">Democrat</span>
+            </div>
+        </div>
+    </div>
+</div>

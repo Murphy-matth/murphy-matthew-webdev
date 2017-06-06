@@ -1,0 +1,64 @@
+<div class="container wd-padding-top">
+    <div ng-repeat="rep in vm.selectedReps"
+         ng-show="rep.photo"
+         class="col-xs-12">
+        <div class="row">
+            <!-- left column -->
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="text-center">
+                    <img ng-src="{{rep.photo}}"
+                         class="avatar img-circle img-thumbnail"
+                         alt="avatar">
+                </div>
+                <h2 class="caption text-center">
+                    {{rep.first_name}}, {{rep.last_name}}
+                </h2>
+                <div class="row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-xs-2">
+                        <a ng-click="vm.openUrl(rep.url)">
+                            <i class="fa fa-home fa-2x wd-muted" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-2">
+                        <a ng-click="vm.openUrl(rep.rss_url)">
+                            <i class="fa fa-rss fa-2x wd-muted" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-2">
+                        <i class="fa fa-heart fa-2x wd-muted" aria-hidden="true"></i>
+                    </div>
+                    <div class="col-xs-2">
+                        <a ng-click="vm.openUrl('http://www.facebook.com/' + rep.facebook_account)"
+                           class="pull-right">
+                            <i class="fa fa-facebook fa-2x wd-muted" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-xs-2">
+                        <a ng-click="vm.openUrl('http://www.twitter.com/' + rep.twitter_account)"
+                           class="pull-right">
+                            <i class="fa fa-twitter fa-2x wd-muted" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!--- Right Column --->
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <!--- Top Row --->
+                <div class="row">
+                    <ul class="nav nav-tabs">
+                        <li ng-repeat="tab in vm.tabs" role="presentation"
+                            ng-class="{'active' : vm.isCurrentTab(tab)}">
+                            <a ng-click="vm.setTab(tab)">
+                                {{tab}}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row">
+                    <div ng-include="vm.getCurrentTabUrl()"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

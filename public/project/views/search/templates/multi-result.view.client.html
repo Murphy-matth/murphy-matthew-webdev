@@ -1,0 +1,43 @@
+<div class="container wd-padding-top">
+    <div ng-repeat="rep in vm.selectedReps"
+         ng-show="rep.photo"
+         class="col-md-3 col-sm-4 col-xs-6">
+        <div class="text-center">
+            <img ng-src="{{rep.photo}}"
+                 ng-click="vm.selectRep(rep.id)"
+                 class="avatar img-circle img-thumbnail"
+                 alt="avatar">
+        </div>
+        <h5 class="caption text-center">
+            {{rep.first_name}}, {{rep.last_name}}
+        </h5>
+        <div class="row">
+            <div class="col-xs-1"></div>
+            <div class="col-xs-2">
+                <a ng-click="vm.openUrl(rep.url)">
+                    <i class="fa fa-home fa-2x wd-muted" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="col-xs-2">
+                <a ng-click="vm.openUrl(rep.rss_url)">
+                    <i class="fa fa-rss fa-2x wd-muted" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="col-xs-2">
+                <i class="fa fa-heart fa-2x wd-muted" aria-hidden="true"></i>
+            </div>
+            <div class="col-xs-2">
+                <a ng-click="vm.openUrl('http://www.facebook.com/' + rep.facebook_account)"
+                   class="pull-right">
+                    <i class="fa fa-facebook fa-2x wd-muted" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="col-xs-2">
+                <a ng-click="vm.openUrl('http://www.twitter.com/' + rep.twitter_account)"
+                   class="pull-right">
+                    <i class="fa fa-twitter fa-2x wd-muted" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

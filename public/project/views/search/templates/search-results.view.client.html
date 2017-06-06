@@ -1,0 +1,32 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="glyphicon glyphicon-home"></span>
+            </button>
+            <span class="navbar-brand"
+                  ng-click="vm.reset()">
+                Your Representatives
+            </span>
+        </div>
+        <div id="navbar"
+             class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-home"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div ng-include="vm.getResultsPageBody()"></div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

@@ -4,7 +4,7 @@
  */
 (function() {
     angular
-        .module("PokerHandReplayer")
+        .module("KnowYourRep")
         .factory("passwordService", passwordService);
 
     function passwordService() {

@@ -1,7 +1,7 @@
 // Register Controller
 (function() {
     angular
-        .module("PokerHandReplayer")
+        .module("KnowYourRep")
         .controller("registerController", registerController);
 
     function registerController($location, userService, passwordService) {

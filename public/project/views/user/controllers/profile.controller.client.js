@@ -1,7 +1,7 @@
 // Profile Controller
 (function() {
     angular
-        .module("PokerHandReplayer")
+        .module("KnowYourRep")
         .controller("profileController", profileController);
 
         function profileController($routeParams, $filter, userService, passwordService) {
@@ -30,7 +30,7 @@
             };
 
             // The default tab is the about tab
-            currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html';
+            currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html.html';
             vm.currentTab = 'about';
 
             vm.update = update;
