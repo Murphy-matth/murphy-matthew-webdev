@@ -62,6 +62,8 @@ app.delete('/api/project/user/:uid', deleteUser);
 
 function updateUser(req, res) {
     var user = req.body;
+    var userId = req.params.uid;
+
     for (var ii = 0; ii < users.length; ii++) {
         var tempUser = users[ii];
         if (tempUser._id === userId) {
@@ -93,6 +95,7 @@ function createUser(req, res) {
 function findUserByCredentials(req, res) {
     var username = req.query['username'];
     var password = req.query['password'];
+
     if (typeof password === 'undefined') {
         return findUserByUsername(res, username);
     } else {

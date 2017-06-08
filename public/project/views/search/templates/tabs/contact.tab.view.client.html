@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div ng-repeat="rep in vm.selectedReps" class="row list-group-item wd-group-item">
-        <div class="row">
+        <div class="row"
+             ng-show="rep.phone">
             <div class="col-xs-2 text-left">
                 Phone:
             </div>
@@ -10,7 +11,8 @@
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row"
+             ng-show="rep.url">
             <div class="col-xs-2 text-left">
                 Website:
             </div>
@@ -20,7 +22,8 @@
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row"
+             ng-show="rep.facebook_account">
             <div class="col-xs-2 text-left">
                 Facebook:
             </div>
@@ -30,13 +33,25 @@
                 </a>
             </div>
         </div>
-        <div class="row">
+        <div class="row"
+             ng-show="rep.twitter_account">
             <div class="col-xs-2 text-left">
                 Twitter:
             </div>
             <div class="col-xs-10 text-left">
                 <a href="http://www.twitter.com/{{rep.twitter_account}}" target="_blank">
                     {{rep.twitter_account}}
+                </a>
+            </div>
+        </div>
+        <div class="row"
+             ng-show="rep.youtube_account">
+            <div class="col-xs-2 text-left">
+                Youtube:
+            </div>
+            <div class="col-xs-10 text-left">
+                <a href="http://www.youtube.com/{{rep.youtube_account}}" target="_blank">
+                    {{rep.youtube_account}}
                 </a>
             </div>
         </div>

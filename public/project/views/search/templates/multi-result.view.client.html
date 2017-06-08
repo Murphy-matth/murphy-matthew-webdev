@@ -8,8 +8,13 @@
                  class="avatar img-circle img-thumbnail"
                  alt="avatar">
         </div>
-        <h5 class="caption text-center">
+        <h5 class="caption text-center"
+            ng-show="rep.first_name">
             {{rep.first_name}}, {{rep.last_name}}
+        </h5>
+        <h5 class="caption text-center"
+            ng-show="rep.name">
+            {{rep.name}}
         </h5>
         <div class="row">
             <div class="col-xs-1"></div>

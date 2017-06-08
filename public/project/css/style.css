@@ -52,6 +52,16 @@ a.btn-block {
     padding-bottom: 30px;
 }
 
+.wd-scrollable-tab {
+    position: absolute;
+    top: 50px;
+    bottom: 0px;
+    overflow: scroll;
+    padding-top: 15px;
+    padding-bottom: 30px;
+    min-height: 400px;
+}
+
 @media (min-width: 768px) {
     .wd-col-right-scrollable-left {
         margin-left: 33%;

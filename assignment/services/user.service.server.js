@@ -37,6 +37,8 @@ function deleteUser(req, res) {
 // Updates the given user whose _id matches the uid
 function updateUser(req, res) {
     var user = req.body;
+    var userId = req.params.uid;
+
     for (var ii = 0; ii < users.length; ii++) {
         var tempUser = users[ii];
         if (tempUser._id === userId) {

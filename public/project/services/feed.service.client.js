@@ -8,17 +8,23 @@
         .module('KnowYourRep')
         .factory('feedService', feedService);
 
-    function feedService($http, $sce) {
-        return {
-            parseFeed: function (url) {
-                var trust = $sce.trustAsResourceUrl(trust)
-                console.log(trust);
-                $http
-                    .get(url)
-                    .then(function(response) {
-                        console.log(response);
-                    })
-            }
+    function feedService($http) {
+
+        var baseUrl = "/api/project/rss/";
+
+        var api = {
+            "parseFeed"   : parseFeed
+        };
+        return api;
+
+        function parseFeed(url) {
+            var newUrl = baseUrl + "?url=" + url;
+
+            return $http
+                .get(newUrl)
+                .then(function(response) {
+                    return response.data;
+                })
         }
     }
 

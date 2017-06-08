@@ -1,10 +1,37 @@
-<div class="row-fluid">
-    <ul class="unstyled">
-        <span class="badge badge-warning" ng-show="vm.feeds.length > 0">{{(vm.feeds | filter:filterText).length}} Items</span>
-        <li ng-repeat="feed in vm.feeds | filter:filterText">
-            <h5><a target="_blank" href="{{feed.link}}">{{feed.title}}</a></h5>
-            <p class="text-left">{{feed.contentSnippet}}</p>
-            <span class="small">{{feed.publishedDate}}</span>
-        </li>
-    </ul>
+<div class="row-fluid wd-padding">
+    <div class="panel-group" id="accordion">
+        <div ng-repeat="feed in vm.feeds"
+             class="panel panel-default"
+             ng-show="vm.show || $index < 5">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <a data-toggle="collapse"
+                       data-parent="#accordion"
+                       href="#collapse{{$index}}"
+                       target="_self">
+                        {{feed.title}}</a>
+                </div>
+            </div>
+            <div id="collapse{{$index}}"
+                 class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            {{feed.date}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn btn-block btn-default"
+         ng-click="vm.showMore()"
+         ng-hide="vm.show">
+        More
+    </div>
+    <div class="btn btn-block btn-default"
+         ng-click="vm.showLess()"
+         ng-show="vm.show">
+        Less
+    </div>
 </div>

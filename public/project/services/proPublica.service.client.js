@@ -9,9 +9,7 @@
 
     function proPublicaService($http) {
 
-        var API_KEY = 'S7VSk7ORmL4dZ1JhpZkuD6P9I94ntJwn4WsFv2HV';
-        var API_ENDPOINT = 'https://api.propublica.org/congress/v1/';
-        var SESSION_NUMBER = '115/';
+        var BASE_URL = '/api/project/';
 
         var api = {
             "findAllRepresentatives"   : findAllRepresentatives,
@@ -26,7 +24,7 @@
                 return;
             }
 
-            var url = API_ENDPOINT + SESSION_NUMBER + chamber + '/members.json';
+            var url = BASE_URL + chamber.toLowerCase();
             return sendGet(url);
         }
 
@@ -36,7 +34,8 @@
                 return;
             }
 
-            var url = API_ENDPOINT + 'members/' + chamber + '/' + state + '/current.json';
+            var url = BASE_URL + chamber.toLowerCase() + '/state/' + state;
+            console.log(url);
             return sendGet(url);
         }
 
@@ -46,18 +45,16 @@
                 return;
             }
 
-            var url = API_ENDPOINT + 'members/' + id + '.json';
+            var url = BASE_URL + chamber.toLowerCase() + '/id/' + id;
             return sendGet(url);
         }
 
         function sendGet(url) {
             return $http
-                .get(url, {
-                    headers: {'X-API-Key': API_KEY}})
+                .get(url)
                 .then(function(response) {
-                    if (response.data.status === 'OK') {
-                        return response.data.results;
-                    }
+                    return response.data.results;
+                }, function(err) {
                     return 'ERROR';
                 })
         }
