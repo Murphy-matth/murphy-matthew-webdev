@@ -17,7 +17,7 @@
             {"type": "IMAGE"},
             {"type": "YOUTUBE"},
             {"type": "LABEL"},
-            {"type": "TEXT INPUT"},
+            {"type": "TEXT"},
             {"type": "BUTTON"},
             {"type": "LINK"},
             {"type": "DATA TABLE"},
@@ -47,12 +47,6 @@
 
         // Returns the different types of widgets.
         function getWidgetTypes() {
-            // var url = '/api/assignment/widget/types';
-            // console.log(url);
-            // return $http.get(url)
-            //     .then(function (response) {
-            //         return response.data;
-            //     })
             return widgetTypes;
         }
 

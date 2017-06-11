@@ -4,20 +4,10 @@
  */
 
 var app = require('../../express.js');
+var widgetModel = require('../models/widget/widget.model.server');
 
 var multer = require('multer'); // npm install multer --save
 var upload = multer({ dest: __dirname+'/../../public/assignment/uploads' });
-
-// I removed the HTML Widgets as we do not display them yet and it causes problems.
-var widgets = [
-    { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "text": "GIZMODO", "name": ""},
-    { "_id": "234", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name": ""},
-    { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%",
-        "url": "http://lorempixel.com/400/200/", "name": ""},
-    { "_id": "567", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Lorem ipsum", "name": ""},
-    { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%",
-        "url": "https://youtu.be/AM2Ivdi9c4E", "name": ""}
-];
 
 var widgetTypes = [
     {"type": "HTML"},
@@ -43,20 +33,11 @@ app.put('/api/assignment/page/:pageId/widget', updateWidgetPosition);
 app.delete('/api/assignment/widget/:widgetId', deleteWidget);
 
 function updateWidgetUrl(req, res) {
-    var widgetId = req.params.widgetId;
-    var url = req.body;
-
-    var result = widgets.find(function(widget) {
-        return widget._id === widgetId;
-    });
-
-    if (typeof result === 'undefined') {
-        res.sendStatus(200);
-        return;
-    }
-
-    result.url = url.url;
-    res.sendStatus(200);
+    widgetModel
+        .updateWidgetUrl(req.params.widgetId, req.body)
+        .then(function (status) {
+            res.send(200);
+        })
 }
 
 function uploadImage(req, res) {
@@ -75,19 +56,15 @@ function uploadImage(req, res) {
     var size          = myFile.size;
     var mimetype      = myFile.mimetype;
 
-    console.log(myFile);
+    var url = '/assignment/uploads/'+ filename;
 
-    for (var ii = 0; ii < widgets.length; ii++) {
-        var widge = widgets[ii];
-        if (widge._id === widgetId) {
-            widge.url = '/assignment/uploads/'+filename;
-            break;
-        }
-    }
+    widgetModel
+        .updateWidgetUrl(widgetId, url)
+        .then(function (status) {
+            var callbackUrl   = "/assignment/index.html#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/"+widgetId;
 
-    var callbackUrl   = "/assignment/index.html#!/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/"+widgetId;
-
-    res.redirect(callbackUrl);
+            res.redirect(callbackUrl);
+        });
 }
 
 function updateWidgetPosition(req, res) {
@@ -95,27 +72,14 @@ function updateWidgetPosition(req, res) {
     var startIndex = req.query['initial'];
     var stopIndex = req.query['final'];
 
-    var result = widgets.filter(function(widget) {
-        return widget.pageId === pageId;
-    });
-    if (typeof result === 'undefined') {
-        res.sendStatus(200);
-        return;
-    }
-
-    var element = result[startIndex];
-    var index = widgets.indexOf(element);
-    widgets.splice(index, 1);
-
-    var endElement = result[stopIndex];
-    var endIndex = widgets.indexOf(endElement);
-    widgets.splice(endIndex, 0, element);
-
-    res.sendStatus(200);
+    widgetModel
+        .reorderWidget(pageId, startIndex, stopIndex)
+        .then(function (status) {
+            res.sendStatus(200);
+        })
 }
 
 function getWidgetTypes(req, res) {
-    console.log(req);
     res.json(widgetTypes);
 }
 
@@ -123,72 +87,49 @@ function getWidgetTypes(req, res) {
 // The new widget's pageId is set to the pageId parameter.
 function createWidget(req, res) {
     var widget = req.body;
-    var pageId = req.params.pageId;
 
-    // For now use a temporary time stamp until it is assigned by the database.
-    widget._id = (new Date()).getTime() + ""; // This seems really bad.
-    widget.pageId = pageId;
-    widget.name = "Widget Name";
-    widgets.push(widget);
+    widget._pageId = req.params.pageId;
 
-    res.json(widget);
+    widgetModel
+        .createWidget(widget, req.params.pageId)
+        .then(function (status) {
+            res.json(status._id);
+        });
 }
 
 // Retrieves the widgets in local widgets array whose pageId matches the parameter pageId.
 function findAllWidgetsForPage(req, res) {
-    var pageId = req.params.pageId;
-
-    var result = widgets.filter(function(widget) {
-        return widget.pageId === pageId;
-    });
-    if (typeof result === 'undefined') {
-        res.sendStatus(200);
-        return;
-    }
-    res.json(result);
+    widgetModel
+        .findWidgetsByPage(req.params.pageId)
+        .then(function (widgets) {
+            res.json(widgets);
+        });
 }
 
 // Retrieves the widget in local widgets array whose _id matches the widgetId parameter.
 function findWidgetById(req, res) {
-    var widgetId = req.params.widgetId;
-
-    var result = widgets.find(function (widget) {
-        return widget._id === widgetId;
-    });
-    if (typeof result === 'undefined') {
-        res.sendStatus(200);
-        return;
-    }
-    res.json(result);
+    widgetModel
+        .findWidgetById(req.params.widgetId)
+        .then(function (widget) {
+            res.json(widget);
+        });
 }
 
 // Updates the widget in local widgets array whose _id matches the widgetId parameter.
 function updateWidget(req, res) {
-    var widgetId = req.params.widgetId;
     var widget = req.body;
-
-    for (var ii = 0; ii < widgets.length; ii++) {
-        var widge = widgets[ii];
-        if (widge._id === widgetId) {
-            widget._id = widgetId;
-            widgets[ii] = widget;
-            break;
-        }
-    }
-
-    res.sendStatus(200);
+    widgetModel
+        .updateWidget(req.params.widgetId, widget)
+        .then(function (status) {
+            res.json(widget);
+        });
 }
 
 // Removes the widget from local widgets array whose _id matches the widgetId parameter.
 function deleteWidget(req, res) {
-    var widgetId = req.params.widgetId;
-
-    var widget = widgets.find(function(widget) {
-        return widget._id === widgetId;
-    });
-
-    var index = widgets.indexOf(widget);
-    widgets.splice(index, 1);
-
-    res.sendStatus(200);
+    widgetModel
+        .deleteWidget(req.params.widgetId)
+        .then(function (status) {
+            res.sendStatus(200);
+        });
 }

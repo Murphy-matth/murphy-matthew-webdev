@@ -20,7 +20,6 @@
             WidgetService
                 .findWidgetById(vm.widgetId)
                 .then(function(widget) {
-                    console.log(widget);
                     vm.widget = widget;
                     vm.editableWidget = angular.copy(vm.widget);
                 })

@@ -17,7 +17,7 @@
 
             vm.update = function () {
                 userService
-                    .updateUser(vm.userId, vm.savedUser)
+                    .updateUser(vm.userId, vm.user)
                     .then(handleUpdate, handleUpdateError);
             };
 
@@ -31,7 +31,7 @@
                 console.log(error);
             }
 
-            // Loads the current user for use by the model.
+            // Loads the current user for use by the models.
             function handleLoad(user) {
                 vm.savedUser = user;
                 vm.user = angular.copy(vm.savedUser);

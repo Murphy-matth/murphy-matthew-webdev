@@ -15,6 +15,7 @@
                 .findWidgetsByPageId(vm.pageId)
                 .then(function(widgets) {
                     vm.widgets = widgets;
+                    console.log(widgets);
                 })
         }
         init();
@@ -24,6 +25,8 @@
         vm.getWidgetUrlForType = getWidgetUrlForType;
 
         function getWidgetUrlForType(type) {
+            console.log(type);
+            console.log('views/widget/templates/widgets/widget-'+type.toLowerCase()+'.view.client.html');
             return 'views/widget/templates/widgets/widget-'+type.toLowerCase()+'.view.client.html';
         }
 

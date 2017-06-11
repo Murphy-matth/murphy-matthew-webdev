@@ -36,7 +36,7 @@
             WidgetService
                 .createWidget(vm.pageId, widget)
                 .then(function(widget) {
-                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + widget._id);
+                    $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page/" + vm.pageId + "/widget/" + widget);
                 })
         }
     }

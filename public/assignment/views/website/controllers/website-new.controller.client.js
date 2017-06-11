@@ -35,8 +35,7 @@
 
             var website = {
                 name: name,
-                description: description,
-                developerId: vm.userId
+                description: description
             };
             WebsiteService
                 .createWebsite(vm.userId, website)

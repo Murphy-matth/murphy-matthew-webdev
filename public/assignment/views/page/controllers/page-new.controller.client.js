@@ -39,12 +39,11 @@
 
             var page = {
                 name: name,
-                websiteId: vm.websiteId,
                 description: title
             };
 
             PageService
-                .createPage(vm.pageId, page)
+                .createPage(vm.websiteId, page)
                 .then(function(response) {
                     // Navigate back to the page list page.
                     $location.url("/user/" + vm.userId + "/website/" + vm.websiteId + "/page");

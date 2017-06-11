@@ -1,6 +1,6 @@
 // Main angular javascript file.
 (function() {
     var webappmaker = angular
-        .module('WebAppMaker', ['ngRoute']);
+        .module('WebAppMaker', ['ngRoute', 'textAngular']);
 
 })();

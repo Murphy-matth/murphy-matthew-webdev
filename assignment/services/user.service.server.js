@@ -4,16 +4,7 @@
  */
 
 var app = require('../../express.js');
-var users = [
-    {_id: "123", username: "alice",    password: "alice",    firstName: "Alice",  lastName: "Wonder",
-        email: "alice@wonderland.net" },
-    {_id: "234", username: "bob",      password: "bob",      firstName: "Bob",    lastName: "Marley",
-        email: "bob@bob.net" },
-    {_id: "345", username: "charly",   password: "charly",   firstName: "Charly", lastName: "Garcia",
-        email: "charly@charly.net" },
-    {_id: "456", username: "jannunzi", password: "jannunzi", firstName: "Jose",   lastName: "Annunzi",
-        email: "jose@jannunzi.net" }
-];
+var userModel = require('../models/user/user.model.server');
 
 app.get('/api/assignment/user/:uid', findUserById);
 app.get('/api/assignment/user', findUserByCredentials);
@@ -23,15 +14,13 @@ app.delete('/api/assignment/user:uid', deleteUser);
 
 // Deletes the given user whose _id matches the uid
 function deleteUser(req, res) {
-    var id = req.params.uid;
-    var user = users.find(function(user) {
-        return user._id === id;
-    });
+    var userId = req.params.uid;
 
-    var index = users.indexOf(user);
-    users.splice(index, 1);
-
-    res.sendStatus(200);
+    userModel
+        .deleteUser(userId)
+        .then(function(status) {
+            res.sendStatus(200);
+        });
 }
 
 // Updates the given user whose _id matches the uid
@@ -39,72 +28,64 @@ function updateUser(req, res) {
     var user = req.body;
     var userId = req.params.uid;
 
-    for (var ii = 0; ii < users.length; ii++) {
-        var tempUser = users[ii];
-        if (tempUser._id === userId) {
-            user._id = userId;
-            users[ii] = user;
-            res.send(user);
-            return;
-        }
-    }
-    res.sendStatus(404);
+    userModel
+        .updateUser(userId, user)
+        .then(function(status) {
+            res.json(user);
+        }, function(error) {
+            res.sendStatus(404);
+        });
 }
 
 // Creates the given user
 function createUser(req, res) {
     var user = req.body;
-
-    user._id = (new Date()).getTime() + ""; // This seems really bad.
-    users.push(user);
-
-    res.send(user);
+    userModel
+        .createUser(user)
+        .then(function (user) {
+            res.json(user);
+        });
 }
 
 // Returns the user whose username and password match the username and password parameters.
 function findUserByCredentials(req, res) {
     var username = req.query['username'];
     var password = req.query['password'];
+
     if (typeof password === 'undefined') {
-        return findUserByUsername(res, username);
+        userModel
+            .findUserByUsername(username)
+            .then(function(user) {
+                if(user !== null) {
+                    res.json(user);
+                } else {
+                    res.sendStatus(404);
+                }
+            }, function (err) {
+                res.sendStatus(404);
+            })
     } else {
-        return findUserByUsernameAndPassword(res, username, password);
-    }
-}
-
-// Returns the user whose username match's the username in the user's array.
-function findUserByUsername(res, username) {
-    var result = users.find(function(user) {
-        return user.username === username;
-    });
-    if (typeof result === 'undefined') {
-         res.sendStatus(404);
-    } else {
-        res.send(result);
-    }
-}
-
-// Returns the user whose username and password match's the username and password in the user's array.
-function findUserByUsernameAndPassword(res, username, password) {
-    var result = users.find(function(user) {
-        return user.username === username && user.password === password;
-    });
-    if (typeof result === 'undefined') {
-        res.sendStatus(404);
-    } else {
-        res.send(result);
+        userModel
+            .findUserByCredentials(username, password)
+            .then(function(user) {
+                if(user !== null) {
+                    res.json(user);
+                } else {
+                    res.sendStatus(404);
+                }
+            }, function (err) {
+                res.sendStatus(404);
+            })
     }
 }
 
 // Returns the user in local users array whose _id matches the userId parameter.
 function findUserById(req, res) {
-    var id = req.params.uid;
-    var result = users.find(function(user) {
-        return user._id === id;
-    });
-    if (result === 'undefined') {
-        return res.send(404);
-    } else {
-        res.send(result);
-    }
+    var userId = req.params.uid;
+
+    userModel
+        .findUserById(userId)
+        .then(function (user) {
+            res.json(user);
+        });
 }
