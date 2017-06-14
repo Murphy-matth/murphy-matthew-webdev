@@ -6,8 +6,7 @@ var app = require('../../express.js');
 var request = require('request');
 
 // Change this if running on localhost.
-var API_KEY = 'S7VSk7ORmL4dZ1JhpZkuD6P9I94ntJwn4WsFv2HV';
-// var API_KEY = process.env.PRO_PUBLICIA_API_KEY;
+var API_KEY = process.env.PRO_PUBLICIA_API_KEY;
 var API_ENDPOINT = 'https://api.propublica.org/congress/v1/';
 var SESSION_NUMBER = '115/';
 
