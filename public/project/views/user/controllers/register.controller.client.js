@@ -1,5 +1,7 @@
 // Register Controller
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .controller("registerController", registerController);
@@ -28,13 +30,13 @@
                 .findUserByUsername(username)
                 .then(userExists, userDoesNotExist);
 
-            function userExists(reponse) {
-                vm.registerError = "Username is already in use.";
+            function userExists(response) {
+                vm.usernameTaken = "Username is already in use.";
             }
 
             function userDoesNotExist(error) {
                 // Make the user.
-                user = {
+                var user = {
                     username: username,
                     password: password,
                     email: "www.example.com",
@@ -56,5 +58,5 @@
                 }
             }
         }
-    };
+    }
 })();

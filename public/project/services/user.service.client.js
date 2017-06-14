@@ -3,6 +3,8 @@
  * Author: Matthew Murphy
  */
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .factory("userService", userService);
@@ -18,12 +20,46 @@
             "findUserByCredentials" : findUserByCredentials,
             "updateUser" : updateUser,
             "deleteUser" : deleteUser,
-            "updatePassword": updatePassword
+            "updatePassword": updatePassword,
+            "followUser": followUser,
+            "removeFollowing": removeFollowing,
+            "removeFollower": removeFollower,
+            "findFollowersByUser": findFollowersByUser,
+            "findFollowingByUser": findFollowingByUser
         };
         return api;
 
+        function removeFollower(userId, followerId) {
+            return $http
+                .delete(baseUrl + userId + '/follower/' + followerId)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function removeFollowing(userId, followerId) {
+            return $http
+                .delete(baseUrl + userId + '/following/' + followerId)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function findFollowingByUser(userId) {
+            return sendGet(baseUrl + userId + '/following');
+        }
+
+        function findFollowersByUser(userId) {
+            return sendGet(baseUrl + userId + '/followers');
+        }
+
+        // Follows the given user.
+        function followUser(userId, followerId) {
+            return sendGet(baseUrl + userId + '/follower/' + followerId);
+        }
+
         function updatePassword(userId, password) {
-            return "Update Successful";
+            return sendGet(baseUrl + userId + '/password/' + password);
         }
 
         // Adds the user parameter instance. Returns the new user.

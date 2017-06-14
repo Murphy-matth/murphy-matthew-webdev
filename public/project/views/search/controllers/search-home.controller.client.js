@@ -4,6 +4,8 @@
  * Author: Matthew Murphy
   */
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .controller("searchHomeController", searchHomeController);
@@ -14,6 +16,7 @@
 
         function init() {
             vm.chamber = 'Senate';
+            vm.userId = $routeParams['uid'];
             var message = $routeParams['message'];
             if (message !== null) {
                 if (message === 'id') {
@@ -30,10 +33,14 @@
 
         function search(searchText) {
             resetMessages();
+            var baseUrl = '';
+            if (vm.userId) {
+                baseUrl = '/user/' + vm.userId;
+            }
             if (searchText === null || searchText.length === 0) {
-                $location.url('/search/' + vm.chamber.toLowerCase() + '/query/');
+                $location.url(baseUrl + '/search/' + vm.chamber.toLowerCase() + '/query/');
             } else {
-                $location.url('/search/' + vm.chamber.toLowerCase() + '/query/' + searchText.toUpperCase());
+                $location.url(baseUrl + '/search/' + vm.chamber.toLowerCase() + '/query/' + searchText.toUpperCase());
             }
         }
 

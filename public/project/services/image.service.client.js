@@ -4,6 +4,8 @@
  */
 
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .factory("imageService", imageService);

@@ -1,4 +1,10 @@
 <div class="container-fluid wd-padding">
+    <div class="form-group"
+         ng-show="vm.message">
+        <div class="alert alert-success">
+            {{vm.message}}
+        </div>
+    </div>
     <div class="form-group">
         <div class="input-group">
             <span class="input-group-addon wd-min-width">Username</span>
@@ -37,6 +43,16 @@
                    id="last-name"
                    ng-model="vm.user.lastName"
                    placeholder="Wonderland">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon wd-min-width">Phone Number</span>
+            <input type="text"
+                   class="form-control"
+                   id="phone"
+                   ng-model="vm.user.phone"
+                   placeholder="203-451-1233">
         </div>
     </div>
 

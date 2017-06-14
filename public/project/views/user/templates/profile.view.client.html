@@ -2,11 +2,12 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button"
+                    href="#!/user/{{vm.userId}}/search"
                     class="navbar-toggle collapsed"
                     data-toggle="collapse"
                     aria-expanded="false"
                     aria-controls="navbar">
-                <span class="glyphicon glyphicon-home"></span>
+                <span class="glyphicon glyphicon-search"></span>
             </button>
             <span class="navbar-brand">Profile</span>
         </div>
@@ -14,9 +15,9 @@
              class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#"
+                    <a href="#!/user/{{vm.userId}}/search"
                        class="navbar-link">
-                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="glyphicon glyphicon-search"></span>
                     </a>
                 </li>
             </ul>
@@ -38,26 +39,31 @@
             <h2 class="caption text-center">
                 {{vm.savedUser.username}}
             </h2>
-            <div class="row wd-padding">
-                <div class="col-xs-1"></div>
-                <div class="col-xs-4">
-                    <a class="btn btn-primary btn-block">
-                        Message
-                    </a>
-                </div>
-                <div class="col-xs-2"></div>
-                <div class="col-xs-4">
+            <div class="wd-padding"
+                 ng-show="vm.otherUser">
+                <div ng-click="vm.followUser(vm.otherUser)">
                     <a class="btn btn-primary btn-block">
                         Follow
                     </a>
                 </div>
-                <div class="col-xs-1"></div>
+            </div>
+            <div class="wd-padding"
+                 ng-hide="vm.otherUser">
+                <div>
+                    <form action="/api/project/uploadProfile"   method="post" enctype="multipart/form-data">
+                        <input  name="myFile"    type="file"  class="form-control"/>
+                        <input  name="userId"  value="{{vm.userId}}"  style="display: none"/>
+                        <input  name="width"     value="100%" style="display: none"/>
+                        <button type="submit"    class="btn btn-block btn-primary">Upload Profile Image</button>
+                    </form>
+                </div>
             </div>
         </div>
         <!--- Right Column --->
         <div class="col-md-8 col-sm-6 col-xs-12">
             <!--- Top Row --->
-            <div class="row">
+            <div class="row"
+                 ng-hide="vm.otherUser">
                 <ul class="nav nav-tabs">
                     <li ng-repeat="tab in vm.tabs" role="presentation"
                         ng-class="{'active' : vm.isCurrentTab(tab)}">
@@ -67,7 +73,23 @@
                     </li>
                 </ul>
             </div>
-            <div class="row">
+            <div class="row"
+                 ng-hide="vm.otherUser">
+                <div ng-include="vm.getCurrentTabUrl()"></div>
+            </div>
+            <div class="row"
+                 ng-show="vm.otherUser">
+                <ul class="nav nav-tabs">
+                    <li ng-repeat="tab in vm.otherTabs" role="presentation"
+                        ng-class="{'active' : vm.isCurrentTab(tab)}">
+                        <a ng-click="vm.setTab(tab)">
+                            {{tab}}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row"
+                 ng-show="vm.otherUser">
                 <div ng-include="vm.getCurrentTabUrl()"></div>
             </div>
         </div>

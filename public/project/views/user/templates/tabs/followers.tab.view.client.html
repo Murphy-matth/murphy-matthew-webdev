@@ -1,9 +1,9 @@
 <div class="container-fluid">
     <div class="list-group">
         <div class="list-group-item col-xs-4 wd-group-item wd-borderless wd-tile"
-             ng-repeat="user in vm.following">
+             ng-repeat="user in vm.followers">
             <div class="wd-toolbar"
-                 ng-click="vm.removeFollowing(vm.userId, user._id)">
+                 ng-click="vm.removeFollower(vm.userId, user._id)">
                 <span class="glyphicon glyphicon-remove wd-red"></span>
             </div>
             <a href="#!/user/{{vm.userId}}/other/{{user._id}}" target="_self">
@@ -15,15 +15,15 @@
                 </div>
             </a>
         </div>
-        <div ng-show="vm.following.length === 0"
+        <div ng-show="vm.followers.length === 0"
              class="wd-padding">
             <div class="alert alert-info"
                  ng-hide="vm.otherUser">
-                You are not currently following any users.
+                No users are currently following you.
             </div>
             <div class="alert alert-info"
                  ng-show="vm.otherUser">
-                This user is not following anyone.
+                This user has no followers.
             </div>
         </div>
     </div>

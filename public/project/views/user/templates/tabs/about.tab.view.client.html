@@ -1,5 +1,7 @@
 <div class="container-fluid">
-    <div ng-repeat="info in vm.profileInfo" class="row list-group-item wd-group-item">
+    <div ng-repeat="info in vm.profileInfo"
+         class="row list-group-item wd-group-item"
+         ng-show="info.value">
         <div class="col-xs-3 text-left">
             {{info.label}}
         </div>

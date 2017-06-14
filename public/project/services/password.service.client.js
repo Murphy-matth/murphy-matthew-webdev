@@ -3,6 +3,8 @@
  * Author: Matthew Murphy
  */
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .factory("passwordService", passwordService);
@@ -22,7 +24,7 @@
          * If result is false then there is an additional field that contains the error message.
          */
         function validate(password) {
-            result = {
+            var result = {
                 result: true,
                 message: ""
             };

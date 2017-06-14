@@ -4,6 +4,8 @@
  */
 
 (function() {
+    "use strict";
+
     angular
         .module('KnowYourRep')
         .factory('feedService', feedService);
@@ -27,6 +29,4 @@
                 })
         }
     }
-
 })();
-

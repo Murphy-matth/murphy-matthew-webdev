@@ -1,28 +1,36 @@
 // Profile Controller
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .controller("profileController", profileController);
 
-        function profileController($routeParams, $filter, userService, passwordService) {
+        function profileController($routeParams, $filter, userService, passwordService, repService) {
             var vm = this;
 
             vm.tabs = [
                 'About',
-                'Stats',
-                'Messages',
                 'Following',
+                'Followers',
+                'Reps',
                 'Edit',
                 'Account Settings'
             ];
 
+            vm.otherTabs = [
+                'About',
+                'Following',
+                'Followers'
+            ];
+
             function init() {
                 vm.userId = $routeParams['uid'];
+                vm.otherUser = $routeParams['oid'];
                 updateProfileInfo();
             }
             init();
 
-            vm.user = angular.copy(vm.savedUser);
             vm.password = {
                 old: "",
                 new: "",
@@ -30,7 +38,7 @@
             };
 
             // The default tab is the about tab
-            currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html.html';
+            var currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html';
             vm.currentTab = 'about';
 
             vm.update = update;
@@ -38,6 +46,46 @@
             vm.setTab = setTab;
             vm.isCurrentTab = isCurrentTab;
             vm.updatePassword = updatePassword;
+            vm.followUser = followUser;
+            vm.removeFollowing = removeFollowing;
+            vm.removeFollower = removeFollower;
+            vm.deleteRep = deleteRep;
+
+            function deleteRep(userId, repId) {
+                repService
+                    .deleteRep(userId, repId)
+                    .then(function (response) {
+                        console.log("Success. Removed the rep");
+                        vm.reps = response;
+                    })
+            }
+
+            // Un Follows the given user
+            function removeFollower(userId, followerId) {
+                userService
+                    .removeFollower(userId, followerId)
+                    .then(function (response) {
+                        vm.followers = response;
+                    })
+            }
+
+            // Un Follows the given user
+            function removeFollowing(userId, followerId) {
+                userService
+                    .removeFollowing(userId, followerId)
+                    .then(function (response) {
+                        vm.following = response;
+                    })
+            }
+
+            // Follows the given user
+            function followUser(followerId) {
+                userService
+                    .followUser(vm.userId, followerId)
+                    .then(function (response) {
+                        console.log("success");
+                    })
+            }
 
             // Updates the user's password.
             function updatePassword() {
@@ -64,9 +112,14 @@
                     return;
                 }
 
-                result = userService.updatePassword(vm.userId, vm.password.new);
-                vm.updatePasswordSuccess = result;
-                vm.updatePasswordFailed = null;
+                userService
+                    .updatePassword(vm.userId, vm.password.new)
+                    .then(function (success) {
+                        vm.updatePasswordSuccess = 'Update Successful';
+                        vm.updatePasswordFailed = null;
+                    }, function (err) {
+                        vm.updatePasswordFailed = 'Update Failed: ' + err;
+                    });
             }
 
             // Updates the current user with the new values in the profile.
@@ -92,6 +145,7 @@
 
             // Sets the current tab.
             function setTab(tab) {
+                vm.message = null;
                 vm.currentTab = tab.toLowerCase();
                 currentTabUrl = 'views/user/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
             }
@@ -103,8 +157,11 @@
 
             // Updates the current profile information to reflect any changes.
             function updateProfileInfo() {
+                // If you are on another page display that user, otherwise display your information
+                var id = vm.otherUser || vm.userId;
+
                 userService
-                    .findUserById(vm.userId)
+                    .findUserById(id)
                     .then(handleUpdate);
 
                 // Handles the response from updating the user.
@@ -115,10 +172,29 @@
                         {label : 'First Name:', value: vm.savedUser.firstName},
                         {label : 'Last Name:', value: vm.savedUser.lastName},
                         {label : 'Email:', value: vm.savedUser.email},
-                        {label : 'Member Since:', value: $filter('date')(vm.savedUser.dateJoined)}
+                        {label : 'Member Since:', value: $filter('date')(vm.savedUser.dateCreated)},
+                        {label : 'Phone:', value: (vm.savedUser.phone)}
                     ];
 
-                    vm.games = vm.savedUser.games;
+                    vm.user = angular.copy(vm.savedUser);
+
+                    userService
+                        .findFollowingByUser(vm.userId)
+                        .then(function (following) {
+                            vm.following = following;
+                        });
+
+                    userService
+                        .findFollowersByUser(vm.userId)
+                        .then(function (followers) {
+                            vm.followers = followers;
+                        });
+
+                    repService
+                        .findRepsByUser(vm.userId)
+                        .then(function (reps) {
+                            vm.reps = reps;
+                        })
                 }
             }
         }

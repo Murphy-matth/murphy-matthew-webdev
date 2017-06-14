@@ -1,5 +1,7 @@
 // Login Controller
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .controller("loginController", loginController);
@@ -13,7 +15,7 @@
                 vm.invalidPassword = null;
 
                 if (typeof username === 'undefined') {
-                    vm.invalidUsername = "Please enter a username."
+                    vm.invalidUsername = "Please enter a username.";
                     return;
                 }
 

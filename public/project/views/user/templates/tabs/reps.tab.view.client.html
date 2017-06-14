@@ -1,25 +1,25 @@
 <div class="container-fluid">
     <div class="list-group">
         <div class="list-group-item col-xs-4 wd-group-item wd-borderless wd-tile"
-             ng-repeat="user in vm.following">
+             ng-repeat="rep in vm.reps">
             <div class="wd-toolbar"
-                 ng-click="vm.removeFollowing(vm.userId, user._id)">
+                 ng-click="vm.deleteRep(vm.userId, rep._id)">
                 <span class="glyphicon glyphicon-remove wd-red"></span>
             </div>
-            <a href="#!/user/{{vm.userId}}/other/{{user._id}}" target="_self">
-                <img ng-src="{{user.photo}}"
+            <a href="#!/user/{{vm.userId}}/search/{{rep.chamber}}/query/{{rep.govId}}" target="_self">
+                <img ng-src="{{rep.photo}}"
                      class="img-thumbnail"
                      alt="avatar">
                 <div class="caption text-center text-capitalize">
-                    <p>{{user.username}}</p>
+                    <p>{{rep.name}}</p>
                 </div>
             </a>
         </div>
-        <div ng-show="vm.following.length === 0"
+        <div ng-show="vm.reps.length === 0"
              class="wd-padding">
             <div class="alert alert-info"
                  ng-hide="vm.otherUser">
-                You are not currently following any users.
+                You are not currently following any representatives.
             </div>
             <div class="alert alert-info"
                  ng-show="vm.otherUser">

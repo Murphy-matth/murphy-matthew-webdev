@@ -4,12 +4,14 @@
  * Author: Matthew Murphy
  */
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .controller("searchResultsController", searchResultsController);
 
 
-    function searchResultsController($routeParams, $location, $window, proPublicaService, imageService, feedService) {
+    function searchResultsController($routeParams, $location, $window, proPublicaService, imageService, feedService, repService) {
         var vm = this;
 
         vm.tabs = [
@@ -18,12 +20,14 @@
             'RSS'
         ];
 
+
         function init() {
             vm.chamber = $routeParams['cid'];
             var query = $routeParams['query'];
+            vm.userId = $routeParams['uid'];
 
             // The default tab is the about tab
-            currentTabUrl = 'views/search/templates/tabs/about.tab.view.client.html';
+            vm.currentTabUrl = 'views/search/templates/tabs/about.tab.view.client.html';
             vm.currentTab = 'about';
 
             // RSS Feeds
@@ -32,6 +36,8 @@
 
             vm.reps = [];
             vm.selectedReps = [];
+
+            resetMessages();
 
             if (query === null) {
                 findAllRepresentatives();
@@ -52,6 +58,36 @@
         vm.openUrl = openUrl;
         vm.showMore = showMore;
         vm.showLess = showLess;
+        vm.followRep = followRep;
+        vm.goToProfile = goToProfile;
+
+        function resetMessages() {
+            vm.followSuccess = false;
+        }
+
+        function goToProfile() {
+            if (!vm.userId) {
+                console.log("Log in you bozo");
+            } else {
+                $location.url('/user/' + vm.userId);
+            }
+        }
+
+        function followRep(rep) {
+            rep.chamber = vm.chamber;
+            if (vm.userId) {
+                repService
+                    .createRep(vm.userId, rep)
+                    .then(function (response) {
+                        vm.followSuccess = true;
+                    })
+            } else {
+                resetMessages();
+                // The user is not logged in.
+                console.log("You must be logged in you bozo.");
+                console.log(rep);
+            }
+        }
 
         function showMore() {
             vm.show = true;
@@ -89,7 +125,7 @@
 
         // Returns the url of the current profile tab.
         function getCurrentTabUrl() {
-            return currentTabUrl;
+            return vm.currentTabUrl;
         }
 
         // Sets the current tab.
@@ -100,7 +136,7 @@
                     loadFeed();
                 }
             }
-            currentTabUrl = 'views/search/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
+            vm.currentTabUrl = 'views/search/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
         }
 
         function loadFeed() {
@@ -157,6 +193,7 @@
                         $location.url('/search/id')
                     } else {
                         vm.reps = rep;
+                        console.log(rep);
                         processReps();
                         vm.selectedReps = vm.reps;
                     }
@@ -177,14 +214,15 @@
 
         // Look up a given states representatives for either the house or the senate.
         function preformStateSearch(state) {
+            resetMessages();
             proPublicaService
                 .findRepresentativeByState(state.toUpperCase(), vm.chamber.toLowerCase())
                 .then(function(rep) {
                     if (rep === 'ERROR') {
                         $location.url('/search/state')
                     } else {
-                        console.log(rep);
                         vm.reps = rep;
+                        console.log(rep);
                         processReps();
                         vm.selectedReps = vm.reps;
                     }

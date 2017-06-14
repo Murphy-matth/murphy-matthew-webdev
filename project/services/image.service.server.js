@@ -31,5 +31,3 @@ function findImageById(req, res) {
     }
     res.send("http://lorempixel.com/200/200");
 }
-
-

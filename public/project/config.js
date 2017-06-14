@@ -1,5 +1,7 @@
 // Routing files for the angular application.
 (function() {
+    "use strict";
+
     angular.module("KnowYourRep")
         .config(Config);
 
@@ -25,6 +27,11 @@
                 templateUrl: "views/user/templates/profile.view.client.html",
                 controller: "profileController",
                 controllerAs: 'vm'
+            })
+            .when("/user/:uid/other/:oid", {
+                templateUrl: "views/user/templates/profile.view.client.html",
+                controller: "profileController",
+                controllerAs: 'vm'
             });
 
         // Search Pages.
@@ -40,6 +47,21 @@
                 controllerAs: 'vm'
             })
             .when("/search/:cid/query/:query", {
+                templateUrl: "views/search/templates/search-results.view.client.html",
+                controller: 'searchResultsController',
+                controllerAs: 'vm'
+            })
+            .when("/user/:uid/search", {
+                templateUrl: "views/search/templates/search.view.client.html",
+                controller: 'searchHomeController',
+                controllerAs: 'vm'
+            })
+            .when("/user/:uid/search/:message", {
+                templateUrl: "views/search/templates/search.view.client.html",
+                controller: 'searchHomeController',
+                controllerAs: 'vm'
+            })
+            .when("/user/:uid/search/:cid/query/:query", {
                 templateUrl: "views/search/templates/search-results.view.client.html",
                 controller: 'searchResultsController',
                 controllerAs: 'vm'

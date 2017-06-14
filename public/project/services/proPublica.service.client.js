@@ -3,6 +3,8 @@
  * Author: Matthew Murphy
  */
 (function() {
+    "use strict";
+
     angular
         .module("KnowYourRep")
         .factory("proPublicaService", proPublicaService);
@@ -19,6 +21,7 @@
         return api;
 
         function findAllRepresentatives(chamber) {
+            chamber = chamber.toLowerCase();
             if (chamber !== 'senate' && chamber !== 'house') {
                 console.error("Invalid type: " + chamber);
                 return;
@@ -29,17 +32,18 @@
         }
 
         function findRepresentativeByState(state, chamber) {
+            chamber = chamber.toLowerCase();
             if (chamber !== 'senate' && chamber !== 'house') {
                 console.error("Invalid type: " + chamber);
                 return;
             }
 
             var url = BASE_URL + chamber.toLowerCase() + '/state/' + state;
-            console.log(url);
             return sendGet(url);
         }
 
         function findRepresentativeById(id, chamber) {
+            chamber = chamber.toLowerCase();
             if (chamber !== 'senate' && chamber !== 'house') {
                 console.error("Invalid type: " + chamber);
                 return;

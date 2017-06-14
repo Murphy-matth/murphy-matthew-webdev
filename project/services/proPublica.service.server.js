@@ -6,7 +6,8 @@ var app = require('../../express.js');
 var request = require('request');
 
 // Change this if running on localhost.
-var API_KEY = process.env.PRO_PUBLICIA_API_KEY;
+var API_KEY = 'S7VSk7ORmL4dZ1JhpZkuD6P9I94ntJwn4WsFv2HV';
+// var API_KEY = process.env.PRO_PUBLICIA_API_KEY;
 var API_ENDPOINT = 'https://api.propublica.org/congress/v1/';
 var SESSION_NUMBER = '115/';
 
@@ -38,8 +39,7 @@ function findAllRepresentatives(req, res) {
 function findRepresentativeByState(req, res) {
     var chamber = req.params.chamber;
     var state = req.params.state;
-    console.log(chamber);
-    console.log(state);
+
     if (chamber !== 'senate' && chamber !== 'house') {
         res.sendStatus(404);
         return;
@@ -55,6 +55,8 @@ function findRepresentativeByState(req, res) {
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             res.send(body);
+        } else {
+            res.sendStatus(404);
         }
     });
 }
@@ -81,4 +83,3 @@ function findRepresentativeById(req, res) {
         }
     });
 }
-

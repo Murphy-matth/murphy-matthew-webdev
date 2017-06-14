@@ -4,53 +4,65 @@
  */
 
 var app = require('../../express.js');
+var repModel = require('../models/representatives/rep.model.server');
+var userModel = require('../models/user/user.model.server');
 
-var reps = [];
 
-app.post('/api/project/rep', createRep);
-app.get('/api/project/rep/:rid', findRepById);
-app.put('/api/project/user/:rid', updateRep);
-app.delete('/api/project/user/:rid', deleteRep);
+app.post('/api/project/rep/:uid', createRep);
+app.get('/api/project/rep/:uid/reps', findRepsByUser);
+app.delete('/api/project/user/:uid/rep/:rid', deleteRep);
+
+function deleteRep(req, res) {
+    var userId = req.params.uid;
+    var repId = req.params.rid;
+
+    userModel
+        .removeRep(userId, repId)
+        .then(function (response) {
+            findRepsByUser(req, res);
+        })
+
+}
+
+function findRepsByUser(req, res) {
+    var userId = req.params.uid;
+
+    userModel
+        .findUserById(userId)
+        .then(function (user) {
+            if (!user) {
+                res.sendStatus(404);
+            }
+            repModel
+                .findResByIds(user.reps)
+                .then(function (reps) {
+                    res.send(reps);
+                })
+        })
+}
 
 // Creates the given rep
 function createRep(req, res) {
+    var userId = req.params.uid;
     var rep = req.body;
 
-    rep._id = (new Date()).getTime() + ""; // This seems really bad.
-    reps.push(user);
+    var newRep = {
+        name: rep.name || rep.first_name + " " + rep.last_name,
+        govId: rep.id || rep.member_id,
+        photo: rep.photo || 'http://lorempixel.com/200/200',
+        chamber: rep.chamber
+    };
 
-    res.send(rep);
-}
+    console.log(rep);
+    console.log(newRep);
 
-// Returns the rep in local reps array whose id matches the repId parameter.
-function findRepById(req, res) {
-    var id = req.params.rid;
-
-    var result = reps.find(function(rep) {
-        return rep.id === id;
-    });
-    if (result === 'undefined') {
-        return res.send(404);
-    } else {
-        res.send(result);
-    }
-}
-
-function updateRep(req, res) {
-    var repId = req.params.rid;
-    var rep = req.body;
-
-    for (var ii = 0; ii < reps.length; ii++) {
-        var tempRep = reps[ii];
-        if (tempRep.id === repId) {
-            reps[ii] = rep;
-            res.send(rep);
-            return;
-        }
-    }
-    res.sendStatus(404);
-}
-
-function deleteRep(req, res) {
-    res.sendStatus(200);
+    repModel
+        .findRepByGovIdOrCreate(newRep)
+        .then(function (rep) {
+            userModel
+                .addRep(userId, rep._id)
+                .then(function (response) {
+                    res.sendStatus(200);
+                })
+        });
 }

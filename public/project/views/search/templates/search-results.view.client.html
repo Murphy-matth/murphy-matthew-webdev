@@ -2,11 +2,12 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button"
+                    ng-click="vm.goToProfile()"
                     class="navbar-toggle collapsed"
                     data-toggle="collapse"
                     aria-expanded="false"
                     aria-controls="navbar">
-                <span class="glyphicon glyphicon-home"></span>
+                <span class="glyphicon glyphicon-user"></span>
             </button>
             <span class="navbar-brand"
                   ng-click="vm.reset()">
@@ -17,9 +18,9 @@
              class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#"
+                    <a ng-click="vm.goToProfile()"
                        class="navbar-link">
-                        <span class="glyphicon glyphicon-home"></span>
+                        <span class="glyphicon glyphicon-user"></span>
                     </a>
                 </li>
             </ul>
