@@ -12,51 +12,52 @@
         vm.register = register;
 
         function register(username, password, verify) {
-            vm.passwordError = null;
-            vm.usernameTaken = null;
+            // Reset all of the messages
+            vm.registerError = null;
+            vm.invalidUsername = false;
+            vm.invalidPassword = false;
+            vm.passwordWarning = null;
+
+            if (typeof username === 'undefined') {
+                vm.invalidUsername = true;
+                vm.registerError = "Please enter a username";
+                return;
+            }
+
+            if (typeof password === 'undefined' || typeof verify === 'undefined') {
+                vm.invalidPassword = true;
+                vm.registerError = "Please enter and verify your password";
+                return;
+            }
 
             var valid = passwordService.validate(password);
             if (!valid.result) {
                 vm.passwordWarning = valid.message;
+                vm.invalidPassword = true;
                 return;
             }
 
             if (password !== verify) {
-                vm.passwordError = "Passwords do not match. Please verify that they are the same.";
+                vm.passwordWarning = "Passwords do not match. Please verify that they are the same.";
+                vm.invalidPassword = true;
                 return;
             }
 
+            var user = {
+                username: username,
+                password: password
+            };
+
             userService
-                .findUserByUsername(username)
-                .then(userExists, userDoesNotExist);
-
-            function userExists(response) {
-                vm.usernameTaken = "Username is already in use.";
-            }
-
-            function userDoesNotExist(error) {
-                // Make the user.
-                var user = {
-                    username: username,
-                    password: password,
-                    email: "www.example.com",
-                    firstName: "",
-                    lastName: ""
-                };
-                // Add it to the service.
-                userService
-                    .createUser(user)
-                    .then(onRegistered, onRegisteredError);
-
-                function onRegistered(user) {
-                    // Load the login page.
-                    $location.url("/user/" + user._id);
-                }
-
-                function onRegisteredError(error) {
-                    console.log(error);
-                }
-            }
+                .register(user)
+                .then(function (user) {
+                    if (!user) {
+                        return;
+                    }
+                    $location.url("/user/"+ user._id);
+                }, function (err) {
+                    console.log(err);
+                })
         }
     }
 })();

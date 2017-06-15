@@ -25,9 +25,51 @@
             "removeFollowing": removeFollowing,
             "removeFollower": removeFollower,
             "findFollowersByUser": findFollowersByUser,
-            "findFollowingByUser": findFollowingByUser
+            "findFollowingByUser": findFollowingByUser,
+            "login": login,
+            "logout": logout,
+            "register": register,
+            "checkLoggedIn": checkLoggedIn
+
         };
         return api;
+
+        function login(username, password) {
+            var credentials = {
+                username: username,
+                password: password
+            };
+
+            return $http
+                .post("/api/project/login", credentials)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function logout(user) {
+            return $http
+                .post("/api/project/logout")
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function register(user) {
+            return $http
+                .post("/api/project/register", user)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function checkLoggedIn() {
+            var url = "/api/project/checkLoggedIn";
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
 
         function removeFollower(userId, followerId) {
             return $http

@@ -49,15 +49,18 @@
                  class="alert alert-danger">
                 {{vm.descriptionError}}
             </div>
-            <div class="form-group">
+            <div class="form-group"
+                 ng-class="{'has-error': vm.nameError}">
                 <label for="website-name">Website Name</label>
                 <input type="text"
                        class="form-control"
                        id="website-name"
                        ng-model="vm.editableWebsite.name"
-                       placeholder="Website name">
+                       placeholder="Website name"
+                       required />
             </div>
-            <div class="form-group">
+            <div class="form-group"
+                 ng-class="{'has-error': vm.descriptionError}">
                 <label for="description-input">Website Description</label>
                 <textarea class="form-control"
                           rows="5"

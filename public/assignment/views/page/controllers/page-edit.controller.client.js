@@ -1,5 +1,7 @@
 // Page-Edit Controller
 (function() {
+    'use strict';
+
     angular
         .module("WebAppMaker")
         .controller("pageEditController", pageEditController);
@@ -49,7 +51,7 @@
                 return;
             }
             if (typeof vm.editablePage.description === 'undefined') {
-                vm.nameError = "Please enter a page description.";
+                vm.descriptionError = "Please enter a page description.";
                 return;
             }
 

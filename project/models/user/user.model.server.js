@@ -6,6 +6,7 @@
 var mongoose = require('mongoose');
 var userSchema = require('./user.schema.server');
 var q = require('q');
+var bcrypt = require("bcrypt-nodejs");
 var userModel = mongoose.model('ProjectUserModel', userSchema);
 
 // API Functions
@@ -128,7 +129,7 @@ function updateUser(userId, newUser) {
             firstName: newUser.firstName,
             lastName: newUser.lastName,
             email: newUser.email,
-            phone: newUser.phone,
+            phone: newUser.phone
         }
     });
 }
@@ -138,7 +139,19 @@ function deleteUser(userId) {
 }
 
 function findUserByCredentials(username, password) {
-    return userModel.findOne({username: username, password: password});
+    console.log([username, password])
+    return userModel
+        .find({username: username})
+        .then(function (user) {
+            console.log(user);
+            if (!user) {
+                return user;
+            }
+            if (user.username === username && bcrypt.compareSync(password, user.password)) {
+                return user;
+            }
+            return null;
+        });
 }
 
 function findUserById(userId) {
@@ -146,5 +159,6 @@ function findUserById(userId) {
 }
 
 function createUser(user) {
+    user.password = bcrypt.hashSync(user.password);
     return userModel.create(user);
 }

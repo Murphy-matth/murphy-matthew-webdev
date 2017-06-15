@@ -1,5 +1,7 @@
 // Website-list Controller
 (function() {
+    'use strict';
+
     angular
         .module("WebAppMaker")
         .controller("pageListController", pageListController);
@@ -18,5 +20,5 @@
                 })
         }
         init();
-    };
+    }
 })();

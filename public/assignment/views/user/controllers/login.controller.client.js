@@ -16,34 +16,31 @@
                     vm.invalidUsername = "Please enter a username."
                     return;
                 }
+                if (typeof password === 'undefined') {
+                    vm.invalidPassword = "Please enter a password."
+                    return;
+                }
 
-                // Check if the username exists.
                 userService
-                    .findUserByUsername(username)
-                    .then(userExists, userDoesNotExist);
+                    .login(username, password)
+                    .then(function(user) {
+                        if (!user) {
+                            vm.invalidPassword = "Invalid username or password. Please try again";
+                            return;
+                        }
+                        $location.url("/user/" + user._id);
+                    }, function (err) {
+                        vm.invalidPassword = "Invalid username or password. Please try again";
+                    });
+            };
 
-                // If the username exists then attempt to log in with the password.
-                function userExists(response) {
-                    userService
-                        .findUserByCredentials(username, password)
-                        .then(handleLogin, handleLoginError);
-                }
-
-                // If the username does not exist present an error message.
-                function userDoesNotExist(error) {
-                    // Username is invalid.
-                    vm.invalidUsername = "Username " + username + " not found. Please try again";
-                }
-
-                // Handle the login response.
-                function handleLogin(user) {
-                    $location.url("/user/" + user._id + "/website");
-                }
-
-                // If there is a login error present an error message.
-                function handleLoginError(error) {
-                    vm.invalidPassword = "Invalid password. Please try again";
-                }
+            vm.logout = function logout() {
+                userService
+                    .logout()
+                    .then(function(response) {
+                            $location.url("/");
+                    });
             }
-        };
+
+        }
 })();

@@ -3,6 +3,8 @@
  * Author: Matthew
  */
 (function () {
+    'use strict';
+
     angular
         .module('WebAppMaker')
         .controller('widgetEditController', widgetEditController);
@@ -32,6 +34,12 @@
         vm.updateWidget = updateWidget;
 
         function updateWidget() {
+            vm.nameError = null;
+
+            if (typeof vm.editableWidget.name === 'undefined') {
+                vm.nameError = "Please enter a widget name";
+                return;
+            }
             WidgetService
                 .updateWidget(vm.widget._id, vm.editableWidget)
                 .then(function(response) {
@@ -40,6 +48,8 @@
         }
 
         function deleteWidget() {
+            vm.nameError = null;
+
             WidgetService
                 .deleteWidget(vm.widget._id)
                 .then(function(response) {

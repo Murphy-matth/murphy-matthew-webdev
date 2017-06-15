@@ -3,6 +3,8 @@
  * Author: Matthew Murphy
  */
 (function() {
+    "use strict";
+
     angular
         .module("WebAppMaker")
         .factory("userService", userService);
@@ -17,9 +19,62 @@
             "findUserByUsername" : findUserByUsername,
             "findUserByCredentials" : findUserByCredentials,
             "updateUser" : updateUser,
-            "deleteUser" : deleteUser
+            "deleteUser" : deleteUser,
+            "login": login,
+            "logout": logout,
+            "register": register,
+            "checkLoggedIn": checkLoggedIn,
+            "findCurrentUser": findCurrentUser
         };
         return api;
+
+        function findCurrentUser() {
+            var url = "/api/assignment/current";
+
+            console.log(url);
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function login(username, password) {
+            var credentials = {
+                username: username,
+                password: password
+            };
+
+            return $http
+                .post("/api/assignment/login", credentials)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+        function logout(user) {
+            return $http
+                .post("/api/assignment/logout")
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function register(user) {
+            return $http
+                .post("/api/assignment/register", user)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function checkLoggedIn() {
+            var url = "/api/assignment/checkLoggedIn";
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
 
         // Adds the user parameter instance. Returns the new user.
         function createUser(user) {

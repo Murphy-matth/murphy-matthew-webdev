@@ -6,12 +6,37 @@
 var app = require('../../express.js');
 var userModel = require('../models/user/user.model.server');
 
+var bcrypt = require("bcrypt-nodejs");
+
+var passport      = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use('project', new LocalStrategy(localStrategy));
+passport.serializeUser(serializeUser);
+passport.deserializeUser(deserializeUser);
+
 var multer = require('multer'); // npm install multer --save
 var upload = multer({ dest: __dirname+'/../../public/project/uploads/profile/' });
 
+/**
+ * API Endpoints
+ */
+
+/**
+ * Login and Authentication
+ */
+app.post  ('/api/project/login', passport.authenticate('project'), login);
+app.get   ('/api/project/checkLoggedIn', checkLoggedIn);
+app.post  ('/api/project/logout', logout);
+app.post  ('/api/project/register', register);
+
+/**
+ * File Upload
+ */
+app.post ("/api/project/uploadProfile", upload.single('myFile'), uploadImage);
+
 app.post('/api/project/user', createUser);
 app.get('/api/project/user/:uid/password/:pass', updatePassword);
-app.post ("/api/project/uploadProfile", upload.single('myFile'), uploadImage);
 app.get('/api/project/user/:uid', findUserById);
 app.get('/api/project/user', findUserByCredentials);
 app.get('/api/project/user/:uid/follower/:fid', addFollower);
@@ -21,6 +46,136 @@ app.delete('/api/project/user/:uid/following/:fid', removeFollowing);
 app.delete('/api/project/user/:uid/follower/:fid', removeFollower);
 app.put('/api/project/user/:uid', updateUser);
 app.delete('/api/project/user/:uid', deleteUser);
+
+/**
+ * End API Endpoints
+ */
+
+
+/**
+ * Login and Authentication
+ */
+
+function login(req, res) {
+    var user = req.user;
+    res.json(user);
+}
+
+function logout(req, res) {
+    req.logout();
+    res.sendStatus(200);
+}
+
+function register(req, res) {
+    var user = req.body;
+
+    userModel
+        .createUser(user)
+        .then(function (user) {
+            req.login(user, function (status) {
+                res.json(user);
+            });
+        });
+}
+
+function checkLoggedIn(req, res) {
+    if(req.isAuthenticated()) {
+        res.json(req.user);
+    } else {
+        res.send('0');
+    }
+}
+
+function localStrategy(username, password, done) {
+    userModel
+        .findUserByUsername(username)
+        .then(function (user) {
+            if (!user) {
+                return done(null, false);
+            }
+            if (user.username === username && bcrypt.compareSync(password, user.password)) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        }, function (err) {
+            if (err) {
+                return done(err);
+            } else {
+                return done(null, false);
+            }
+        });
+}
+
+// function localStrategy(username, password, done) {
+//     userModel
+//         .findUserByCredentials(username, password)
+//         .then(function (user) {
+//             if (!user) {
+//                 return done(null, false);
+//             }
+//             return done(null, user);
+//         }, function (err) {
+//             if (err) {
+//                 return done(err);
+//             } else {
+//                 return done(null, false);
+//             }
+//         });
+// }
+
+function serializeUser(user, done) {
+    done(null, user);
+}
+
+function deserializeUser(user, done) {
+    userModel
+        .findUserById(user._id)
+        .then(
+            function(user){
+                done(null, user);
+            },
+            function(err){
+                done(err, null);
+            }
+        );
+}
+
+/**
+ * End Login and Authentication
+ */
+
+/**
+ * File Upload
+ */
+
+function uploadImage(req, res) {
+    console.log("Upload Image");
+
+    var userId      = req.body.userId;
+    var myFile        = req.file;
+
+    var originalname  = myFile.originalname; // file name on user's computer
+    var filename      = myFile.filename;     // new file name in upload folder
+    var path          = myFile.path;         // full path of uploaded file
+    var destination   = myFile.destination;  // folder where file is saved to
+    var size          = myFile.size;
+    var mimetype      = myFile.mimetype;
+
+    var url = '/project/uploads/profile/'+ filename;
+
+    userModel
+        .updateUrl(userId, url)
+        .then(function (status) {
+            var callbackUrl   = "/project/index.html#!/user/"+userId;
+            console.log(callbackUrl);
+            res.redirect(callbackUrl);
+        });
+}
+
+/**
+ * End File Upload
+ */
 
 function updatePassword(req, res) {
     var userId = req.params.uid;
@@ -112,28 +267,6 @@ function removeFollowing(req, res) {
                     findFollowingByIds(req, res);
                 })
         })
-}
-
-function uploadImage(req, res) {
-
-    var userId      = req.body.userId;
-    var myFile        = req.file;
-
-    var originalname  = myFile.originalname; // file name on user's computer
-    var filename      = myFile.filename;     // new file name in upload folder
-    var path          = myFile.path;         // full path of uploaded file
-    var destination   = myFile.destination;  // folder where file is saved to
-    var size          = myFile.size;
-    var mimetype      = myFile.mimetype;
-
-    var url = '/project/uploads/profile/'+ filename;
-
-    userModel
-        .updateUrl(userId, url)
-        .then(function (status) {
-            var callbackUrl   = "/project/index.html#!/user/"+userId;
-            res.redirect(callbackUrl);
-        });
 }
 
 // Updates the given user. Will not update username or password.

@@ -3,6 +3,8 @@
  * Author: Matthew Murphy
   */
 (function() {
+    'use strict';
+
     angular
         .module("WebAppMaker")
         .controller("pageNewController", pageNewController);
@@ -25,15 +27,15 @@
         vm.createPage = createPage;
 
         function createPage(name, title) {
-            vm.nameError = null
+            vm.nameError = null;
             vm.descriptionError = null;
 
             if (typeof name === 'undefined') {
-                vm.nameError = "Please enter a page name."
+                vm.nameError = "Please enter a page name.";
                 return;
             }
             if (typeof title === 'undefined') {
-                vm.nameError = "Please enter a page title."
+                vm.descriptionError = "Please enter a page title.";
                 return;
             }
 
@@ -50,5 +52,5 @@
                 })
 
         }
-    };
+    }
 })();

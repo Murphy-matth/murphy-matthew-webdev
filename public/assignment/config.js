@@ -21,10 +21,21 @@
                 controller: "registerController",
                 controllerAs: 'vm'
             })
+            .when("/user", {
+                templateUrl: "views/user/templates/profile.view.client.html",
+                controller: "profileController",
+                controllerAs: 'vm',
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
+            })
             .when("/user/:uid", {
                 templateUrl: "views/user/templates/profile.view.client.html",
                 controller: "profileController",
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
             });
 
         // Website pages.
@@ -84,6 +95,21 @@
                 templateUrl: 'views/widget/templates/widgets/widget-flickr-search.view.client.html',
                 controller: 'flickrController',
                 controllerAs: 'vm'
-                    })
+            });
+
+        function checkLoggedIn($q, $location, userService) {
+            var deferred = $q.defer();
+            userService
+                .checkLoggedIn()
+                .then(function (currentUser) {
+                    if(currentUser === '0') {
+                        deferred.reject();
+                        $location.url('/login');
+                    } else {
+                        deferred.resolve(currentUser);
+                    }
+                });
+            return deferred.promise;
+        }
     }
 })();

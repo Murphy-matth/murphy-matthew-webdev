@@ -44,11 +44,11 @@
             vm.descriptionError = null;
 
             if (typeof webName === 'undefined') {
-                vm.nameError = "Please enter a website name."
+                vm.nameError = "Please enter a website name.";
                 return;
             }
             if (typeof webDescription === 'undefined') {
-                vm.nameError = "Please enter a website description."
+                vm.descriptionError = "Please enter a website description.";
                 return;
             }
 

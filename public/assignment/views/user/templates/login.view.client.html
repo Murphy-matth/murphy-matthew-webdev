@@ -9,16 +9,30 @@
              class="alert alert-danger wd-center">
             {{vm.invalidPassword}}
         </div>
-        <input type="text"
-               ng-model="username"
-               class="form-control wd-center"
-               placeholder="username"/>
-        <input type="password"
-               ng-model="password"
-               class="form-control wd-center"
-               placeholder="password"/>
+        <form novalidate name="myForm">
+            <div ng-class="{'has-error': vm.invalidUsername}">
+            <input type="text"
+                   ng-model="username"
+                   name="username"
+                   class="form-control wd-center"
+                   placeholder="username"
+                   autocapitalize="off"
+                   required />
+            </div>
+            <div ng-class="{'has-error': vm.invalidPassword}">
+                <input type="password"
+                       ng-model="password"
+                       class="form-control wd-center"
+                       placeholder="password"
+                       required />
+            </div>
+        </form>
         <a class="btn btn-primary btn-block wd-center"
            ng-click="vm.login(username, password)">Login</a>
+        <a href="/auth/facebook" class="btn btn-primary btn-block wd-center">
+            <span class="fa fa-facebook"></span>
+            Facebook
+        </a>
         <a class="btn btn-success btn-block wd-center"
            href="#!/register">Register</a>
     </div>

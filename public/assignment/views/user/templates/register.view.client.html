@@ -1,26 +1,31 @@
 <div class="wd-vertical-center">
     <div class="container-fluid wd-vertical-center-container">
         <h1 class="text-center">Register</h1>
-        <div ng-show="vm.updateError"
-             class="alert alert-danger wd-center">
-            {{vm.updateError}}
-        </div>
         <div ng-show="vm.registerError"
              class="alert alert-danger wd-center">
             {{vm.registerError}}
         </div>
-        <input type="text"
-               ng-model="username"
-               class="form-control wd-center"
-               placeholder="username"/>
-        <input type="password"
-               ng-model="password"
-               class="form-control wd-center"
-               placeholder="password"/>
-        <input type="password"
-               ng-model="verify"
-               class="form-control wd-center"
-               placeholder="verify password"/>
+        <div ng-class="{'has-error': vm.invalidUsername}">
+            <input type="text"
+                   ng-model="username"
+                   class="form-control wd-center"
+                   placeholder="username"
+                   required />
+            </div>
+        <div ng-class="{'has-error': vm.invalidPassword}">
+            <input type="password"
+                   ng-model="password"
+                   class="form-control wd-center"
+                   placeholder="password"
+                   required />
+        </div>
+        <div ng-class="{'has-error': vm.invalidPassword}">
+            <input type="password"
+                   ng-model="verify"
+                   class="form-control wd-center"
+                   placeholder="verify password"
+                   required />
+        </div>
         <a class="btn btn-primary btn-block wd-center"
            ng-click="vm.register(username, password, verify)">Register</a>
         <a class="btn btn-success btn-block wd-center"

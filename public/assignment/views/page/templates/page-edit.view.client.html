@@ -51,16 +51,19 @@
                  class="alert alert-danger">
                 {{vm.descriptionError}}
             </div>
-            <div class="form-group">
+            <div class="form-group"
+                 ng-class="{'has-error': vm.nameError}">
                 <label for="name-input">Name</label>
                 <input class="form-control"
                        type="text"
                        id="name-input"
                        placeholder="Page Name"
                        ng-model="vm.editablePage.name"
-                       value="Blog Post" />
+                       value="Blog Post"
+                       required />
             </div>
-            <div class="form-group">
+            <div class="form-group"
+                 ng-class="{'has-error': vm.descriptionError}">
                 <label for="title-input">Title</label>
                 <input class="form-control"
                        type="text"

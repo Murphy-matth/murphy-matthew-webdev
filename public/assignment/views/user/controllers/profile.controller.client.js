@@ -4,16 +4,30 @@
         .module("WebAppMaker")
         .controller("profileController", profileController);
 
-        function profileController($routeParams, userService) {
+        function profileController($routeParams, $location, userService) {
             var vm = this;
 
             function init() {
                 vm.userId = $routeParams['uid'];
-                userService
-                    .findUserById(vm.userId)
-                    .then(handleLoad, handleLoadError);
+                if (vm.userId) {
+                    userService
+                        .findUserById(vm.userId)
+                        .then(handleLoad, handleLoadError);
+                } else {
+                    userService
+                        .findCurrentUser()
+                        .then(handleLoad, handleLoadError);
+                }
             }
             init();
+
+            vm.logout = function() {
+                userService
+                    .logout()
+                    .then(function () {
+                        $location.url('/login');
+                    });
+            };
 
             vm.update = function () {
                 userService
@@ -33,6 +47,7 @@
 
             // Loads the current user for use by the models.
             function handleLoad(user) {
+                console.log(user);
                 vm.savedUser = user;
                 vm.user = angular.copy(vm.savedUser);
             }

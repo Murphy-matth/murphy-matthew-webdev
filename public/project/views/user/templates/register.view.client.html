@@ -2,7 +2,7 @@
     <div class="container-fluid wd-vertical-center-container">
         <h1 class="text-center">Register</h1>
         <div class="form-group wd-center"
-             ng-class="{'has-warning': vm.usernameTaken}">
+             ng-class="{'has-warning': vm.invalidUsername}">
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-user"></i>
@@ -14,13 +14,13 @@
                        placeholder="Username"
                        ng-model="username" />
             </div>
-            <span ng-show="vm.usernameTaken"
+            <span ng-show="vm.registerError && vm.invalidUsername"
                   class="help-block">
-                    {{vm.usernameTaken}}
+                    {{vm.registerError}}
             </span>
         </div>
         <div class="form-group wd-center"
-             ng-class="{'has-error': vm.passwordError, 'has-warning': vm.passwordWarning}">
+             ng-class="{'has-error': vm.invalidPassword, 'has-warning': vm.passwordWarning}">
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-lock"></i>
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="form-group wd-center"
-             ng-class="{'has-error': vm.passwordError, 'has-warning': vm.passwordWarning}">
+             ng-class="{'has-error': vm.invalidPassword, 'has-warning': vm.passwordWarning}">
             <div class="input-group">
                 <span class="input-group-addon">
                     <i class="glyphicon glyphicon-lock"></i>
@@ -50,9 +50,9 @@
                   class="help-block">
                     {{vm.passwordWarning}}
             </span>
-            <span ng-show="vm.passwordError"
+            <span ng-show="vm.registerError && (vm.passwordWarning || vm.invalidPassword)"
                   class="help-block">
-                    {{vm.passwordError}}
+                    {{vm.registerError}}
             </span>
         </div>
         <a class="btn btn-primary btn-block wd-center"
