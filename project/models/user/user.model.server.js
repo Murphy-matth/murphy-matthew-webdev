@@ -91,7 +91,7 @@ function removeFollower(userId, followerId) {
 
 function updateUrl(userId, url) {
     return userModel.update({_id: userId}, {
-        $addToSet : {
+        $set : {
             photo: url
         }
     });
