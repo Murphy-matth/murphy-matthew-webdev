@@ -6,40 +6,27 @@
         .module("KnowYourRep")
         .controller("registerController", registerController);
 
-    function registerController($location, userService, passwordService) {
+    function registerController($scope, $location, userService, passwordService) {
         var vm = this;
 
         vm.register = register;
 
         function register(username, password, verify) {
             // Reset all of the messages
-            vm.registerError = null;
-            vm.invalidUsername = false;
-            vm.invalidPassword = false;
             vm.passwordWarning = null;
 
-            if (typeof username === 'undefined') {
-                vm.invalidUsername = true;
-                vm.registerError = "Please enter a username";
+            if ($scope.registerForm.$invalid) {
                 return;
             }
 
-            if (typeof password === 'undefined' || typeof verify === 'undefined') {
-                vm.invalidPassword = true;
-                vm.registerError = "Please enter and verify your password";
+            if (password !== verify) {
+                vm.passwordWarning = "Passwords do not match. Please verify that they are the same.";
                 return;
             }
 
             var valid = passwordService.validate(password);
             if (!valid.result) {
                 vm.passwordWarning = valid.message;
-                vm.invalidPassword = true;
-                return;
-            }
-
-            if (password !== verify) {
-                vm.passwordWarning = "Passwords do not match. Please verify that they are the same.";
-                vm.invalidPassword = true;
                 return;
             }
 

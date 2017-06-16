@@ -7,19 +7,13 @@
         .controller("loginController", loginController);
 
 
-        function loginController($location, userService) {
+        function loginController($scope, $location, userService) {
             var vm = this;
 
             vm.login = function (username, password) {
-                vm.invalidUsername = null;
-                vm.invalidPassword = null;
+                vm.invalid = null;
 
-                if (typeof username === 'undefined') {
-                    vm.invalidUsername = "Please enter a username.";
-                    return;
-                }
-                if (typeof password === 'undefined') {
-                    vm.invalidPassword = "Please enter a password.";
+                if ($scope.loginForm.$invalid) {
                     return;
                 }
 
@@ -27,12 +21,12 @@
                     .login(username, password)
                     .then(function(user) {
                         if (!user) {
-                            vm.invalidPassword = "Invalid username or password. Please try again";
+                            vm.invalid = "Invalid username or password. Please try again";
                             return;
                         }
                         $location.url("/user/" + user._id);
                     }, function (err) {
-                        vm.invalidPassword = "Invalid username or password. Please try again";
+                        vm.invalid = "Invalid username or password. Please try again";
                     });
             };
         }

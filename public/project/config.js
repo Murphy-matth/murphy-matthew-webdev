@@ -31,6 +31,14 @@
                     currentUser: checkLoggedIn
                 }
             })
+            .when("/user", {
+                templateUrl: "views/user/templates/profile.view.client.html",
+                controller: "profileController",
+                controllerAs: 'vm',
+                resolve: {
+                    currentUser: checkLoggedIn
+                }
+            })
             .when("/user/:uid/other/:oid", {
                 templateUrl: "views/user/templates/profile.view.client.html",
                 controller: "profileController",

@@ -27,8 +27,28 @@ userModel.findUsersByIds = findUsersByIds;
 userModel.updatePassword = updatePassword;
 userModel.addRep = addRep;
 userModel.removeRep = removeRep;
+userModel.findUserByFacebookId = findUserByFacebookId;
+userModel.updateFacebookToken = updateFacebookToken;
 
 module.exports = userModel;
+
+function updateFacebookToken(userId, facebookId, token) {
+    var facebook = {
+        id: facebookId,
+        token: token
+    };
+
+    return userModel
+        .update({_id: userId}, {
+            $set : {
+                facebook: facebook
+            }
+        });
+}
+
+function findUserByFacebookId(facebookId) {
+    return userModel.findOne({'facebook.id': facebookId});
+}
 
 function addRep(userId, repId) {
     return userModel.update({_id: userId}, {

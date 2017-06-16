@@ -1,65 +1,77 @@
 <div class="wd-vertical-center">
     <div class="container-fluid wd-vertical-center-container">
         <h1 class="text-center">Register</h1>
-        <div class="form-group wd-center"
-             ng-class="{'has-warning': vm.invalidUsername}">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-user"></i>
+        <form novalidate
+              ng-submit="vm.register(username, password, verify)"
+              name="registerForm">
+            <div class="form-group wd-center"
+                 ng-class="{'has-error': (registerForm.username.$error.required && registerForm.$submitted)}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </span>
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Username"
+                           name="username"
+                           ng-model="username"
+                           required/>
+                </div>
+                <span ng-show="registerForm.username.$error.required && registerForm.$submitted"
+                      class="help-block">
+                    Please enter a username.
                 </span>
-                <input id="User"
-                       type="text"
-                       class="form-control"
-                       name="User"
-                       placeholder="Username"
-                       ng-model="username" />
             </div>
-            <span ng-show="vm.registerError && vm.invalidUsername"
-                  class="help-block">
-                    {{vm.registerError}}
-            </span>
-        </div>
-        <div class="form-group wd-center"
-             ng-class="{'has-error': vm.invalidPassword, 'has-warning': vm.passwordWarning}">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-lock"></i>
+            <div class="form-group wd-center"
+                 ng-class="{'has-error': (registerForm.password.$error.required && registerForm.$submitted),
+                            'has-warning': vm.passwordWarning}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           name="password"
+                           ng-model="password"
+                           required/>
+                </div>
+                <span ng-show="registerForm.password.$error.required && registerForm.$submitted"
+                      class="help-block">
+                    Please enter a password.
                 </span>
-                <input id="Pass"
-                       type="password"
-                       class="form-control"
-                       name="Pass"
-                       placeholder="Password"
-                       ng-model="password" />
             </div>
-        </div>
-        <div class="form-group wd-center"
-             ng-class="{'has-error': vm.invalidPassword, 'has-warning': vm.passwordWarning}">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-lock"></i>
+            <div class="form-group wd-center"
+                 ng-class="{'has-error': (registerForm.verify.$error.required && registerForm.$submitted),
+                            'has-warning': vm.passwordWarning}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Verify"
+                           name="verify"
+                           ng-model="verify"
+                           required/>
+                </div>
+                <span ng-show="registerForm.verify.$error.required && registerForm.$submitted"
+                      class="help-block">
+                    Please verify your password.
                 </span>
-                <input id="VerifyPass"
-                       type="password"
-                       class="form-control"
-                       name="VerifyPass"
-                       placeholder="Verify Password"
-                       ng-model="verify" />
-            </div>
-            <span ng-show="vm.passwordWarning"
-                  class="help-block">
+                <span ng-show="vm.passwordWarning"
+                      class="help-block">
                     {{vm.passwordWarning}}
-            </span>
-            <span ng-show="vm.registerError && (vm.passwordWarning || vm.invalidPassword)"
-                  class="help-block">
-                    {{vm.registerError}}
-            </span>
-        </div>
-        <a class="btn btn-primary btn-block wd-center"
-           ng-click="vm.register(username, password, verify)">Register</a>
-        <a class="btn btn-success btn-block wd-center"
-            href="#!/login">
-            Already registered? Login!
-        </a>
+                </span>
+            </div>
+            <input class="btn btn-primary btn-block wd-center"
+                   type="submit"
+                   id="submit"
+                   value="Register" />
+            <a class="btn btn-success btn-block wd-center"
+               href="#!/login">
+                Already registered? Login!
+            </a>
+        </form>
     </div>
 </div>

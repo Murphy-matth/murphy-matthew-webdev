@@ -14,7 +14,6 @@
         var baseUrl = "/api/project/user/";
 
         var api = {
-            "createUser"   : createUser,
             "findUserById" : findUserById,
             "findUserByUsername" : findUserByUsername,
             "findUserByCredentials" : findUserByCredentials,
@@ -29,10 +28,20 @@
             "login": login,
             "logout": logout,
             "register": register,
-            "checkLoggedIn": checkLoggedIn
-
+            "checkLoggedIn": checkLoggedIn,
+            "findCurrentUser": findCurrentUser
         };
         return api;
+
+
+        function findCurrentUser() {
+            var url = "/api/project/current";
+
+            return $http.get(url)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
 
         function login(username, password) {
             var credentials = {

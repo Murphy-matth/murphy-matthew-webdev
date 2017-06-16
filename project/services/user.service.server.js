@@ -39,6 +39,7 @@ app.post('/api/project/user', createUser);
 app.get('/api/project/user/:uid/password/:pass', updatePassword);
 app.get('/api/project/user/:uid', findUserById);
 app.get('/api/project/user', findUserByCredentials);
+app.get('/api/project/current', getCurrentUser);
 app.get('/api/project/user/:uid/follower/:fid', addFollower);
 app.get('/api/project/user/:uid/followers', findFollowersByIds);
 app.get('/api/project/user/:uid/following', findFollowingByIds);
@@ -129,12 +130,63 @@ function deserializeUser(user, done) {
  */
 
 /**
+ * Facebook Authentication
+ */
+var FacebookStrategy = require('passport-facebook').Strategy;
+var facebookConfig = {
+    clientID     : process.env.FACEBOOK_CLIENT_ID,
+    clientSecret : process.env.FACEBOOK_CLIENT_SECRET,
+    callbackURL  : process.env.FACEBOOK_CALLBACK_URL
+};
+
+
+app.get ('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect: '/project/index.html#!/user',
+        failureRedirect: '/project/index.html#!/login'
+    }));
+
+passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
+
+function facebookStrategy(token, refreshToken, profile, done) {
+    userModel
+        .findUserByFacebookId(profile.id)
+        .then(function (user) {
+            if (!user) {
+                var newUser = {
+                    username: profile.displayName,
+                    facebook: {
+                        id: profile.id,
+                        token: token
+                    }
+                };
+
+                return userModel
+                    .createUser(newUser)
+                    .then(function (response) {
+                        return done(null, response);
+                    })
+            } else {
+                return userModel
+                    .updateFacebookToken(user._id, profile.id, token)
+                    .then(function (response) {
+                        return done(null, user);
+                    })
+            }
+        }, function (err) {
+            return done(null, false);
+        })
+}
+/**
+ * End Facebook Authentication
+ */
+
+/**
  * File Upload
  */
 
 function uploadImage(req, res) {
-    console.log("Upload Image");
-
     var userId      = req.body.userId;
     var myFile        = req.file;
 
@@ -151,7 +203,6 @@ function uploadImage(req, res) {
         .updateUrl(userId, url)
         .then(function (status) {
             var callbackUrl   = "/project/index.html#!/user/"+userId;
-            console.log(callbackUrl);
             res.redirect(callbackUrl);
         });
 }
@@ -159,6 +210,11 @@ function uploadImage(req, res) {
 /**
  * End File Upload
  */
+
+function getCurrentUser(req, res) {
+    var user = req.user;
+    res.json(user);
+}
 
 function updatePassword(req, res) {
     var userId = req.params.uid;

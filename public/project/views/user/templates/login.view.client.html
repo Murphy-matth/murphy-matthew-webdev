@@ -1,8 +1,11 @@
 <div class="wd-vertical-center">
     <div class="container-fluid wd-vertical-center-container">
         <h1 class="text-center">Login</h1>
+        <form novalidate
+              ng-submit="vm.login(username, password)"
+              name="loginForm">
             <div class="form-group wd-center"
-                 ng-class="{'has-error': vm.invalidUsername}">
+                 ng-class="{'has-error': (loginForm.username.$error.required && loginForm.$submitted) || vm.invalid}">
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="glyphicon glyphicon-user"></i>
@@ -10,34 +13,47 @@
                     <input type="text"
                            class="form-control"
                            placeholder="Username"
-                           ng-model="username" />
+                           name="username"
+                           ng-model="username"
+                           required/>
                 </div>
-                <span ng-show="vm.invalidUsername"
+                <span ng-show="loginForm.username.$error.required && loginForm.$submitted"
                       class="help-block">
-                    {{vm.invalidUsername}}
+                    Please enter a username.
                 </span>
             </div>
-        <div class="form-group wd-center"
-             ng-class="{'has-error': vm.invalidPassword}">
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <i class="glyphicon glyphicon-lock"></i>
+            <div class="form-group wd-center"
+                 ng-class="{'has-error': (loginForm.password.$error.required && loginForm.$submitted) || vm.invalid}">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-lock"></i>
+                    </span>
+                    <input type="password"
+                           class="form-control"
+                           placeholder="Password"
+                           name="password"
+                           ng-model="password"
+                           required/>
+                </div>
+                <span ng-show="loginForm.password.$error.required && loginForm.$submitted"
+                      class="help-block">
+                    Please enter a password.
                 </span>
-                <input id="password"
-                       type="password"
-                       class="form-control"
-                       name="password"
-                       placeholder="Password"
-                       ng-model="password" />
+                <span ng-show="vm.invalid"
+                      class="help-block">
+                    {{vm.invalid}}
+                </span>
             </div>
-            <span ng-show="vm.invalidPassword"
-                  class="help-block">
-                    {{vm.invalidPassword}}
-            </span>
-        </div>
-        <a class="btn btn-primary btn-block wd-center"
-           ng-click="vm.login(username, password)">Login</a>
-        <a class="btn btn-success btn-block wd-center"
-           href="#!/register">Need an Account? Register!</a>
+            <input class="btn btn-primary btn-block wd-center"
+                   type="submit"
+                   id="submit"
+                   value="Login" />
+            <a href="/auth/facebook" class="btn btn-primary btn-block wd-center">
+                <span class="fa fa-facebook"></span>
+                Facebook
+            </a>
+            <a class="btn btn-success btn-block wd-center"
+               href="#!/register">Need an Account? Register!</a>
+        </form>
     </div>
 </div>

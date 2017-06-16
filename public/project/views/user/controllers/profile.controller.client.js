@@ -26,8 +26,26 @@
 
             function init() {
                 vm.userId = $routeParams['uid'];
-                vm.otherUser = $routeParams['oid'];
-                updateProfileInfo();
+                if (vm.userId) {
+                    userService
+                        .findUserById(vm.userId)
+                        .then(handleLoad, handleLoadError);
+                } else {
+                    userService
+                        .findCurrentUser()
+                        .then(handleLoad, handleLoadError);
+                }
+
+                function handleLoad(user) {
+                    console.log(user);
+                    vm.userId = user._id;
+                    vm.otherUser = $routeParams['oid'];
+                    updateProfileInfo();
+                }
+
+                function handleLoadError(err) {
+                    console.log(err);
+                }
             }
             init();
 

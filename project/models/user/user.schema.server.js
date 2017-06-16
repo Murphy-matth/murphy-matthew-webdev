@@ -10,6 +10,11 @@ var userSchema = mongoose.Schema({
     password: {type: String, require: true},
     firstName: String,
     lastName: String,
+    roles: [{type: String, default: 'USER', enum: ['USER', 'ADMIN']}],
+    facebook: {
+        id:    String,
+        token: String
+    },
     photo: {type: String, default: "http://lorempixel.com/200/200"},
     email: String,
     phone: String,
