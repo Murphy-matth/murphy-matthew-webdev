@@ -167,7 +167,11 @@ function facebookStrategy(token, refreshToken, profile, done) {
                 return userModel
                     .createUser(newUser)
                     .then(function (response) {
+                        console.log(response);
                         return done(null, response);
+                    }, function (err) {
+                        console.log(err);
+                        return done(null, false);
                     })
             } else {
                 return userModel
