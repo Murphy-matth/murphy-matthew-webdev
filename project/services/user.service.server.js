@@ -150,11 +150,9 @@ app.get('/auth/facebook/callback',
 passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
 
 function facebookStrategy(token, refreshToken, profile, done) {
-    console.log(profile);
     userModel
         .findUserByFacebookId(profile.id)
         .then(function (user) {
-            console.log(user);
             if (!user) {
                 var newUser = {
                     username: profile.displayName,
@@ -167,10 +165,8 @@ function facebookStrategy(token, refreshToken, profile, done) {
                 return userModel
                     .createUser(newUser)
                     .then(function (response) {
-                        console.log(response);
                         return done(null, response);
                     }, function (err) {
-                        console.log(err);
                         return done(null, false);
                     })
             } else {
@@ -181,7 +177,6 @@ function facebookStrategy(token, refreshToken, profile, done) {
                     })
             }
         }, function (err) {
-            console.log(err);
             return done(null, false);
         })
 }
