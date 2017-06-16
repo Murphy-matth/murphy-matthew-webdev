@@ -150,6 +150,7 @@ app.get('/auth/facebook/callback',
 passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
 
 function facebookStrategy(token, refreshToken, profile, done) {
+    console.log(profile);
     userModel
         .findUserByFacebookId(profile.id)
         .then(function (user) {
