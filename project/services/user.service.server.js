@@ -154,6 +154,7 @@ function facebookStrategy(token, refreshToken, profile, done) {
     userModel
         .findUserByFacebookId(profile.id)
         .then(function (user) {
+            console.log(user);
             if (!user) {
                 var newUser = {
                     username: profile.displayName,
@@ -176,6 +177,7 @@ function facebookStrategy(token, refreshToken, profile, done) {
                     })
             }
         }, function (err) {
+            console.log(err);
             return done(null, false);
         })
 }
