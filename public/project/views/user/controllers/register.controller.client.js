@@ -54,7 +54,7 @@
                     if (!user) {
                         return;
                     }
-                    $location.url("/user/"+ user._id);
+                    $location.url("/user/" + user._id);
                 }, function (err) {
                     console.log(err);
                 })

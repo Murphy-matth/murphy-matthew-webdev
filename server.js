@@ -8,8 +8,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-// app.use(session({ secret: process.env.SESSION_SECRET }));
-app.use(session({ secret: "localhost" }));
+app.use(session({ secret: process.env.SESSION_SECRET }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -18,9 +17,13 @@ app.use(app.express.static(__dirname + '/public'));
 
 // require ("./test/app.js")(app);
 
-require("./assignment/app.js");
+if (process.env.ASSIGNMENT) {
+    require("./assignment/app.js");
+}
 
-require("./project/app.js");
+if (process.env.PROJECT) {
+    require("./project/app.js");
+}
 
 var port = process.env.PORT || 3000;
 

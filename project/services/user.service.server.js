@@ -107,23 +107,6 @@ function localStrategy(username, password, done) {
         });
 }
 
-// function localStrategy(username, password, done) {
-//     userModel
-//         .findUserByCredentials(username, password)
-//         .then(function (user) {
-//             if (!user) {
-//                 return done(null, false);
-//             }
-//             return done(null, user);
-//         }, function (err) {
-//             if (err) {
-//                 return done(err);
-//             } else {
-//                 return done(null, false);
-//             }
-//         });
-// }
-
 function serializeUser(user, done) {
     done(null, user);
 }

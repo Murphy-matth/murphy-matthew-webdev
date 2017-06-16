@@ -19,7 +19,7 @@
                     return;
                 }
                 if (typeof password === 'undefined') {
-                    vm.invalidPassword = "Please enter a password."
+                    vm.invalidPassword = "Please enter a password.";
                     return;
                 }
 
