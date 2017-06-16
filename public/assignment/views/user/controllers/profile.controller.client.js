@@ -49,6 +49,7 @@
             function handleLoad(user) {
                 console.log(user);
                 vm.savedUser = user;
+                vm.userId = user._id;
                 vm.user = angular.copy(vm.savedUser);
             }
 
