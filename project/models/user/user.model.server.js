@@ -179,6 +179,8 @@ function findUserById(userId) {
 }
 
 function createUser(user) {
-    user.password = bcrypt.hashSync(user.password);
+    if (user.password) {
+        user.password = bcrypt.hashSync(user.password);
+    }
     return userModel.create(user);
 }
