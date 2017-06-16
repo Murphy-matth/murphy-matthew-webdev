@@ -19,8 +19,8 @@ var userSchema = mongoose.Schema({
     email: String,
     phone: String,
     reps: [{type: mongoose.Schema.ObjectId, ref: "ProjectRepresentativeModel"}],
-    following: [{type: mongoose.Schema.ObjectId, ref: "ProjectUserModel", unique: true}],
-    followers: [{type: mongoose.Schema.ObjectId, ref: "ProjectUserModel", unique: true}],
+    following: [{type: mongoose.Schema.ObjectId, ref: "ProjectUserModel"}],
+    followers: [{type: mongoose.Schema.ObjectId, ref: "ProjectUserModel"}],
     dateCreated: {type: Date, default: Date.now}
 }, {collection: "udergraduate_project_user"});
 
