@@ -1,0 +1,33 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <span class="navbar-brand">Admin</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid wd-padding-top">
+    <div class="row">
+        <div class="col-xs-3 wd-col-left-scrollable-right">
+            <a class="btn btn-default btn-block wd-margin-top"
+               ng-click="vm.findAllUsers()">
+                List All Users
+            </a>
+            <a class="btn btn-default btn-block wd-margin-top"
+               ng-click="vm.createUser()">
+                Create User
+            </a>
+            <a class="btn btn-default btn-block wd-margin-top">
+                Create Admin
+            </a>
+            <a class="btn btn-default btn-block wd-margin-top">
+                List All Reps
+            </a>
+        </div>
+        <div class="col-xs-9 wd-scrollable-right">
+            <div ng-include="vm.getRightView()"></div>
+        </div>
+    </div>
+</div>
+
+<div ng-include="'views/common/footer.view.client.html'"></div>

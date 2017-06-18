@@ -1,0 +1,20 @@
+<div class="container-fluid">
+    <ul ng-repeat="user in vm.users"
+        class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-xs-11">
+                    {{user.username}}
+                </div>
+                <div class="col-xs-1">
+                    <span class="glyphicon btn-link glyphicon-cog"
+                          ng-click="vm.editUser(user)">
+                    </span>
+                    <span class="glyphicon btn-link glyphicon-remove"
+                          ng-click="vm.deleteUser(user._id)">
+                    </span>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

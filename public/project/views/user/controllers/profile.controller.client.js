@@ -229,6 +229,17 @@
                     // Create a copy of the user that is editable without changing the original user.
                     vm.user = angular.copy(vm.savedUser);
 
+                    // Show admin button
+                    if (vm.otherUser) {
+                        vm.admin = false;
+                    } else {
+                        userService
+                            .checkAdmin()
+                            .then(function (response) {
+                                vm.admin = !(response === '0')
+                            })
+                    }
+
                     // TODO(matt): Make these one call
                     // Populate the following tab.
                     if (vm.otherUser) {

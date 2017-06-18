@@ -40,6 +40,17 @@
                 }
             });
 
+        // Admin pages.
+        $routeProvider
+            .when("/admin", {
+                templateUrl: "views/admin/templates/admin-home.view.client.html",
+                controller: 'adminHomeController',
+                controllerAs: 'vm',
+                resolve: {
+                    currentUser: checkAdmin
+                }
+            });
+
         // Search Pages.
         $routeProvider
             .when("/search", {

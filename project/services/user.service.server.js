@@ -114,7 +114,7 @@ function checkAdmin(req, res) {
 
     var user = req.user._id;
     userModel
-        .findUserById(user._id)
+        .findUserById(user)
         .then(function (user) {
             if (!user) {
                 res.send('0');
@@ -229,7 +229,8 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var facebookConfig = {
     clientID     : process.env.FACEBOOK_CLIENT_ID,
     clientSecret : process.env.FACEBOOK_CLIENT_SECRET,
-    callbackURL  : process.env.FACEBOOK_CALLBACK_URL
+    callbackURL  : process.env.FACEBOOK_CALLBACK_URL,
+    profileFields: ['id', 'emails', 'displayName']
 };
 
 
@@ -254,6 +255,10 @@ function facebookStrategy(token, refreshToken, profile, done) {
                         token: token
                     }
                 };
+
+                if (profile.emails.length > 0) {
+                    newUser.email = profile.emails[0].value
+                }
 
                 return userModel
                     .createUser(newUser)

@@ -32,13 +32,14 @@
 
 .parallax__group {
     position: relative;
-    height: 100vh;
+    height: 75vh;
     transform-style: preserve-3d;
 }
 
 .parallax__group__second {
     position: relative;
-    height: 50vh;
+    height: 75vh;
+    background-color: #d3d3d3;
     transform-style: preserve-3d;
 }
 
@@ -63,11 +64,27 @@ a.btn-block {
     margin: 0;
 }
 
+a.btn-block.wd-margin-top {
+    margin-top: 15px;
+}
+
 .wd-min-width {
     min-width: 125px;
 }
 .wd-group-item:first-child {
     border-top: none;
+}
+
+.wd-image {
+    height: 384px;
+    width: 330px;
+}
+
+@media screen and (max-width: 768px) {
+    .wd-image {
+        height: 128px;
+        width: 110px;
+    }
 }
 
 .wd-borderless { border: none; }
@@ -102,6 +119,21 @@ a.btn-block {
     overflow: scroll;
     padding-top: 15px;
     padding-bottom: 30px;
+}
+
+.wd-scrollable-right {
+    position: absolute;
+    top: 50px;
+    bottom: 0px;
+    overflow: scroll;
+    padding-top: 15px;
+    padding-bottom: 65px;
+    margin-left: 25%;
+    border-left: solid 10px #f8f8f8;
+}
+
+.wd-col-left-scrollable-right {
+
 }
 
 .wd-scrollable-tab {
