@@ -29,8 +29,28 @@ userModel.addRep = addRep;
 userModel.removeRep = removeRep;
 userModel.findUserByFacebookId = findUserByFacebookId;
 userModel.updateFacebookToken = updateFacebookToken;
+userModel.findUserByGoogleId = findUserByGoogleId;
+userModel.updateGoogleToken = updateGoogleToken;
 
 module.exports = userModel;
+
+function findUserByGoogleId(googleId) {
+    return userModel.findOne({'google.id': googleId});
+}
+
+function updateGoogleToken(userId, googleId, token) {
+    var google = {
+        id: googleId,
+        token: token
+    };
+
+    return userModel
+        .update({_id: userId}, {
+            $set : {
+                google: google
+            }
+        });
+}
 
 function updateFacebookToken(userId, facebookId, token) {
     var facebook = {
@@ -67,9 +87,10 @@ function removeRep(userId, repId) {
 }
 
 function updatePassword(userId, password) {
+    var hashed = bcrypt.hashSync(password);
     return userModel.update({_id: userId}, {
         $set : {
-            password: password
+            password: hashed
         }
     })
 }
@@ -159,11 +180,9 @@ function deleteUser(userId) {
 }
 
 function findUserByCredentials(username, password) {
-    console.log([username, password])
     return userModel
         .find({username: username})
         .then(function (user) {
-            console.log(user);
             if (!user) {
                 return user;
             }
@@ -182,5 +201,6 @@ function createUser(user) {
     if (user.password) {
         user.password = bcrypt.hashSync(user.password);
     }
+    console.log(user);
     return userModel.create(user);
 }

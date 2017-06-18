@@ -1,54 +1,113 @@
-<div class="container-fluid wd-vertical-center">
-    <div class="wd-center">
-        <h2 class="text-center">Know Your Rep</h2>
-        <div class="input-group">
-            <input ng-model="searchText"
-                   type="text"
-                   class="form-control">
-            <div class="input-group-btn">
-                <button type="button"
-                        class="btn btn-default dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false">
-                    {{vm.chamber}} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a ng-click="vm.updateDropDown('Senate')">
-                            Senate
-                        </a>
-                    </li>
-                    <li>
-                        <a ng-click="vm.updateDropDown('House')">
-                            House
-                        </a>
-                    </li>
-                </ul>
-            </div><!-- /btn-group -->
-            <span class="input-group-btn">
-                <a class="btn btn-default"
-                   ng-click="vm.search(searchText)"
-                   type="button">
-                    <span class="glyphicon glyphicon-search"></span>
-                </a>
-            </span>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button"
+                    class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target="#navbar"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand">
+                <span>Know Your Rep</span>
+            </div>
         </div>
-        <div ng-show="vm.warningMessage"
-             class="alert alert-warning wd-remove-margin">
-            {{vm.warningMessage}}
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#!/login"
+                       ng-hide="vm.loggedIn"
+                       class="navbar-link">
+                        <span>Login</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#!/user"
+                       ng-show="vm.loggedIn"
+                       class="navbar-link">
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
         </div>
-        <div  ng-show="vm.showLink"
-              class="alert alert-warning">
-            Representative ID not found. Click
-            <a href="http://bioguide.congress.gov/biosearch/biosearch.asp"
-               target="_blank"
-               type="button">
-                here
-            </a>
-            <span> to look up the ID.</span>
+    </div>
+</nav>
+
+<div class="parallax" style="padding-top: 65px">
+    <div class="parallax__group">
+        <div class="parallax__layer parallax__layer--base">
+            <div class="wd-vertical-center">
+                <div class="wd-center">
+                    <div class="input-group">
+                        <input ng-model="searchText"
+                               type="text"
+                               placeholder="Type in an ID, a State or leave it blank"
+                               class="form-control">
+                        <div class="input-group-btn">
+                            <button type="button"
+                                    class="btn btn-default dropdown-toggle"
+                                    data-toggle="dropdown"
+                                    aria-haspopup="true"
+                                    aria-expanded="false">
+                                {{vm.chamber}} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a ng-click="vm.updateDropDown('Senate')">
+                                        Senate
+                                    </a>
+                                </li>
+                                <li>
+                                    <a ng-click="vm.updateDropDown('House')">
+                                        House
+                                    </a>
+                                </li>
+                            </ul>
+                        </div><!-- /btn-group -->
+                        <span class="input-group-btn">
+                            <a class="btn btn-default"
+                               ng-click="vm.search(searchText)"
+                               type="button">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                        </span>
+                    </div>
+                    <div ng-show="vm.warningMessage"
+                         class="alert alert-warning wd-remove-margin">
+                        {{vm.warningMessage}}
+                    </div>
+                    <div  ng-show="vm.showLink"
+                          class="alert alert-warning">
+                        Representative ID not found. Click
+                        <a href="http://bioguide.congress.gov/biosearch/biosearch.asp"
+                           target="_blank"
+                           type="button">
+                            here
+                        </a>
+                        <span> to look up the ID.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!--- Parallax group-->
+    <div class="parallax__group__second">
+        <div class="parallax__layer--back" style="height: 100%">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-4 col-sm-6 col-xs-12">
+                    <div class="text-center">
+                        <img src="../../../profile.jpg"
+                             class="avatar
+                     img-circle
+                     img-thumbnail"
+                             alt="avatar">
+                    </div>
+                    <h2 class="caption text-center">
+                        Matthew Murphy
+                    </h2>
+            </div>
         </div>
     </div>
 </div>
-
-<div ng-include="'views/common/footer.view.client.html'"></div>

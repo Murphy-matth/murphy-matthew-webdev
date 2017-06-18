@@ -13,12 +13,11 @@
 
         var BASE_URL = '/api/project/';
 
-        var api = {
+        return {
             "findAllRepresentatives"   : findAllRepresentatives,
             'findRepresentativeByState' : findRepresentativeByState,
             'findRepresentativeById': findRepresentativeById
         };
-        return api;
 
         function findAllRepresentatives(chamber) {
             chamber = chamber.toLowerCase();

@@ -1,3 +1,47 @@
+.parallax {
+    perspective: 1px;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.parallax::-webkit-scrollbar {
+    display: none;
+}
+
+.parallax_arrow {
+    position: absolute;
+    bottom: 10px;
+    right: 50%;
+}
+
+.parallax__layer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.parallax__layer--base {
+    transform: translateZ(0);
+}
+.parallax__layer--back {
+    transform: translateZ(-1px) scale(2);
+    background-color: #d3d3d3;
+}
+
+.parallax__group {
+    position: relative;
+    height: 100vh;
+    transform-style: preserve-3d;
+}
+
+.parallax__group__second {
+    position: relative;
+    height: 50vh;
+    transform-style: preserve-3d;
+}
+
 input.form-control,
 a.btn-block {
     margin-bottom: 5px;
@@ -9,6 +53,10 @@ a.btn-block {
 
 .wd-padding {
     padding-top: 10px;
+}
+
+.wd-padding-medium {
+    padding-top: 40px;
 }
 
 .wd-remove-margin {
@@ -29,6 +77,10 @@ a.btn-block {
     padding-bottom: 65px;
 }
 
+.wd-padding-bottom {
+    padding-bottom: 65px;
+}
+
 .wd-vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -36,7 +88,7 @@ a.btn-block {
     display: flex;
     align-items: center;
 
-    padding-bottom: 20%;
+    padding-bottom: 30%;
 }
 
 .wd-vertical-center-container {

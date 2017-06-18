@@ -16,6 +16,7 @@ if(process.env.MLAB_USERNAME) {
 var mongoose = require("mongoose");
 var db = mongoose.connect(connectionString);
 
+require('./modules/authenticator.service.server');
 require('./services/user.service.server.js');
 require('./services/image.service.server.js');
 require('./services/feed.service.server');

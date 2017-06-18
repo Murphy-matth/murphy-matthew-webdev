@@ -1,6 +1,10 @@
 <div class="wd-vertical-center">
     <div class="container-fluid wd-vertical-center-container">
         <h1 class="text-center">Register</h1>
+        <span ng-show="vm.unknownError"
+              class="alert alert-danger wd-center">
+                    {{vm.unknownError}}
+                </span>
         <form novalidate
               ng-submit="vm.register(username, password, verify)"
               name="registerForm">

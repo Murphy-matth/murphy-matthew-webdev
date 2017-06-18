@@ -6,9 +6,13 @@
         .module("KnowYourRep")
         .controller("profileController", profileController);
 
-        function profileController($routeParams, $filter, userService, passwordService, repService) {
+        function profileController($routeParams, $filter, $location, userService, passwordService, repService) {
             var vm = this;
 
+            /**
+             * Represents all of the profile tabs for a given user.
+             * @type {[*]}
+             */
             vm.tabs = [
                 'About',
                 'Following',
@@ -18,37 +22,20 @@
                 'Account Settings'
             ];
 
+            /**
+             * Represents all of the profile tabs when looking at another user's profile.
+             * @type {[*]}
+             */
             vm.otherTabs = [
                 'About',
                 'Following',
                 'Followers'
             ];
 
-            function init() {
-                vm.userId = $routeParams['uid'];
-                if (vm.userId) {
-                    userService
-                        .findUserById(vm.userId)
-                        .then(handleLoad, handleLoadError);
-                } else {
-                    userService
-                        .findCurrentUser()
-                        .then(handleLoad, handleLoadError);
-                }
-
-                function handleLoad(user) {
-                    console.log(user);
-                    vm.userId = user._id;
-                    vm.otherUser = $routeParams['oid'];
-                    updateProfileInfo();
-                }
-
-                function handleLoadError(err) {
-                    console.log(err);
-                }
-            }
-            init();
-
+            /**
+             * Used for updating a user's password
+             * @type {{old: string, new: string, verify: string}}
+             */
             vm.password = {
                 old: "",
                 new: "",
@@ -59,6 +46,11 @@
             var currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html';
             vm.currentTab = 'about';
 
+            function init() {
+                updateProfileInfo()
+            }
+            init();
+
             vm.update = update;
             vm.getCurrentTabUrl = getCurrentTabUrl;
             vm.setTab = setTab;
@@ -68,13 +60,29 @@
             vm.removeFollowing = removeFollowing;
             vm.removeFollower = removeFollower;
             vm.deleteRep = deleteRep;
+            vm.logout = logout;
 
-            function deleteRep(userId, repId) {
-                repService
-                    .deleteRep(userId, repId)
+            /**
+             * Logs the user out and returns them to the login page.
+             */
+            function logout() {
+                userService
+                    .logout({})
                     .then(function (response) {
-                        console.log("Success. Removed the rep");
+                        $location.url('/login');
+                    }, function (err) {
+                        $location.url('/login');
+                    });
+            }
+
+
+            function deleteRep(repId) {
+                repService
+                    .deleteRep(repId)
+                    .then(function (response) {
                         vm.reps = response;
+                    }, function (err) {
+                        console.log(err);
                     })
             }
 
@@ -99,13 +107,15 @@
             // Follows the given user
             function followUser(followerId) {
                 userService
-                    .followUser(vm.userId, followerId)
+                    .followUser(followerId)
                     .then(function (response) {
                         console.log("success");
                     })
             }
 
-            // Updates the user's password.
+            /**
+             * Updates the user's password.
+             */
             function updatePassword() {
                 // Clear all of the old error messages.
                 vm.updatePasswordFailed = null;
@@ -114,36 +124,40 @@
 
 
                 if (vm.password.new !== vm.password.verify) {
-                    vm.updatePasswordFailed = "Passwords must match!"
+                    vm.updatePasswordFailed = "Passwords must match!";
                     return;
                 }
 
-                var result = userService.findUserByCredentials(vm.savedUser.username, vm.password.old);
-                if (result === null) {
-                    vm.invalidOldPassword = "Password incorrect";
-                    return;
-                }
-
-                result = passwordService.validate(vm.password.new);
+                var result = passwordService.validate(vm.password.new);
                 if (!result.result) {
                     vm.updatePasswordFailed = result.message;
                     return;
                 }
 
                 userService
-                    .updatePassword(vm.userId, vm.password.new)
+                    .updatePassword(vm.password.old, vm.password.new)
                     .then(function (success) {
                         vm.updatePasswordSuccess = 'Update Successful';
                         vm.updatePasswordFailed = null;
                     }, function (err) {
-                        vm.updatePasswordFailed = 'Update Failed: ' + err;
+                        vm.invalidOldPassword = 'Update Failed. Please verify that your old password is correct';
                     });
             }
 
-            // Updates the current user with the new values in the profile.
+            /**
+             * Updates the current user with the new values in the profile.
+             */
             function update() {
+                clearMessages();
+
+                if (vm.editForm.$invalid) {
+                    vm.errorMessage = "Please fix the input errors before submitting again";
+                    return;
+                }
+
+
                 userService
-                    .updateUser(vm.userId, vm.user)
+                    .updateUser(vm.user)
                     .then(updateSuccess, updateFailed);
 
                 function updateSuccess(user) {
@@ -153,34 +167,52 @@
 
                 function updateFailed(error) {
                     console.log(error);
+                    vm.errorMessage = "An Error Occurred. Please try again";
                 }
             }
 
-            // Returns the url of the current profile tab.
+            /**
+             * Returns the url of the current profile tab.
+             * @returns {string}
+             */
             function getCurrentTabUrl() {
                 return currentTabUrl;
             }
 
-            // Sets the current tab.
+            /**
+             * Sets the current tab.
+             * @param tab to be set.
+             */
             function setTab(tab) {
-                vm.message = null;
+                clearMessages();
                 vm.currentTab = tab.toLowerCase();
                 currentTabUrl = 'views/user/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
             }
 
-            // Returns true if the tab is the currently active tab.
+            /**
+             * Returns true if the tab is the currently active tab.
+             */
             function isCurrentTab(tab) {
                 return tab.toLowerCase() === vm.currentTab;
             }
 
-            // Updates the current profile information to reflect any changes.
+            /**
+             * Updates the current profile information to reflect any changes that the user might have made.
+             * This needs to be called after any change to the user's information.
+             */
             function updateProfileInfo() {
                 // If you are on another page display that user, otherwise display your information
-                var id = vm.otherUser || vm.userId;
+                vm.otherUser = $routeParams['uid'];
 
-                userService
-                    .findUserById(id)
-                    .then(handleUpdate);
+                if (vm.otherUser) {
+                    userService
+                        .findUserById(vm.otherUser)
+                        .then(handleUpdate);
+                } else {
+                    userService
+                        .findCurrentUser()
+                        .then(handleUpdate)
+                }
 
                 // Handles the response from updating the user.
                 function handleUpdate(user) {
@@ -194,26 +226,73 @@
                         {label : 'Phone:', value: (vm.savedUser.phone)}
                     ];
 
+                    // Create a copy of the user that is editable without changing the original user.
                     vm.user = angular.copy(vm.savedUser);
 
-                    userService
-                        .findFollowingByUser(vm.userId)
-                        .then(function (following) {
-                            vm.following = following;
-                        });
+                    // TODO(matt): Make these one call
+                    // Populate the following tab.
+                    if (vm.otherUser) {
+                        userService
+                            .findFollowingByUser(vm.otherUser)
+                            .then(function (following) {
+                                vm.following = following;
+                            }, function (err) {
+                                vm.following = [];
+                            });
 
-                    userService
-                        .findFollowersByUser(vm.userId)
-                        .then(function (followers) {
-                            vm.followers = followers;
-                        });
+                        // Populate the followers tab.
+                        userService
+                            .findFollowersByUser(vm.otherUser)
+                            .then(function (followers) {
+                                vm.followers = followers;
+                            }, function (err) {
+                                vm.followers = [];
+                            });
 
-                    repService
-                        .findRepsByUser(vm.userId)
-                        .then(function (reps) {
-                            vm.reps = reps;
-                        })
+                        // Populate the reps tab.
+                        repService
+                            .findRepsByUser(vm.otherUser)
+                            .then(function (reps) {
+                                vm.reps = reps;
+                            }, function (err) {
+                                vm.reps = [];
+                            })
+                    } else {
+                        userService
+                            .findFollowing()
+                            .then(function (following) {
+                                vm.following = following;
+                            }, function (err) {
+                                vm.following = [];
+                            });
+
+                        // Populate the followers tab.
+                        userService
+                            .findFollowers()
+                            .then(function (followers) {
+                                vm.followers = followers;
+                            }, function (err) {
+                                vm.followers = [];
+                            });
+
+                        // Populate the reps tab.
+                        repService
+                            .findReps()
+                            .then(function (reps) {
+                                vm.reps = reps;
+                            }, function (err) {
+                                vm.reps = [];
+                            })
+                    }
                 }
+            }
+
+            /**
+             * Clears all messages
+             */
+            function clearMessages() {
+                vm.message = null;
+                vm.errorMessage = null;
             }
         }
 })();

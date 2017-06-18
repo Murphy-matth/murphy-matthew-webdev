@@ -14,22 +14,14 @@
                 controllerAs: 'vm'
             })
             .when("/", {
-                templateUrl: "views/user/templates/login.view.client.html",
-                controller: "loginController",
+                templateUrl: "views/search/templates/search.view.client.html",
+                controller: 'searchHomeController',
                 controllerAs: 'vm'
             })
             .when("/register", {
                 templateUrl: "views/user/templates/register.view.client.html",
                 controller: "registerController",
                 controllerAs: 'vm'
-            })
-            .when("/user/:uid", {
-                templateUrl: "views/user/templates/profile.view.client.html",
-                controller: "profileController",
-                controllerAs: 'vm',
-                resolve: {
-                    currentUser: checkLoggedIn
-                }
             })
             .when("/user", {
                 templateUrl: "views/user/templates/profile.view.client.html",
@@ -39,7 +31,7 @@
                     currentUser: checkLoggedIn
                 }
             })
-            .when("/user/:uid/other/:oid", {
+            .when("/user/:uid", {
                 templateUrl: "views/user/templates/profile.view.client.html",
                 controller: "profileController",
                 controllerAs: 'vm',
@@ -51,7 +43,7 @@
         // Search Pages.
         $routeProvider
             .when("/search", {
-               templateUrl: "views/search/templates/search.view.client.html",
+                templateUrl: "views/search/templates/search.view.client.html",
                 controller: 'searchHomeController',
                 controllerAs: 'vm'
             })
@@ -64,36 +56,7 @@
                 templateUrl: "views/search/templates/search-results.view.client.html",
                 controller: 'searchResultsController',
                 controllerAs: 'vm'
-            })
-            .when("/user/:uid/search", {
-                templateUrl: "views/search/templates/search.view.client.html",
-                controller: 'searchHomeController',
-                controllerAs: 'vm'
-            })
-            .when("/user/:uid/search/:message", {
-                templateUrl: "views/search/templates/search.view.client.html",
-                controller: 'searchHomeController',
-                controllerAs: 'vm'
-            })
-            .when("/user/:uid/search/:cid/query/:query", {
-                templateUrl: "views/search/templates/search-results.view.client.html",
-                controller: 'searchResultsController',
-                controllerAs: 'vm'
             });
-
-        function checkCurrentUser($q, $location, userService) {
-            var deferred = $q.defer();
-            userService
-                .checkLoggedIn()
-                .then(function (currentUser) {
-                    if(currentUser === '0') {
-                        deferred.resolve({});
-                    } else {
-                        deferred.resolve(currentUser);
-                    }
-                });
-            return deferred.promise;
-        }
 
         function checkAdmin($q, $location, userService) {
             var deferred = $q.defer();

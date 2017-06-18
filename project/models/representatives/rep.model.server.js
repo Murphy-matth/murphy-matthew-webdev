@@ -13,8 +13,21 @@ repModel.createRep = createRep;
 repModel.findRepByGovId = findRepByGovId;
 repModel.findRepByGovIdOrCreate = findRepByGovIdOrCreate;
 repModel.findResByIds = findResByIds;
+repModel.update = update;
 
 module.exports = repModel;
+
+function update(rep) {
+    return repModel
+        .update({govId: rep.govId}, {
+            $set : {
+                govId: rep.govId,
+                chamber: rep.chamber,
+                name: rep.name,
+                dateCreated: Date.now
+            }
+        })
+}
 
 function findResByIds(reps) {
     return repModel.find({_id: {$in : reps}});
@@ -36,14 +49,17 @@ function findRepByGovIdOrCreate(newRep) {
                 return repModel
                     .createRep(newRep)
                     .then(function (result) {
-                        console.log("Create");
-                        console.log(result);
                         return result;
                     });
             } else {
-                console.log("Do not create");
-                console.log(rep);
-                return rep;
+                return repModel
+                    .update(rep)
+                    .then(function (success) {
+                        return rep;
+                    }, function (err) {
+                        console.log(err);
+                        return rep;
+                    });
             }
         })
 }

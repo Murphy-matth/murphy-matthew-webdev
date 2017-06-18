@@ -11,9 +11,13 @@
         .controller("searchResultsController", searchResultsController);
 
 
-    function searchResultsController($routeParams, $location, $window, proPublicaService, imageService, feedService, repService) {
+    function searchResultsController($routeParams, $location, userService, proPublicaService, imageService, feedService, repService) {
         var vm = this;
 
+        /**
+         * Search results tab's for the in depth view.
+         * @type {[*]}
+         */
         vm.tabs = [
             'About',
             'Contact',
@@ -24,7 +28,6 @@
         function init() {
             vm.chamber = $routeParams['cid'];
             var query = $routeParams['query'];
-            vm.userId = $routeParams['uid'];
 
             // The default tab is the about tab
             vm.currentTabUrl = 'views/search/templates/tabs/about.tab.view.client.html';
@@ -38,6 +41,12 @@
             vm.selectedReps = [];
 
             resetMessages();
+
+            checkedLoggedIn(function () {
+                // No op.
+            }, function () {
+                // No op.
+            });
 
             if (query === null) {
                 findAllRepresentatives();
@@ -55,37 +64,72 @@
         vm.isCurrentTab = isCurrentTab;
         vm.selectRep = selectRep;
         vm.reset = reset;
-        vm.openUrl = openUrl;
         vm.showMore = showMore;
         vm.showLess = showLess;
         vm.followRep = followRep;
         vm.goToProfile = goToProfile;
+
+        function checkedLoggedIn(success, failure) {
+            userService
+                .checkLoggedIn()
+                .then(function (currentUser) {
+                    if(currentUser === '0') {
+                        vm.loggedIn = false;
+                        failure();
+                    } else {
+                        vm.loggedIn = true;
+                        success();
+                    }
+                });
+        }
 
         function resetMessages() {
             vm.followSuccess = false;
         }
 
         function goToProfile() {
-            if (!vm.userId) {
-                console.log("Log in you bozo");
+            if (vm.loggedIn === null) {
+                checkedLoggedIn(success, failure);
             } else {
-                $location.url('/user/' + vm.userId);
+                if (vm.loggedIn) {
+                    success();
+                } else {
+                    failure();
+                }
+            }
+
+            function success() {
+                $location.url('/user');
+            }
+            function failure() {
+                console.log("You need to log in");
+                $location.url('/login');
             }
         }
 
         function followRep(rep) {
+            resetMessages();
             rep.chamber = vm.chamber;
-            if (vm.userId) {
+            if (vm.loggedIn === null) {
+                checkedLoggedIn(success, failure);
+            } else {
+                if (vm.loggedIn) {
+                    success();
+                } else {
+                    failure();
+                }
+            }
+
+            function success() {
                 repService
-                    .createRep(vm.userId, rep)
+                    .createRep(rep)
                     .then(function (response) {
                         vm.followSuccess = true;
                     })
-            } else {
-                resetMessages();
-                // The user is not logged in.
-                console.log("You must be logged in you bozo.");
-                console.log(rep);
+            }
+            function failure() {
+                console.log("You need to log in");
+                $location.url('/login');
             }
         }
 
@@ -95,11 +139,6 @@
 
         function showLess() {
             vm.show = false;
-        }
-
-        // Open the given url in a new window. Needed to bypass ng-route catching the ng-href attributes.
-        function openUrl(url) {
-            $window.open(url, '_blank');
         }
 
         // Resets the currently selected representative back to the original search query.
@@ -112,13 +151,12 @@
             proPublicaService
                 .findRepresentativeById(id, vm.chamber.toLowerCase())
                 .then(function(rep) {
-                    if (rep === 'ERRROR') {
+                    if (rep === 'ERROR' || typeof rep === 'undefined') {
                         $location.url('/search/id')
                     } else {
                         processRep(rep[0]);
                         vm.selectedReps = [];
                         vm.selectedReps.push(rep[0]);
-                        console.log(rep[0]);
                     }
                 })
         }
@@ -189,11 +227,10 @@
             proPublicaService
                 .findRepresentativeById(id, vm.chamber.toUpperCase())
                 .then(function(rep) {
-                    if (rep === 'ERRROR') {
-                        $location.url('/search/id')
+                    if (rep === 'ERROR' || typeof rep === 'undefined') {
+                        $location.url('/search/id');
                     } else {
                         vm.reps = rep;
-                        console.log(rep);
                         processReps();
                         vm.selectedReps = vm.reps;
                     }
@@ -205,7 +242,6 @@
             proPublicaService
                 .findAllRepresentatives(vm.chamber.toUpperCase())
                 .then(function(data) {
-                    console.log(data);
                     vm.reps = data;
                     processReps();
                     vm.selectedReps = vm.reps;
@@ -218,11 +254,10 @@
             proPublicaService
                 .findRepresentativeByState(state.toUpperCase(), vm.chamber.toLowerCase())
                 .then(function(rep) {
-                    if (rep === 'ERROR') {
+                    if (rep === 'ERROR' || typeof rep === 'undefined') {
                         $location.url('/search/state')
                     } else {
                         vm.reps = rep;
-                        console.log(rep);
                         processReps();
                         vm.selectedReps = vm.reps;
                     }

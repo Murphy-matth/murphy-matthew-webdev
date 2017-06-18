@@ -5,6 +5,7 @@
 
 var app = require('../../express.js');
 var userModel = require('../models/user/user.model.server');
+var authenticator = require('../modules/authenticator.service.server.js');
 
 var bcrypt = require("bcrypt-nodejs");
 
@@ -23,35 +24,119 @@ var upload = multer({ dest: __dirname+'/../../public/project/uploads/profile/' }
  */
 
 /**
+ * Admin
+ */
+
+app.get('/api/project/checkAdmin', checkAdmin);
+
+/**
  * Login and Authentication
  */
 app.post  ('/api/project/login', passport.authenticate('project'), login);
-app.get   ('/api/project/checkLoggedIn', checkLoggedIn);
 app.post  ('/api/project/logout', logout);
 app.post  ('/api/project/register', register);
+app.get   ('/api/project/checkLoggedIn', checkLoggedIn);
 
 /**
  * File Upload
  */
 app.post ("/api/project/uploadProfile", upload.single('myFile'), uploadImage);
 
-app.post('/api/project/user', createUser);
-app.get('/api/project/user/:uid/password/:pass', updatePassword);
+/**
+ * Followers and Following
+ */
+app.get('/api/project/followers', getCurrentFollowers);
+app.get('/api/project/following', getCurrentFollowing);
+app.get('/api/project/follower/:fid', addFollower);
+app.get('/api/project/user/:uid/followers', findFollowersByUser);
+app.get('/api/project/user/:uid/following', findFollowingByUser);
+app.delete('/api/project/following/:fid', removeFollowing);
+app.delete('/api/project/follower/:fid', removeFollower);
+
+/**
+ * User Functions
+ */
+app.post('/api/project/password', updatePassword);
 app.get('/api/project/user/:uid', findUserById);
-app.get('/api/project/user', findUserByCredentials);
 app.get('/api/project/current', getCurrentUser);
-app.get('/api/project/user/:uid/follower/:fid', addFollower);
-app.get('/api/project/user/:uid/followers', findFollowersByIds);
-app.get('/api/project/user/:uid/following', findFollowingByIds);
-app.delete('/api/project/user/:uid/following/:fid', removeFollowing);
-app.delete('/api/project/user/:uid/follower/:fid', removeFollower);
-app.put('/api/project/user/:uid', updateUser);
+app.put('/api/project/user', updateUser);
 app.delete('/api/project/user/:uid', deleteUser);
 
 /**
  * End API Endpoints
  */
 
+/**
+ * Admin
+ */
+
+/**
+ * This function ensures that there is at least one admin user.
+ */
+function ensureAdmin() {
+    var admin = {
+        username: process.env.ADMIN_USERNAME,
+        password: process.env.ADMIN_PASSWORD,
+        roles: ['ADMIN', 'USER']
+    };
+
+    userModel
+        .findUserByUsername(process.env.ADMIN_USERNAME)
+        .then(function (user) {
+            if (!user) {
+                userModel
+                    .createUser(admin)
+                    .then(function (success) {
+                        // No op.
+                    }, function (err) {
+                        throw new Error("Problem with admin user: " + err);
+                    });
+            } else if (!user.roles.contains('ADMIN')) {
+                throw new Error("Problem with admin user");
+            }
+        }, function (err) {
+            userModel
+                .createUser(admin)
+                .then(function (success) {
+                    // No op.
+                }, function (err) {
+                    throw new Error("Problem with admin user: " + err);
+                });
+        })
+}
+ensureAdmin(); // Always run this once.
+
+function checkAdmin(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user._id;
+    userModel
+        .findUserById(user._id)
+        .then(function (user) {
+            if (!user) {
+                res.send('0');
+                return;
+            }
+            var role = user.roles.find(function (r) {
+                return r === 'ADMIN';
+            });
+            if (role.length < 1) {
+                res.send('0');
+            } else {
+                res.send(sanitizeUser(user));
+            }
+
+        }, function (err) {
+            res.send('0');
+        })
+}
+
+/**
+ * End Admin
+ */
 
 /**
  * Login and Authentication
@@ -59,7 +144,7 @@ app.delete('/api/project/user/:uid', deleteUser);
 
 function login(req, res) {
     var user = req.user;
-    res.json(user);
+    res.json(sanitizeUser(user));
 }
 
 function logout(req, res) {
@@ -74,14 +159,14 @@ function register(req, res) {
         .createUser(user)
         .then(function (user) {
             req.login(user, function (status) {
-                res.json(user);
+                res.json(sanitizeUser(user));
             });
         });
 }
 
 function checkLoggedIn(req, res) {
     if(req.isAuthenticated()) {
-        res.json(req.user);
+        res.json(sanitizeUser(req.user));
     } else {
         res.send('0');
     }
@@ -95,7 +180,7 @@ function localStrategy(username, password, done) {
                 return done(null, false);
             }
             if (user.username === username && bcrypt.compareSync(password, user.password)) {
-                return done(null, user);
+                return done(null, sanitizeUser(user));
             } else {
                 return done(null, false);
             }
@@ -108,8 +193,16 @@ function localStrategy(username, password, done) {
         });
 }
 
+/**
+ * End Login and Authentication
+ */
+
+/**
+ * Serialization and Deserialization
+ */
+
 function serializeUser(user, done) {
-    done(null, user);
+    done(null, sanitizeUser(user));
 }
 
 function deserializeUser(user, done) {
@@ -126,7 +219,7 @@ function deserializeUser(user, done) {
 }
 
 /**
- * End Login and Authentication
+ * End Serialization and Deserialization
  */
 
 /**
@@ -173,6 +266,7 @@ function facebookStrategy(token, refreshToken, profile, done) {
                 return userModel
                     .updateFacebookToken(user._id, profile.id, token)
                     .then(function (response) {
+                        console.log(user);
                         return done(null, user);
                     })
             }
@@ -185,10 +279,75 @@ function facebookStrategy(token, refreshToken, profile, done) {
  */
 
 /**
+ * Google Authentication
+ */
+
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
+var googleConfig = {
+    clientID     : process.env.GOOGLE_CLIENT_ID,
+    clientSecret : process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL  : process.env.GOOGLE_CALLBACK_URL
+};
+
+app.get('/auth/google', passport.authenticate('google', { scope : 'profile' }));
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', {
+        successRedirect: '/project/index.html#!/user',
+        failureRedirect: '/project/index.html#!/login'
+    }));
+
+passport.use(new GoogleStrategy(googleConfig, googleStrategy));
+
+function googleStrategy(token, refreshToken, profile, done) {
+    userModel
+        .findUserByGoogleId(profile.id)
+        .then(function (user) {
+            if (!user) {
+                console.log(profile);
+                var newUser = {
+                    username: profile.displayName,
+                    google: {
+                        id: profile.id,
+                        token: token
+                    },
+                    firstName: profile.givenName,
+                    lastName: profile.familyName
+                };
+
+                return userModel
+                    .createUser(newUser)
+                    .then(function (response) {
+                        return done(null, response);
+                    }, function (err) {
+                        return done(null, false);
+                    })
+            } else {
+                return userModel
+                    .updateGoogleToken(user._id, profile.id, token)
+                    .then(function (response) {
+                        return done(null, user);
+                    })
+            }
+        }, function (err) {
+            return done(null, false);
+        })
+}
+
+/**
+ * End Google Authentication
+ */
+
+/**
  * File Upload
  */
 
 function uploadImage(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId      = req.body.userId;
     var myFile        = req.file;
 
@@ -213,23 +372,52 @@ function uploadImage(req, res) {
  * End File Upload
  */
 
-function getCurrentUser(req, res) {
-    var user = req.user;
-    res.json(user);
-}
+/**
+ * Followers and Following
+ */
+function getCurrentFollowers(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
 
-function updatePassword(req, res) {
-    var userId = req.params.uid;
-    var passwprd = req.params.pass;
+    var user = req.user;
+    if (!user.followers) {
+        res.send([]);
+    }
 
     userModel
-        .updatePassword(userId, passwprd)
-        .then(function (response) {
-            res.sendStatus(200);
+        .findUsersByIds(user.followers)
+        .then(function (followers) {
+            res.json(followers);
+        })
+
+}
+
+function getCurrentFollowing(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user;
+    if (!user.following) {
+        res.send([]);
+    }
+
+    userModel
+        .findUsersByIds(user.following)
+        .then(function (following) {
+            res.json(following);
         })
 }
 
-function findFollowingByIds(req, res) {
+function findFollowingByUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId = req.params.uid;
 
     userModel
@@ -244,10 +432,17 @@ function findFollowingByIds(req, res) {
             } else {
                 res.send([]);
             }
+        }, function (err) {
+            res.send([]);
         })
 }
 
-function findFollowersByIds(req, res) {
+function findFollowersByUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId = req.params.uid;
 
     userModel
@@ -262,11 +457,19 @@ function findFollowersByIds(req, res) {
             } else {
                 res.send([]);
             }
+        }, function (err) {
+            res.send([]);
         })
 }
 
 function addFollower(req, res) {
-    var userId = req.params.uid;
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user;
+    var userId = user._id;
     var followerId = req.params.fid;
 
     userModel
@@ -281,7 +484,12 @@ function addFollower(req, res) {
 }
 
 function removeFollower(req, res) {
-    var userId = req.params.uid;
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var userId = req.user._id;
     var followerId = req.params.fid;
 
     userModel
@@ -290,13 +498,18 @@ function removeFollower(req, res) {
             userModel
                 .removeFollowing(followerId, userId)
                 .then(function (response) {
-                    findFollowersByIds(req, res);
+                    getCurrentFollowers(req, res);
                 })
         })
 }
 
 function removeFollowing(req, res) {
-    var userId = req.params.uid;
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var userId = req.user._id;
     var followerId = req.params.fid;
 
     userModel
@@ -305,15 +518,61 @@ function removeFollowing(req, res) {
             userModel
                 .removeFollower(followerId, userId)
                 .then(function (response) {
-                    findFollowingByIds(req, res);
+                    getCurrentFollowing(req, res);
                 })
+        })
+}
+
+/**
+ * End Followers and Following
+ */
+
+/**
+ * User Functions
+ */
+
+function getCurrentUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user;
+    delete user._id;
+    res.json(user);
+}
+
+function updatePassword(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user;
+    var userId = user._id;
+    var password = req.body;
+
+    if (!bcrypt.compareSync(password.old, user.password)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    userModel
+        .updatePassword(userId, password.new)
+        .then(function (response) {
+            res.sendStatus(200);
         })
 }
 
 // Updates the given user. Will not update username or password.
 function updateUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var user = req.body;
-    var userId = req.params.uid;
+    var userId = req.user._id;
 
     userModel
         .updateUser(userId, user)
@@ -326,6 +585,11 @@ function updateUser(req, res) {
 
 // Currently no one can delete a user.
 function deleteUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId = req.params.uid;
 
     userModel
@@ -335,59 +599,28 @@ function deleteUser(req, res) {
         });
 }
 
-// Creates the given user
-function createUser(req, res) {
-    var user = req.body;
-
-    userModel
-        .createUser(user)
-        .then(function (user) {
-            res.json(user);
-        }, function (err) {
-            res.sendStatus(404).send("Unable to create user.")
-        });
-}
-
-// Returns the user whose username and password match the username and password parameters.
-function findUserByCredentials(req, res) {
-    var username = req.query['username'];
-    var password = req.query['password'];
-
-    if (typeof password === 'undefined') {
-        userModel
-            .findUserByUsername(username)
-            .then(function(user) {
-                if(user !== null) {
-                    res.json(user);
-                } else {
-                    res.sendStatus(404);
-                }
-            }, function (err) {
-                res.sendStatus(404);
-            })
-    } else {
-        userModel
-            .findUserByCredentials(username, password)
-            .then(function(user) {
-                if(user !== null) {
-                    res.json(user);
-                } else {
-                    res.sendStatus(404);
-                }
-            }, function (err) {
-                res.sendStatus(404);
-            })
-    }
-}
-
 // Returns the user whose _id matches the userId parameter.
 function findUserById(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId = req.params.uid;
 
     userModel
         .findUserById(userId)
         .then(function (user) {
-            console.log(user);
             res.json(user);
         });
 }
+
+function sanitizeUser(user) {
+    delete user._id;
+    delete user.password;
+    return user;
+}
+
+/**
+ * End User Functions
+ */

@@ -1,4 +1,7 @@
-// Login Controller
+/**
+ * Login Controller
+ * Author: Matthew Murphy
+ */
 (function() {
     "use strict";
 
@@ -24,7 +27,8 @@
                             vm.invalid = "Invalid username or password. Please try again";
                             return;
                         }
-                        $location.url("/user/" + user._id);
+                        console.log(user);
+                        $location.url('/user');
                     }, function (err) {
                         vm.invalid = "Invalid username or password. Please try again";
                     });

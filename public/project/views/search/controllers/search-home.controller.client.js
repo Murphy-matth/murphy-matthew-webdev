@@ -11,12 +11,11 @@
         .controller("searchHomeController", searchHomeController);
 
 
-    function searchHomeController($location, $routeParams) {
+    function searchHomeController($location, $routeParams, userService) {
         var vm = this;
 
         function init() {
             vm.chamber = 'Senate';
-            vm.userId = $routeParams['uid'];
             var message = $routeParams['message'];
             if (message !== null) {
                 if (message === 'id') {
@@ -25,6 +24,11 @@
                     vm.warningMessage = 'Please enter a valid two letter state abbreviation';
                 }
             }
+            userService
+                .checkLoggedIn()
+                .then(function (response) {
+                    vm.loggedIn = (response !== '0');
+                })
         }
         init();
 
@@ -33,14 +37,10 @@
 
         function search(searchText) {
             resetMessages();
-            var baseUrl = '';
-            if (vm.userId) {
-                baseUrl = '/user/' + vm.userId;
-            }
             if (searchText === null || searchText.length === 0) {
-                $location.url(baseUrl + '/search/' + vm.chamber.toLowerCase() + '/query/');
+                $location.url('/search/' + vm.chamber.toLowerCase() + '/query/');
             } else {
-                $location.url(baseUrl + '/search/' + vm.chamber.toLowerCase() + '/query/' + searchText.toUpperCase());
+                $location.url('/search/' + vm.chamber.toLowerCase() + '/query/' + searchText.toUpperCase());
             }
         }
 

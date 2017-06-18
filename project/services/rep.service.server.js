@@ -6,14 +6,41 @@
 var app = require('../../express.js');
 var repModel = require('../models/representatives/rep.model.server');
 var userModel = require('../models/user/user.model.server');
+var authenticator = require('../modules/authenticator.service.server.js');
 
-
-app.post('/api/project/rep/:uid', createRep);
+app.post('/api/project/rep', createRep);
 app.get('/api/project/rep/:uid/reps', findRepsByUser);
-app.delete('/api/project/user/:uid/rep/:rid', deleteRep);
+app.get('/api/project/reps', findReps);
+app.delete('/api/project/rep/:rid', deleteRep);
+app.delete('/api/project/rep/', deleteRep);
+
+function findReps(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var user = req.user;
+    if (user.reps) {
+        repModel
+            .findResByIds(user.reps)
+            .then(function (reps) {
+                res.send(reps);
+            }, function (err) {
+                res.send([]);
+            });
+    } else {
+        res.send([]);
+    }
+}
 
 function deleteRep(req, res) {
-    var userId = req.params.uid;
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var userId = req.user._id;
     var repId = req.params.rid;
 
     userModel
@@ -21,11 +48,19 @@ function deleteRep(req, res) {
         .then(function (response) {
             findRepsByUser(req, res);
         })
-
 }
 
 function findRepsByUser(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
     var userId = req.params.uid;
+
+    if (!userId) {
+        userId = req.user._id;
+    }
 
     userModel
         .findUserById(userId)
@@ -43,18 +78,24 @@ function findRepsByUser(req, res) {
 
 // Creates the given rep
 function createRep(req, res) {
-    var userId = req.params.uid;
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var userId = req.user._id;
     var rep = req.body;
+
+    if (rep.id) {
+        rep.photo = 'https://theunitedstates.io/images/congress/225x275/' + rep.id + '.jpg'
+    }
 
     var newRep = {
         name: rep.name || rep.first_name + " " + rep.last_name,
         govId: rep.id || rep.member_id,
-        photo: rep.photo || 'http://lorempixel.com/200/200',
+        photo: rep.photo,
         chamber: rep.chamber
     };
-
-    console.log(rep);
-    console.log(newRep);
 
     repModel
         .findRepByGovIdOrCreate(newRep)

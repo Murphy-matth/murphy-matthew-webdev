@@ -14,10 +14,9 @@
 
         var baseUrl = "/api/project/rss/";
 
-        var api = {
+        return {
             "parseFeed"   : parseFeed
         };
-        return api;
 
         function parseFeed(url) {
             var newUrl = baseUrl + "?url=" + url;

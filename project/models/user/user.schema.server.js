@@ -15,6 +15,10 @@ var userSchema = mongoose.Schema({
         id:    String,
         token: String
     },
+    google : {
+        id: String,
+        token: String
+    },
     photo: {type: String, default: "http://lorempixel.com/200/200"},
     email: String,
     phone: String,

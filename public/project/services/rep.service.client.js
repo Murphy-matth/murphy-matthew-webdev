@@ -13,17 +13,26 @@
 
         var BASE_URL = '/api/project/';
 
-        var api = {
+        return {
             "createRep"   : createRep,
             "deleteRep"   : deleteRep,
-            "findRepsByUser": findRepsByUser
+            "findRepsByUser": findRepsByUser,
+            "findReps": findReps
         };
-        return api;
 
-        function deleteRep(userId, repId) {
-            var url = BASE_URL + 'user/' + userId + '/rep/' + repId;
+        function deleteRep(repId) {
+            var url = BASE_URL + 'rep/' + repId;
             return $http
                 .delete(url)
+                .then(function (response) {
+                    return response.data;
+                })
+        }
+
+        function findReps() {
+            var url = BASE_URL + "reps/";
+            return $http
+                .get(url)
                 .then(function (response) {
                     return response.data;
                 })
@@ -38,9 +47,8 @@
                 })
         }
 
-        function createRep(userId, rep) {
-            var url = BASE_URL + 'rep/' + userId;
-            console.log(url);
+        function createRep(rep) {
+            var url = BASE_URL + 'rep/';
 
             return $http
                 .post(url, rep)

@@ -14,10 +14,9 @@
 
         var baseUrl = "/api/project/image/";
 
-        var api = {
+        return {
             "findImageById"   : findImageById
         };
-        return api;
 
         function findImageById(id) {
             var url = baseUrl + id;

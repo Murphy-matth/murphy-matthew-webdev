@@ -1,4 +1,7 @@
-// Register Controller
+/**
+ * Register Controller
+ * Author: Matthew Murphy
+ */
 (function() {
     "use strict";
 
@@ -41,9 +44,10 @@
                     if (!user) {
                         return;
                     }
-                    $location.url("/user/" + user._id);
+                    $location.url("/user/");
                 }, function (err) {
                     console.log(err);
+                    vm.unknownError = "An error occured. Please try again";
                 })
         }
     }

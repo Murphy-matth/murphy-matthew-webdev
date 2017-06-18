@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button"
-                    href="#!/user/{{vm.userId}}/search"
+                    href="#!/search"
                     class="navbar-toggle collapsed"
                     data-toggle="collapse"
                     aria-expanded="false"
@@ -15,7 +15,7 @@
              class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="#!/user/{{vm.userId}}/search"
+                    <a href="#!/search"
                        class="navbar-link">
                         <span class="glyphicon glyphicon-search"></span>
                     </a>
@@ -58,6 +58,11 @@
                     </form>
                 </div>
             </div>
+            <div class="wd-padding"
+                 ng-hide="vm.otherUser">
+                <a class="btn btn-danger btn-block wd-padding"
+                   ng-click="vm.logout()">Logout</a>
+            </div>
         </div>
         <!--- Right Column --->
         <div class="col-md-8 col-sm-6 col-xs-12">
@@ -95,5 +100,3 @@
         </div>
     </div>
 </div>
-
-<div ng-include="'views/common/footer.view.client.html'"></div>
