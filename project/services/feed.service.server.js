@@ -30,7 +30,12 @@ function parseBody(body) {
     };
 
     // Convert the xml into json.
-    var json = parser.toJson(body, options);
+    try {
+        var json = parser.toJson(body, options);
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
     var results = [];
 
     if (typeof json === 'undefined' || json === null) {

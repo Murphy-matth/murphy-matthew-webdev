@@ -35,61 +35,57 @@
     </div>
 </nav>
 
-<div class="parallax" style="padding-top: 65px">
-    <div class="parallax__group">
-        <div class="parallax__layer parallax__layer--base">
-            <div class="wd-vertical-center">
-                <div class="wd-center">
-                    <div class="input-group">
-                        <input ng-model="searchText"
-                               type="text"
-                               placeholder="Enter an ID, a state abbreviation or nothing"
-                               class="form-control">
-                        <div class="input-group-btn">
-                            <button type="button"
-                                    class="btn btn-default dropdown-toggle"
-                                    data-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                {{vm.chamber}} <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a ng-click="vm.updateDropDown('Senate')">
-                                        Senate
-                                    </a>
-                                </li>
-                                <li>
-                                    <a ng-click="vm.updateDropDown('House')">
-                                        House
-                                    </a>
-                                </li>
-                            </ul>
-                        </div><!-- /btn-group -->
-                        <span class="input-group-btn">
-                            <a class="btn btn-default"
-                               ng-click="vm.search(searchText)"
-                               type="button">
-                                <span class="glyphicon glyphicon-search"></span>
-                            </a>
-                        </span>
-                    </div>
-                    <div ng-show="vm.warningMessage"
-                         class="alert alert-warning wd-remove-margin">
-                        {{vm.warningMessage}}
-                    </div>
-                    <div  ng-show="vm.showLink"
-                          class="alert alert-warning">
-                        Representative ID not found. Click
-                        <a href="http://bioguide.congress.gov/biosearch/biosearch.asp"
-                           target="_blank"
+<div class="container-fluid wd-padding-top">
+        <div class="wd-vertical-center">
+            <div class="wd-center">
+                <div class="input-group">
+                    <input ng-model="searchText"
+                           type="text"
+                           placeholder="Enter an ID, a state abbreviation or nothing"
+                           class="form-control">
+                    <div class="input-group-btn">
+                        <button type="button"
+                                class="btn btn-default dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
+                            {{vm.chamber}} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a ng-click="vm.updateDropDown('Senate')">
+                                    Senate
+                                </a>
+                            </li>
+                            <li>
+                                <a ng-click="vm.updateDropDown('House')">
+                                    House
+                                </a>
+                            </li>
+                        </ul>
+                    </div><!-- /btn-group -->
+                    <span class="input-group-btn">
+                        <a class="btn btn-default"
+                           ng-click="vm.search(searchText)"
                            type="button">
-                            here
+                            <span class="glyphicon glyphicon-search"></span>
                         </a>
-                        <span> to look up the ID.</span>
-                    </div>
+                    </span>
+                </div>
+                <div ng-show="vm.warningMessage"
+                     class="alert alert-warning wd-remove-margin">
+                    {{vm.warningMessage}}
+                </div>
+                <div  ng-show="vm.showLink"
+                      class="alert alert-warning">
+                    Representative ID not found. Click
+                    <a href="http://bioguide.congress.gov/biosearch/biosearch.asp"
+                       target="_blank"
+                       type="button">
+                        here
+                    </a>
+                    <span> to look up the ID.</span>
                 </div>
             </div>
         </div>
-    </div> <!--- Parallax group-->
-</div>
+    </div>
