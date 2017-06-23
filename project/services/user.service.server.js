@@ -85,11 +85,14 @@ function ensureAdmin() {
         .then(function (user) {
             console.log("Admin stuff");
             if (!user) {
+                console.log("Create");
                 userModel
                     .createUser(admin)
                     .then(function (success) {
                         // No op.
+                        console.log(success);
                     }, function (err) {
+                        console.log(err);
                         throw new Error("Problem with admin user: " + err);
                     });
             } else if (!user.roles.contains('ADMIN')) {
