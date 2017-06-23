@@ -357,7 +357,7 @@ function uploadImage(req, res) {
         return;
     }
 
-    var userId      = req.body.userId;
+    var userId      = req.user._id;
     var myFile        = req.file;
 
     var originalname  = myFile.originalname; // file name on user's computer
