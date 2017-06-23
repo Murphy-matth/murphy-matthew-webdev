@@ -1,7 +1,7 @@
 <div class="container wd-padding-top">
     <div ng-repeat="rep in vm.selectedReps"
          ng-show="rep.photo"
-         class="col-md-3 col-sm-4 col-xs-6 wd-padding">
+         class="col-md-4 col-xs-6 wd-padding">
         <div class="text-center">
             <img ng-src="{{rep.photo}}"
                  ng-click="vm.selectRep(rep.id)"
