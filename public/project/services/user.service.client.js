@@ -15,6 +15,7 @@
 
         return {
             "findUserById" : findUserById,
+            "findUserByUsername" : findUserByUsername,
             "updateUser" : updateUser,
             "updatePassword": updatePassword,
             "followUser": followUser,
@@ -31,6 +32,10 @@
             "findFollowing": findFollowing,
             "findFollowers": findFollowers
         };
+
+        function findUserByUsername(username) {
+            return sendGet("/api/project/username/?username=" + username);
+        }
 
         function findCurrentUser() {
             return sendGet('/api/project/current');

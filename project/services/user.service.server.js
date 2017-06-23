@@ -59,6 +59,7 @@ app.delete('/api/project/follower/:fid', removeFollower);
 app.post('/api/project/password', updatePassword);
 app.get('/api/project/user/:uid', findUserById);
 app.get('/api/project/current', getCurrentUser);
+app.get('/api/project/username', findUserByUsername);
 app.put('/api/project/user', updateUser);
 app.delete('/api/project/user/:uid', deleteUser);
 
@@ -83,9 +84,7 @@ function ensureAdmin() {
     userModel
         .findUserByUsername(process.env.ADMIN_USERNAME)
         .then(function (user) {
-            console.log("Admin stuff");
             if (!user) {
-                console.log("Create");
                 userModel
                     .createUser(admin)
                     .then(function (success) {
@@ -539,6 +538,26 @@ function removeFollowing(req, res) {
 /**
  * User Functions
  */
+
+function findUserByUsername(req, res) {
+    if (!authenticator.authenticate(req)) {
+        res.sendStatus(401);
+        return;
+    }
+
+    var username = req.query['username'];
+    userModel
+        .findUserByUsername(username)
+        .then(function(user) {
+            if(user !== null) {
+                res.json(user);
+            } else {
+                res.sendStatus(404);
+            }
+        }, function (err) {
+            res.sendStatus(404);
+        })
+}
 
 function getCurrentUser(req, res) {
     if (!authenticator.authenticate(req)) {

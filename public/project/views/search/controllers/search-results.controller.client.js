@@ -48,7 +48,19 @@
                 vm.loggedIn = false;
             });
 
-            if (query === null || typeof query === 'undefined') {
+            if (vm.chamber.toLowerCase() === 'user') {
+                userService
+                    .findUserByUsername(query.toLowerCase())
+                    .then(function (user) {
+                        if (!user) {
+                            $location.url('/search/user');
+                            return;
+                        }
+                        $location.url('/user/' + user._id);
+                    }, function (err) {
+                        $location.url('/search/user');
+                    })
+            } else if (query === null || typeof query === 'undefined') {
                 findAllRepresentatives();
             } else if (query.length === 2) {
                 preformStateSearch(query);
@@ -231,7 +243,7 @@
                 .findRepresentativeById(id, vm.chamber.toUpperCase())
                 .then(function(rep) {
                     if (rep === 'ERROR' || typeof rep === 'undefined') {
-                        $location.url('/search/id');
+                        $location.url('/search/id')
                     } else {
                         vm.reps = rep;
                         processReps();

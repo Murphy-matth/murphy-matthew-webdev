@@ -16,12 +16,15 @@
 
         function init() {
             vm.chamber = 'Senate';
+            vm.placeholder = "Enter a state abbreviation or your reps ID";
             var message = $routeParams['message'];
             if (message !== null) {
                 if (message === 'id') {
                     vm.showLink = true;
                 } else if (message === 'state') {
                     vm.warningMessage = 'Please enter a valid two letter state abbreviation';
+                } else if (message === 'user') {
+                    vm.warningMessage = 'Username not found';
                 }
             }
             userService
@@ -47,6 +50,11 @@
         // Updates the chamber to the given text.
         function updateDropDown(text) {
             vm.chamber = text;
+            if (text === 'User') {
+                vm.placeholder = "Enter a username";
+            } else {
+                vm.placeholder = "Enter a state abbreviation or your reps ID";
+            }
         }
 
         function resetMessages() {

@@ -41,7 +41,7 @@
             <div class="input-group">
                 <input ng-model="searchText"
                        type="text"
-                       placeholder="Enter an ID, a state abbreviation or nothing"
+                       placeholder="{{vm.placeholder}}"
                        class="form-control">
                 <div class="input-group-btn">
                     <button type="button"
@@ -60,6 +60,11 @@
                         <li>
                             <a ng-click="vm.updateDropDown('House')">
                                 House
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="vm.updateDropDown('User')">
+                                User
                             </a>
                         </li>
                     </ul>
