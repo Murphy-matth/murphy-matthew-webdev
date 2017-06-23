@@ -372,7 +372,7 @@ function uploadImage(req, res) {
     userModel
         .updateUrl(userId, url)
         .then(function (status) {
-            var callbackUrl   = "/project/index.html#!/user/"+userId;
+            var callbackUrl   = '/project/index.html#!/user/';
             res.redirect(callbackUrl);
         });
 }

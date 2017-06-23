@@ -28,6 +28,8 @@
                 message: ""
             };
 
+            return result;
+            
             // Check the password length.
             if (password.length < minPasswordLength) {
                 result.result = false;
