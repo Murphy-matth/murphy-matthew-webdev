@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="form-group"
+         ng-show="vm.message">
+        <div class="alert alert-success">
+            {{vm.message}}
+        </div>
+    </div>
+    <div class="form-group"
+         ng-show="vm.error">
+        <div class="alert alert-danger">
+            {{vm.error}}
+        </div>
+    </div>
+    <form novalidate name="vm.repEditForm" ng-submit="vm.updateRep()">
+        <div class="form-group">
+            <div class="input-group"
+                 ng-class="{'has-error': vm.repEditForm.$submitted && vm.repEditForm['name'].$invalid}">
+                <span class="input-group-addon wd-min-width">Name</span>
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       name="name"
+                       ng-model="vm.rep.name"
+                       placeholder="Name"
+                       required >
+            </div>
+            <span ng-show="vm.repEditForm.$submitted && vm.repEditForm['name'].$invalid"
+                  class="help-block">
+                  Name is required
+            </span>
+        </div>
+        <div class="form-group">
+            <div class="input-group"
+                 ng-class="{'has-error': vm.repEditForm.$submitted && vm.repEditForm['photo'].$invalid}">
+                <span class="input-group-addon wd-min-width">Photo</span>
+                <input type="url"
+                       class="form-control"
+                       id="photo"
+                       name="photo"
+                       ng-model="vm.rep.photo"
+                       placeholder="Photo"
+                       required >
+            </div>
+            <span ng-show="vm.repEditForm.$submitted && vm.repEditForm['photo'].$invalid"
+                  class="help-block">
+                  Photo is required and should be a url.
+            </span>
+        </div>
+        <input class="btn btn-success btn-block"
+               type="submit"
+               id="submit"
+               value="Update" />
+        <a class="btn btn-danger btn-block"
+           ng-click="vm.deleteRep(vm.rep._id)">
+            Delete
+        </a>
+    </form>
+</div>

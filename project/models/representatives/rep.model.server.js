@@ -13,20 +13,25 @@ repModel.createRep = createRep;
 repModel.findRepByGovId = findRepByGovId;
 repModel.findRepByGovIdOrCreate = findRepByGovIdOrCreate;
 repModel.findResByIds = findResByIds;
-repModel.update = update;
+repModel.updateRep = updateRep;
+repModel.deleteRep = deleteRep;
 
 module.exports = repModel;
 
-function update(rep) {
+function deleteRep(repId) {
+    return repModel.remove({_id: repId});
+}
+
+function updateRep(rep) {
     return repModel
-        .update({govId: rep.govId}, {
-            $set : {
-                govId: rep.govId,
-                chamber: rep.chamber,
+        .update({_id: rep._id}, {
+            $set: {
+                photo: rep.photo,
                 name: rep.name,
-                dateCreated: Date.now
+                govId: rep.govId,
+                chamber: rep.chamber
             }
-        })
+        });
 }
 
 function findResByIds(reps) {
@@ -53,7 +58,7 @@ function findRepByGovIdOrCreate(newRep) {
                     });
             } else {
                 return repModel
-                    .update(rep)
+                    .updateRep(rep)
                     .then(function (success) {
                         return rep;
                     }, function (err) {

@@ -37,7 +37,7 @@
 
         function search(searchText) {
             resetMessages();
-            if (searchText === null || searchText.length === 0) {
+            if (searchText === null || typeof searchText === 'undefined' || searchText.length === 0) {
                 $location.url('/search/' + vm.chamber.toLowerCase() + '/query/');
             } else {
                 $location.url('/search/' + vm.chamber.toLowerCase() + '/query/' + searchText.toUpperCase());

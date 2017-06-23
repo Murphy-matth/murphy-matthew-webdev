@@ -1,0 +1,17 @@
+<div class="container-fluid">
+    <ul ng-repeat="rep in vm.reps"
+        class="list-group">
+        <li class="list-group-item">
+                <img ng-src="{{rep.photo}}"
+                     class="pull-left wd-padding-right"
+                     width="25px">
+                <span>{{rep.name}}</span>
+                <span class="glyphicon btn-link glyphicon-remove pull-right"
+                      ng-click="vm.removeRep(rep._id)">
+                </span>
+                <span class="glyphicon btn-link glyphicon-cog pull-right"
+                  ng-click="vm.editRep(rep)">
+                </span>
+        </li>
+    </ul>
+</div>

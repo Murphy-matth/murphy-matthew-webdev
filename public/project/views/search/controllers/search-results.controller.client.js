@@ -43,12 +43,12 @@
             resetMessages();
 
             checkedLoggedIn(function () {
-                // No op.
+                vm.loggedIn = true;
             }, function () {
-                // No op.
+                vm.loggedIn = false;
             });
 
-            if (query === null) {
+            if (query === null || typeof query === 'undefined') {
                 findAllRepresentatives();
             } else if (query.length === 2) {
                 preformStateSearch(query);
@@ -124,7 +124,8 @@
                 repService
                     .createRep(rep)
                     .then(function (response) {
-                        vm.followSuccess = true;
+                        vm.followSuccess = rep.id || rep.member_id;
+                    }, function (err) {
                     })
             }
             function failure() {
@@ -148,6 +149,7 @@
 
         // Selects the representative to show more details whose id matches the id field
         function selectRep(id) {
+            vm.newRep = true;
             proPublicaService
                 .findRepresentativeById(id, vm.chamber.toLowerCase())
                 .then(function(rep) {
@@ -170,8 +172,9 @@
         function setTab(tab) {
             vm.currentTab = tab.toLowerCase();
             if (tab === 'RSS') {
-                if (vm.feeds.length === 0) {
+                if (vm.newRep || vm.feeds.length === 0) {
                     loadFeed();
+                    vm.newRep = false;
                 }
             }
             vm.currentTabUrl = 'views/search/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
@@ -207,7 +210,7 @@
         }
 
         function processRep(rep) {
-            getImageSrc(rep.id)
+            getImageSrc(rep.id || rep.member_id)
                 .then(function(url) {
                     rep.photo = url;
                 })
@@ -242,7 +245,7 @@
             proPublicaService
                 .findAllRepresentatives(vm.chamber.toUpperCase())
                 .then(function(data) {
-                    vm.reps = data;
+                    vm.reps = data[0].members;
                     processReps();
                     vm.selectedReps = vm.reps;
                 })

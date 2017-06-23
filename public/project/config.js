@@ -67,6 +67,11 @@
                 templateUrl: "views/search/templates/search-results.view.client.html",
                 controller: 'searchResultsController',
                 controllerAs: 'vm'
+            })
+            .when("/search/:cid/query", {
+                templateUrl: "views/search/templates/search-results.view.client.html",
+                controller: 'searchResultsController',
+                controllerAs: 'vm'
             });
 
         function checkAdmin($q, $location, userService) {

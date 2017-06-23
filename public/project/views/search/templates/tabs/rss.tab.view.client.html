@@ -1,4 +1,5 @@
-<div class="row-fluid wd-padding">
+<div class="row-fluid wd-padding"
+     ng-show="vm.feeds.length > 0">
     <div class="panel-group" id="accordion">
         <div ng-repeat="feed in vm.feeds"
              class="panel panel-default"
@@ -16,9 +17,20 @@
                  class="panel-collapse collapse">
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-xs-6">
-                            {{feed.date}}
-                        </div>
+                        Date: {{feed.pubDate | date}}
+                    </div>
+                    <div class="row">
+                        Link:
+                        <a ng-href="{{feed.link}}"
+                                 target="_blank">
+                            {{feed.link}}
+                        </a>
+                    </div>
+                    <div class="row" ng-show="feed.description">
+                        Description: {{feed.description}}
+                    </div>
+                    <div class="row" ng-hide="feed.description">
+                        Description: No description available. Please follow the link for more information.
                     </div>
                 </div>
             </div>
@@ -33,5 +45,11 @@
          ng-click="vm.showLess()"
          ng-show="vm.show">
         Less
+    </div>
+</div>
+<div class="row-fluid wd-padding"
+     ng-hide="vm.feeds.length > 0">
+    <div class="alert alert-info">
+        Unable to load RSS feed.
     </div>
 </div>

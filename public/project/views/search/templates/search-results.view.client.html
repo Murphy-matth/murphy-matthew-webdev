@@ -2,12 +2,13 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button"
-                    ng-click="vm.goToProfile()"
                     class="navbar-toggle collapsed"
                     data-toggle="collapse"
+                    data-target="#navbar"
                     aria-expanded="false"
                     aria-controls="navbar">
-                <span class="glyphicon glyphicon-user"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
             </button>
             <span class="navbar-brand"
                   ng-click="vm.reset()">
@@ -17,10 +18,16 @@
         <div id="navbar"
              class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li ng-show="vm.loggedIn">
                     <a ng-click="vm.goToProfile()"
                        class="navbar-link">
                         <span class="glyphicon glyphicon-user"></span>
+                    </a>
+                </li>
+                <li ng-hide="vm.loggedIn">
+                    <a href="#!/login"
+                       class="navbar-link">
+                        <span>Login</span>
                     </a>
                 </li>
             </ul>
@@ -29,5 +36,3 @@
 </nav>
 
 <div ng-include="vm.getResultsPageBody()"></div>
-
-<div ng-include="'views/common/footer.view.client.html'"></div>

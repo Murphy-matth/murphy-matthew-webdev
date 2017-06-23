@@ -27,7 +27,6 @@
                             vm.invalid = "Invalid username or password. Please try again";
                             return;
                         }
-                        console.log(user);
                         $location.url('/user');
                     }, function (err) {
                         vm.invalid = "Invalid username or password. Please try again";

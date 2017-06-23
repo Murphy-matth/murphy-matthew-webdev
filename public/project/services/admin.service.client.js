@@ -18,8 +18,54 @@
             "findAllUsers"   : findAllUsers,
             "deleteUser": deleteUser,
             "updateUser": updateUser,
-            "createUser": createUser
+            "createUser": createUser,
+            "findAllReps": findAllReps,
+            "deleteRep": deleteRep,
+            "updateRep": updateRep
         };
+
+        function updateRep(rep) {
+            var url = baseUrl + 'rep';
+
+            return $http
+                .post(url, rep)
+                .then(function (response) {
+                    return response.data;
+                }, function (err) {
+                    console.log(err);
+                    return err;
+                })
+        }
+
+        function deleteRep(repId) {
+            if (repId === null || typeof repId === 'undefined') {
+                console.log("RepId cannot be null");
+                return;
+            }
+            var url = baseUrl + "rep/" + repId;
+
+            return $http
+                .delete(url)
+                .then(function (response) {
+                    return response.data;
+                }, function (err) {
+                    console.log(err);
+                    return err;
+                })
+        }
+
+        function findAllReps() {
+            var newUrl = baseUrl + "reps";
+
+            return $http
+                .get(newUrl)
+                .then(function(response) {
+                    return response.data;
+                }, function (err) {
+                    console.log(err);
+                    return err;
+                })
+        }
 
         function createUser(user) {
             var url = baseUrl + 'user/create';

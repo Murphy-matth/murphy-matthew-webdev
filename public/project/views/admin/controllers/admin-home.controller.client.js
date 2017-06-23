@@ -25,6 +25,60 @@
       vm.editUser = editUser;
       vm.updateUser = updateUser;
       vm.createUser = createUser;
+      vm.createAdmin = createAdmin;
+      vm.findAllReps = findAllReps;
+      vm.removeRep = removeRep;
+      vm.editRep = editRep;
+      vm.updateRep = updateRep;
+
+      function updateRep() {
+          reset();
+          if(vm.repEditForm.$invalid) {
+              return;
+          }
+          adminService
+              .updateRep(vm.rep)
+              .then(function (success) {
+                  vm.message = "Update Success!";
+              }, function (err) {
+                  vm.error = "Error: " + err;
+              })
+      }
+
+      function editRep(rep) {
+          reset();
+          vm.rep = rep;
+          rightTab = 'views/admin/templates/tabs/rep-edit.tab.view.client.html';
+      }
+
+      function removeRep(repId) {
+          reset();
+          adminService
+              .deleteRep(repId)
+              .then(function (success) {
+                  findAllReps();
+              }, function (err) {
+                  vm.error = "Failed to delete rep: " + repId;
+              });
+      }
+
+      function findAllReps() {
+          reset();
+          rightTab = 'views/admin/templates/tabs/reps.tab.view.client.html';
+          adminService
+              .findAllReps()
+              .then(function (reps) {
+                  vm.reps = reps;
+              })
+      }
+
+      function createAdmin() {
+          reset();
+          vm.user = {
+              admin: true
+          };
+          rightTab = 'views/admin/templates/tabs/user-new.tab.view.client.html';
+      }
 
       function createUser(user) {
           reset();

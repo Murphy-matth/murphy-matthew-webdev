@@ -2,39 +2,22 @@
     <div ng-repeat="rep in vm.selectedReps" class="row list-group-item wd-group-item">
         <div class="row"
              ng-show="rep.first_name">
-            <div class="col-xs-2 text-left">
-                First Name:
-            </div>
-            <div class="col-xs-10 text-left">
-                {{rep.first_name}}
-            </div>
+            <span class="pull-left wd-padding-left">First Name: {{rep.first_name}}</span>
         </div>
         <div class="row"
              ng-show="rep.last_name">
-            <div class="col-xs-2 text-left">
-                Last Name:
-            </div>
-            <div class="col-xs-10 text-left">
-                {{rep.last_name}}
-            </div>
+             <span class="pull-left wd-padding-left">Last Name: {{rep.last_name}}</span>
         </div>
         <div class="row"
              ng-show="rep.state">
-            <div class="col-xs-2 text-left">
-                State:
-            </div>
-            <div class="col-xs-10 text-left">
-                {{rep.state}}
-            </div>
+            <span class="pull-left wd-padding-left">State: {{rep.state}}</span>
         </div>
         <div class="row">
-            <div class="col-xs-2 text-left">
+            <span class="pull-left wd-padding-left">
                 Party:
-            </div>
-            <div class="col-xs-10 text-left">
                 <span ng-show="rep.party === 'R' || rep.current_party === 'R'">Republican</span>
                 <span ng-show="rep.party === 'D' || rep.current_party === 'D'">Democrat</span>
-            </div>
+            </span>
         </div>
     </div>
 </div>

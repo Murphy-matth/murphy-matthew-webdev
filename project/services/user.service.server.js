@@ -123,12 +123,11 @@ function checkAdmin(req, res) {
             var role = user.roles.find(function (r) {
                 return r === 'ADMIN';
             });
-            if (role.length < 1) {
+            if (typeof role === 'undefined' || role.length < 1) {
                 res.send('0');
             } else {
                 res.send(sanitizeUser(user));
             }
-
         }, function (err) {
             res.send('0');
         })
@@ -271,7 +270,6 @@ function facebookStrategy(token, refreshToken, profile, done) {
                 return userModel
                     .updateFacebookToken(user._id, profile.id, token)
                     .then(function (response) {
-                        console.log(user);
                         return done(null, user);
                     })
             }

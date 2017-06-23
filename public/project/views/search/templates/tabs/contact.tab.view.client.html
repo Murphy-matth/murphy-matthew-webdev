@@ -2,58 +2,48 @@
     <div ng-repeat="rep in vm.selectedReps" class="row list-group-item wd-group-item">
         <div class="row"
              ng-show="rep.phone">
-            <div class="col-xs-2 text-left">
-                Phone:
-            </div>
-            <div class="col-xs-10 text-left">
-                <a href="tel:{{rep.phone}}">
+             <span class="wd-padding-left pull-left">
+                 Phone:
+                 <a href="tel:{{rep.phone}}">
                     {{rep.phone}}
-                </a>
-            </div>
+                 </a>
+             </span>
         </div>
         <div class="row"
              ng-show="rep.url">
-            <div class="col-xs-2 text-left">
+            <span class="wd-padding-left pull-left">
                 Website:
-            </div>
-            <div class="col-xs-10 text-left">
                 <a href="{{rep.url}}" target="_blank">
                     {{rep.url}}
                 </a>
-            </div>
+            </span>
         </div>
         <div class="row"
              ng-show="rep.facebook_account">
-            <div class="col-xs-2 text-left">
+            <span class="pull-left wd-padding-left">
                 Facebook:
-            </div>
-            <div class="col-xs-10 text-left">
                 <a href="http://www.facebook.com/{{rep.facebook_account}}" target="_blank">
                     {{rep.facebook_account}}
                 </a>
-            </div>
+            </span>
         </div>
         <div class="row"
              ng-show="rep.twitter_account">
-            <div class="col-xs-2 text-left">
+            <span class="wd-padding-left pull-left">
                 Twitter:
-            </div>
-            <div class="col-xs-10 text-left">
                 <a href="http://www.twitter.com/{{rep.twitter_account}}" target="_blank">
                     {{rep.twitter_account}}
                 </a>
-            </div>
+            </span>
         </div>
         <div class="row"
              ng-show="rep.youtube_account">
-            <div class="col-xs-2 text-left">
+            <span class="wd-padding-left pull-left">
                 Youtube:
-            </div>
-            <div class="col-xs-10 text-left">
                 <a href="http://www.youtube.com/{{rep.youtube_account}}" target="_blank">
                     {{rep.youtube_account}}
                 </a>
-            </div>
+            </span>
         </div>
     </div>
 </div>

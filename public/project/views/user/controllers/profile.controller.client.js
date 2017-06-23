@@ -10,29 +10,6 @@
             var vm = this;
 
             /**
-             * Represents all of the profile tabs for a given user.
-             * @type {[*]}
-             */
-            vm.tabs = [
-                'About',
-                'Following',
-                'Followers',
-                'Reps',
-                'Edit',
-                'Account Settings'
-            ];
-
-            /**
-             * Represents all of the profile tabs when looking at another user's profile.
-             * @type {[*]}
-             */
-            vm.otherTabs = [
-                'About',
-                'Following',
-                'Followers'
-            ];
-
-            /**
              * Used for updating a user's password
              * @type {{old: string, new: string, verify: string}}
              */
@@ -42,19 +19,12 @@
                 verify: ""
             };
 
-            // The default tab is the about tab
-            var currentTabUrl = 'views/user/templates/tabs/about.tab.view.client.html';
-            vm.currentTab = 'about';
-
             function init() {
                 updateProfileInfo()
             }
             init();
 
             vm.update = update;
-            vm.getCurrentTabUrl = getCurrentTabUrl;
-            vm.setTab = setTab;
-            vm.isCurrentTab = isCurrentTab;
             vm.updatePassword = updatePassword;
             vm.followUser = followUser;
             vm.removeFollowing = removeFollowing;
@@ -77,6 +47,7 @@
 
 
             function deleteRep(repId) {
+                clearMessages();
                 repService
                     .deleteRep(repId)
                     .then(function (response) {
@@ -88,6 +59,7 @@
 
             // Un Follows the given user
             function removeFollower(userId, followerId) {
+                clearMessages();
                 userService
                     .removeFollower(userId, followerId)
                     .then(function (response) {
@@ -97,6 +69,7 @@
 
             // Un Follows the given user
             function removeFollowing(userId, followerId) {
+                clearMessages();
                 userService
                     .removeFollowing(userId, followerId)
                     .then(function (response) {
@@ -106,6 +79,7 @@
 
             // Follows the given user
             function followUser(followerId) {
+                clearMessages();
                 userService
                     .followUser(followerId)
                     .then(function (response) {
@@ -117,11 +91,7 @@
              * Updates the user's password.
              */
             function updatePassword() {
-                // Clear all of the old error messages.
-                vm.updatePasswordFailed = null;
-                vm.updatePasswordSuccess = null;
-                vm.invalidOldPassword = null;
-
+                clearMessages();
 
                 if (vm.password.new !== vm.password.verify) {
                     vm.updatePasswordFailed = "Passwords must match!";
@@ -151,16 +121,15 @@
                 clearMessages();
 
                 if (vm.editForm.$invalid) {
-                    vm.errorMessage = "Please fix the input errors before submitting again";
                     return;
                 }
-
 
                 userService
                     .updateUser(vm.user)
                     .then(updateSuccess, updateFailed);
 
                 function updateSuccess(user) {
+                    console.log("Success");
                     vm.message = "Update Successful!";
                     updateProfileInfo();
                 }
@@ -169,31 +138,6 @@
                     console.log(error);
                     vm.errorMessage = "An Error Occurred. Please try again";
                 }
-            }
-
-            /**
-             * Returns the url of the current profile tab.
-             * @returns {string}
-             */
-            function getCurrentTabUrl() {
-                return currentTabUrl;
-            }
-
-            /**
-             * Sets the current tab.
-             * @param tab to be set.
-             */
-            function setTab(tab) {
-                clearMessages();
-                vm.currentTab = tab.toLowerCase();
-                currentTabUrl = 'views/user/templates/tabs/' + tab.toLowerCase() + '.tab.view.client.html';
-            }
-
-            /**
-             * Returns true if the tab is the currently active tab.
-             */
-            function isCurrentTab(tab) {
-                return tab.toLowerCase() === vm.currentTab;
             }
 
             /**
@@ -237,6 +181,8 @@
                             .checkAdmin()
                             .then(function (response) {
                                 vm.admin = !(response === '0')
+                            }, function (err) {
+                                console.log(err);
                             })
                     }
 
@@ -304,6 +250,9 @@
             function clearMessages() {
                 vm.message = null;
                 vm.errorMessage = null;
+                vm.updatePasswordFailed = null;
+                vm.updatePasswordSuccess = null;
+                vm.invalidOldPassword = null;
             }
         }
 })();

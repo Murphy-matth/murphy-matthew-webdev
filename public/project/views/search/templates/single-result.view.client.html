@@ -32,22 +32,19 @@
                     </div>
                     <div class="col-xs-2"
                          ng-show="rep.facebook_account">
-                        <a href='http://www.facebook.com/ + {{rep.facebook_account}}' target="_blank"
-                           class="pull-right">
+                        <a href='http://www.facebook.com/ + {{rep.facebook_account}}' target="_blank">
                             <i class="fa fa-facebook fa-2x wd-muted" aria-hidden="true"></i>
                         </a>
                     </div>
                     <div class="col-xs-2"
                          ng-show="rep.twitter_account">
-                        <a href='http://www.twitter.com/ + {{rep.twitter_account}}' target="_blank"
-                           class="pull-right">
+                        <a href='http://www.twitter.com/ + {{rep.twitter_account}}' target="_blank">
                             <i class="fa fa-twitter fa-2x wd-muted" aria-hidden="true"></i>
                         </a>
                     </div>
                     <div class="col-xs-2"
                          ng-show="rep.youtube_account">
-                        <a href='http://www.youtube.com/ + {{rep.youtube_account}}' target="_blank"
-                           class="pull-right">
+                        <a href='http://www.youtube.com/ + {{rep.youtube_account}}' target="_blank">
                             <i class="fa fa-youtube fa-2x wd-muted" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -55,6 +52,14 @@
             </div>
             <!--- Right Column --->
             <div class="col-md-8 col-sm-6 col-xs-12">
+                <div ng-show="vm.followSuccess && rep.member_id === vm.followSuccess"
+                     class="alert alert-success col-xs-12 alert-dismissible"
+                     role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    Successfully Followed the Rep!
+                </div>
                 <!--- Top Row --->
                 <div class="row">
                     <ul class="nav nav-tabs">

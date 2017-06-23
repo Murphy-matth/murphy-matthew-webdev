@@ -1,14 +1,11 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button"
-                    href="#!/search"
-                    class="navbar-toggle collapsed"
-                    data-toggle="collapse"
-                    aria-expanded="false"
-                    aria-controls="navbar">
+            <a type="button"
+                href="#!/search"
+                class="navbar-toggle collapsed wd-muted">
                 <span class="glyphicon glyphicon-search"></span>
-            </button>
+            </a>
             <span class="navbar-brand">Profile</span>
         </div>
         <div id="navbar"
@@ -18,6 +15,12 @@
                     <a href="#!/admin"
                        class="navbar-link">
                         <span class="glyphicon glyphicon-lock"></span>
+                    </a>
+                </li>
+                <li ng-show="vm.otherUser">
+                    <a href="#!/user"
+                       class="navbar-link">
+                        <span class="glyphicon glyphicon-user"></span>
                     </a>
                 </li>
                 <li>
@@ -73,35 +76,308 @@
         <!--- Right Column --->
         <div class="col-md-8 col-sm-6 col-xs-12">
             <!--- Top Row --->
-            <div class="row"
-                 ng-hide="vm.otherUser">
+            <div class="row">
                 <ul class="nav nav-tabs">
-                    <li ng-repeat="tab in vm.tabs" role="presentation"
-                        ng-class="{'active' : vm.isCurrentTab(tab)}">
-                        <a ng-click="vm.setTab(tab)">
-                            {{tab}}
+                    <li class="active">
+                        <a data-toggle="tab"
+                           href="#about" target="_self">
+                            About
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab"
+                           href="#following" target="_self">
+                            Following
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab"
+                           href="#followers" target="_self">
+                            Followers
+                        </a>
+                    </li>
+                    <li ng-hide="vm.otherUser">
+                        <a data-toggle="tab"
+                           href="#reps" target="_self">
+                            Reps
+                        </a>
+                    </li>
+                    <li ng-hide="vm.otherUser">
+                        <a data-toggle="tab"
+                           href="#edit" target="_self">
+                            Edit
+                        </a>
+                    </li>
+                    <li ng-hide="vm.otherUser">
+                        <a data-toggle="tab"
+                           href="#account_settings" target="_self">
+                            Account Settings
                         </a>
                     </li>
                 </ul>
-            </div>
-            <div class="row"
-                 ng-hide="vm.otherUser">
-                <div ng-include="vm.getCurrentTabUrl()"></div>
-            </div>
-            <div class="row"
-                 ng-show="vm.otherUser">
-                <ul class="nav nav-tabs">
-                    <li ng-repeat="tab in vm.otherTabs" role="presentation"
-                        ng-class="{'active' : vm.isCurrentTab(tab)}">
-                        <a ng-click="vm.setTab(tab)">
-                            {{tab}}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="row"
-                 ng-show="vm.otherUser">
-                <div ng-include="vm.getCurrentTabUrl()"></div>
+
+                <div class="tab-content">
+                    <div id="about"
+                         class="tab-pane fade in active">
+                        <div class="container-fluid">
+                            <div ng-repeat="info in vm.profileInfo"
+                                 class="row list-group-item wd-group-item"
+                                 ng-show="info.value">
+                                <div class="col-xs-3 text-left">
+                                    {{info.label}}
+                                </div>
+                                <div class="col-xs-9 text-left">
+                                    {{info.value}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="following"
+                         class="tab-pane fade">
+                        <div class="container-fluid">
+                            <div class="list-group">
+                                <div class="list-group-item col-xs-4 wd-group-item wd-borderless wd-tile"
+                                     ng-repeat="user in vm.following">
+                                    <div class="wd-toolbar"
+                                         ng-click="vm.removeFollowing(vm.userId, user._id)">
+                                        <span class="glyphicon glyphicon-remove wd-red"></span>
+                                    </div>
+                                    <a href="#!/user/{{user._id}}" target="_self">
+                                        <img ng-src="{{user.photo}}"
+                                             class="img-thumbnail"
+                                             alt="avatar">
+                                        <div class="caption text-center text-capitalize">
+                                            <p>{{user.username}}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div ng-show="vm.following.length === 0"
+                                     class="wd-padding">
+                                    <div class="alert alert-info"
+                                         ng-hide="vm.otherUser">
+                                        You are not currently following any users.
+                                    </div>
+                                    <div class="alert alert-info"
+                                         ng-show="vm.otherUser">
+                                        This user is not following anyone.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="followers"
+                         class="tab-pane fade">
+                        <div class="container-fluid">
+                            <div class="list-group">
+                                <div class="list-group-item col-xs-4 wd-group-item wd-borderless wd-tile"
+                                     ng-repeat="user in vm.followers">
+                                    <div class="wd-toolbar"
+                                         ng-click="vm.removeFollower(vm.userId, user._id)">
+                                        <span class="glyphicon glyphicon-remove wd-red"></span>
+                                    </div>
+                                    <a href="#!/user/{{user._id}}" target="_self">
+                                        <img ng-src="{{user.photo}}"
+                                             class="img-thumbnail"
+                                             alt="avatar">
+                                        <div class="caption text-center text-capitalize">
+                                            <p>{{user.username}}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div ng-show="vm.followers.length === 0"
+                                     class="wd-padding">
+                                    <div class="alert alert-info"
+                                         ng-hide="vm.otherUser">
+                                        No users are currently following you.
+                                    </div>
+                                    <div class="alert alert-info"
+                                         ng-show="vm.otherUser">
+                                        This user has no followers.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="reps"
+                         class="tab-pane fade"
+                         ng-hide="vm.otherUser">
+                        <div class="container-fluid">
+                            <div class="list-group">
+                                <div class="list-group-item col-xs-4 wd-group-item wd-borderless wd-tile"
+                                     ng-repeat="rep in vm.reps">
+                                    <div class="wd-toolbar"
+                                         ng-click="vm.deleteRep(rep._id)">
+                                        <span class="glyphicon glyphicon-remove wd-red"></span>
+                                    </div>
+                                    <a href="#!/search/{{rep.chamber}}/query/{{rep.govId}}" target="_self">
+                                        <img ng-src="{{rep.photo}}"
+                                             class="img-thumbnail"
+                                             alt="avatar">
+                                        <div class="caption text-center text-capitalize">
+                                            <p>{{rep.name}}</p>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div ng-show="vm.reps.length === 0"
+                                     class="wd-padding">
+                                    <div class="alert alert-info"
+                                         ng-hide="vm.otherUser">
+                                        You are not currently following any representatives.
+                                    </div>
+                                    <div class="alert alert-info"
+                                         ng-show="vm.otherUser">
+                                        This user is not following anyone.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="edit"
+                         class="tab-pane fade"
+                         ng-hide="vm.otherUser">
+                        <div class="container-fluid wd-padding">
+                            <div class="form-group"
+                                 ng-show="vm.message">
+                                <div class="alert alert-success">
+                                    {{vm.message}}
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 ng-show="vm.errorMessage">
+                                <div class="alert alert-danger">
+                                    {{vm.errorMessage}}
+                                </div>
+                            </div>
+                            <form novalidate name="vm.editForm" ng-submit="vm.update()">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon wd-min-width">Username</span>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="username"
+                                               name="username"
+                                               ng-model="vm.user.username"
+                                               placeholder="Username">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group"
+                                         ng-class="{'has-error': vm.editForm.$submitted && vm.editForm['email'].$invalid}">
+                                        <span class="input-group-addon wd-min-width">Email</span>
+                                        <input type="email"
+                                               class="form-control"
+                                               id="email"
+                                               name="email"
+                                               ng-model="vm.user.email"
+                                               placeholder="alice@wonderland.com">
+                                    </div>
+                                    <span ng-show="vm.editForm.$submitted && vm.editForm['email'].$invalid"
+                                          class="help-block">
+                                        Emails must have an @ sign
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon wd-min-width">First Name</span>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="first-name"
+                                               name="firstName"
+                                               ng-model="vm.user.firstName"
+                                               placeholder="Alice">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon wd-min-width">Last Name</span>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="last-name"
+                                               name="lastName"
+                                               ng-model="vm.user.lastName"
+                                               placeholder="Wonderland">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group"
+                                         ng-class="{'has-error': vm.editForm.$submitted && vm.editForm['phone'].$invalid}">
+                                        <span class="input-group-addon wd-min-width">Phone Number</span>
+                                        <input type="tel"
+                                               class="form-control"
+                                               id="phone"
+                                               ng-minlength="12"
+                                               name="phone"
+                                               ng-model="vm.user.phone"
+                                               placeholder="203-451-1233">
+                                    </div>
+                                    <span ng-show="vm.editForm.$submitted && vm.editForm['phone'].$invalid"
+                                          class="help-block">
+                                            Phone numbers should be in the form XXX-XXX-XXXX
+                                    </span>
+                                </div>
+                                <input class="btn btn-success btn-block"
+                                       type="submit"
+                                       id="submit"
+                                       value="Update" />
+                            </form>
+                        </div>
+                    </div>
+                    <div id="account_settings"
+                         class="tab-pane fade"
+                         ng-hide="vm.otherUser">
+                        <div class="container-fluid wd-padding">
+                            <div ng-show="vm.updatePasswordSuccess"
+                                 class="alert alert-success">
+                                {{vm.updatePasswordSuccess}}
+                            </div>
+                            <div class="form-group"
+                                 ng-class="{'has-error': vm.invalidOldPassword}">
+                                <div class="input-group">
+                                    <span class="input-group-addon wd-min-width">Old Password</span>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="old-password"
+                                           ng-model="vm.password.old"
+                                           placeholder="Old Password">
+                                </div>
+                                <span ng-show="vm.invalidOldPassword"
+                                      class="help-block">
+                                    {{vm.invalidOldPassword}}
+                                </span>
+                            </div>
+                            <div class="form-group"
+                                 ng-class="{'has-error': vm.updatePasswordFailed}">
+                                <div class="input-group">
+                                    <span class="input-group-addon wd-min-width">New Password</span>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="new-password"
+                                           ng-model="vm.password.new"
+                                           placeholder="New Password">
+                                </div>
+                            </div>
+                            <div class="form-group"
+                                 ng-class="{'has-error': vm.updatePasswordFailed}">
+                                <div class="input-group">
+                                    <span class="input-group-addon wd-min-width">Verify Password</span>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="verify-password"
+                                           ng-model="vm.password.verify"
+                                           placeholder="Verify Password">
+                                </div>
+                                <span ng-show="vm.updatePasswordFailed"
+                                      class="help-block">
+                                      {{vm.updatePasswordFailed}}
+                                </span>
+                            </div>
+                            <a class="btn btn-success btn-block"
+                               ng-click="vm.updatePassword()">
+                                Update
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

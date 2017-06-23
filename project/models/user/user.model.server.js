@@ -201,6 +201,5 @@ function createUser(user) {
     if (user.password) {
         user.password = bcrypt.hashSync(user.password);
     }
-    console.log(user);
     return userModel.create(user);
 }

@@ -15,7 +15,7 @@ app.use(passport.session());
 // configure a public directory to host static content
 app.use(app.express.static(__dirname + '/public'));
 
-// require ("./test/app.js")(app);
+require ("./test/app.js")(app);
 
 if (process.env.ASSIGNMENT) {
     require("./assignment/app.js");

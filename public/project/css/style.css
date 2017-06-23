@@ -32,7 +32,7 @@
 
 .parallax__group {
     position: relative;
-    height: 75vh;
+    height: 100vh;
     transform-style: preserve-3d;
 }
 
@@ -98,6 +98,10 @@ a.btn-block.wd-margin-top {
     padding-bottom: 65px;
 }
 
+.wd-padding-left {
+    padding-left: 15px;
+}
+
 .wd-vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -152,10 +156,17 @@ a.btn-block.wd-margin-top {
     }
 }
 
-@media (min-width: 991px) {
+@media (min-width: 968px) {
     .wd-center {
         max-width: 35%;
         margin-left: 32.5%;
+    }
+}
+
+@media (min-width: 480px) and (max-width: 968px) {
+    .wd-center {
+        max-width: 75%;
+        margin-left: 12.5%;
     }
 }
 
@@ -211,4 +222,8 @@ a.btn-block.wd-margin-top {
 
 .wd-scrollable {
     overflow: scroll;
+}
+
+.wd-padding-right {
+    padding-right: 10px;
 }
