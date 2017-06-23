@@ -83,6 +83,7 @@ function ensureAdmin() {
     userModel
         .findUserByUsername(process.env.ADMIN_USERNAME)
         .then(function (user) {
+            console.log("Admin stuff");
             if (!user) {
                 userModel
                     .createUser(admin)
@@ -252,7 +253,8 @@ function facebookStrategy(token, refreshToken, profile, done) {
                     facebook: {
                         id: profile.id,
                         token: token
-                    }
+                    },
+                    roles: ['USER']
                 };
 
                 if (profile.emails.length > 0) {
@@ -315,7 +317,8 @@ function googleStrategy(token, refreshToken, profile, done) {
                         token: token
                     },
                     firstName: profile.givenName,
-                    lastName: profile.familyName
+                    lastName: profile.familyName,
+                    roles: ['USER']
                 };
 
                 return userModel
