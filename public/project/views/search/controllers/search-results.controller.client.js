@@ -193,7 +193,9 @@
         }
 
         function loadFeed() {
-            if (vm.selectedReps[0].rss_url === null || typeof vm.selectedReps[0].rss_url === 'undefined') {
+            if (vm.selectedReps[0].rss_url === null
+                || typeof vm.selectedReps[0].rss_url === 'undefined'
+                || vm.selectedReps[0].rss_url.length < 5) {
                 vm.feeds = [];
                 console.log("No rss url to load");
                 return;
