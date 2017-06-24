@@ -197,6 +197,9 @@
                 .parseFeed(vm.selectedReps[0].rss_url)
                 .then(function (res) {
                     vm.feeds = res;
+                }, function (err) {
+                    console.log(err);
+                    vm.feeds = [];
                 });
         }
 
