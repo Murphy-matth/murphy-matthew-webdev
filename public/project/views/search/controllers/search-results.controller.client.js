@@ -193,6 +193,11 @@
         }
 
         function loadFeed() {
+            if (vm.selectedReps[0].rss_url === null || typeof vm.selectedReps[0].rss_url === 'undefined') {
+                vm.feeds = [];
+                console.log("No rss url to load");
+                return;
+            }
             feedService
                 .parseFeed(vm.selectedReps[0].rss_url)
                 .then(function (res) {
