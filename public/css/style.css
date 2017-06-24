@@ -21,6 +21,7 @@ body,
 
 footer.page-footer {
     padding-top: 0;
+    margin-top: 45px;
 }
 
 footer.page-footer, footer.page-footer .footer-copyright {
