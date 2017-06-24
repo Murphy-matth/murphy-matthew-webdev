@@ -110,8 +110,8 @@ var facebookConfig = {
 app.get ('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect: '/assignment/index.html#!/user',
-        failureRedirect: '/assignment/index.html#!/login'
+        successRedirect: '/assignment/index2.html#!/user',
+        failureRedirect: '/assignment/index2.html#!/login'
     }));
 
 passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));

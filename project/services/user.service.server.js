@@ -239,8 +239,8 @@ var facebookConfig = {
 app.get ('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect: '/project/index.html#!/user',
-        failureRedirect: '/project/index.html#!/login'
+        successRedirect: '/project/index2.html#!/user',
+        failureRedirect: '/project/index2.html#!/login'
     }));
 
 passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
@@ -300,8 +300,8 @@ app.get('/auth/google', passport.authenticate('google', { scope : 'profile' }));
 
 app.get('/auth/google/callback',
     passport.authenticate('google', {
-        successRedirect: '/project/index.html#!/user',
-        failureRedirect: '/project/index.html#!/login'
+        successRedirect: '/project/index2.html#!/user',
+        failureRedirect: '/project/index2.html#!/login'
     }));
 
 passport.use(new GoogleStrategy(googleConfig, googleStrategy));
@@ -371,7 +371,7 @@ function uploadImage(req, res) {
     userModel
         .updateUrl(userId, url)
         .then(function (status) {
-            var callbackUrl   = '/project/index.html#!/user/';
+            var callbackUrl   = '/project/index2.html#!/user/';
             res.redirect(callbackUrl);
         });
 }
