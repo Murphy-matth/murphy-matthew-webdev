@@ -14,7 +14,7 @@ Sunnyvale, CA. I am returning to Xperiel for my third co-op.
 # Useful Links
 Both my project and my assignments are hosted at [heroku.](https://webdev-summer-2017.herokuapp.com/)
 
-My project is located at [TBD.](www.google.com)
+My project is located at [heroku.](http://matthew-murphy-project.herokuapp.com/)
 
 My assignment is located at [heroku.](https://webdev-summer-2017.herokuapp.com/assignment/index.html)
 
